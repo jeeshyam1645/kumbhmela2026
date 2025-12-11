@@ -1,0 +1,88 @@
+FUNCTIONAL SPECIFICATION DOCUMENT (FSD)
+Project Name: Magh/Kumbh Mela Camp Booking Portal Version: 1.1 Date: December 9, 2025 Primary Goal: To generate high-quality phone leads for camp accommodation and spiritual services.
+________________________________________
+1. PROJECT OVERVIEW
+The website will serve as a digital brochure and lead generation engine for a luxury camp in Prayagraj. It must build trust through transparency, cater to both English and Hindi speakers, and prioritize direct communication (Phone/WhatsApp) over automated e-commerce.
+________________________________________
+2. SITE ARCHITECTURE & NAVIGATION
+2.1 Navigation Bar (Sticky Header)
+•	Logo: Left-aligned.
+•	Menu Links: Home | Kumbh Guide | Accommodation (Camps) | Puja Services | Contact.
+•	Language Toggle: Switcher for English / हिंदी (Must be prominent).
+•	CTA Button: "Check Availability" (Floats on mobile).
+2.2 Sitemap
+1.	Home Page: Landing page with Hero banner and Trust signals.
+2.	Kumbh Mela Info: History, Bathing Dates, Significance.
+3.	Accommodation: Listings of different tent categories (Swiss/Dorm/Deluxe).
+4.	Amenities: Details on food, sanitation, safety.
+5.	Puja Services: Catalogue of rituals with "Enquire" buttons.
+6.	Contact/Enquiry: Form and Location.
+7.	Thank You Page: Post-submission landing page.
+8.	Legal Pages (Footer Links):
+•	Terms & Cancellation Policy: Text-based page detailing refund tiers and camp rules.
+•	Privacy Policy: Standard GDPR/Data protection text (since you are collecting phone numbers).
+
+________________________________________
+3. KEY FUNCTIONAL REQUIREMENTS
+3.1 Multilingual System (Priority: High)
+•	Mechanism: Manual translation toggle (Not auto-Google Translate).
+•	Logic:
+o	User clicks "Hindi" -> Site reloads/switches to Hindi version URL.
+•	Content: All static text, menus, buttons, and form labels must be translatable.
+3.2 Booking & Enquiry Engine (Priority: High)
+•	Model: Lead Generation Only (No Payment Gateway).
+•	Checkbox Requirement: Before the "Submit Enquiry" button works, add a checkbox:
+•	[ ] I have read and agree to the Terms & Cancellation Policy.
+•	(Note: This protects you legally. If they dispute a refund later, you can show they checked this box).
+•	Form Locations:
+o	Dedicated "Contact" page.
+o	"Check Availability" pop-up on Camp Detail pages.
+o	"Enquire for Puja" button on Service page.
+•	Form Fields:
+1.	Name (Text)
+2.	Mobile Number (Number + Country Code selector). Validation: Must be 10-15 digits.
+3.	Check-in / Check-out (Date Picker).
+4.	Number of Persons (Dropdown: 1, 2, 3, 4, 5+).
+5.	Camp Preference (Dropdown: Swiss Cottage / Deluxe Tent / Dormitory).
+6.	Special Needs / Puja Request (Text Area).
+•	Submission Logic:
+o	Frontend: Validate fields -> Submit -> Redirect to Thank You Page.
+o	Thank You Page: Display message: "Thanks [Name]! We will call you within 2 hours." + Embed "Camp Tour" Video.
+3.3 Notification System (The "Speed to Lead")
+•	Email Alert: System sends full enquiry details to admin@yourcamp.com.
+•	WhatsApp Alert (Internal): Integration (via API like Wati/Interakt or PHP script) to send a structured message to the Owner’s Mobile.
+•	WhatsApp Alert (Customer - Optional): Auto-reply: "Namaste! We received your request. Our Camp Manager will call you shortly."
+________________________________________
+4. PAGE-BY-PAGE CONTENT REQUIREMENTS
+A. Home Page
+•	Hero Section: High-quality Video/Image slider. Text: "Your Spiritual Home at Prayagraj."
+•	Trust Indicators: Icons for "Attached Toilet," "Satvik Food," "24/7 Security."
+•	Ticker: Scrolling text for "Next Bathing Date."
+B. Accommodation Page (Product Listing)
+•	Card Design: Each tent type must show:
+o	Image Gallery (Interior, Bed, Washroom).
+o	Key Specs (e.g., "1 Double Bed," "Geyser," "Carpeted Floor").
+o	CTA Button: "Get Quote."
+•	Camp Layout (Map Section):
+o	Visual: Use a high-quality 2D Illustrated Graphic (Vector style) showing the tents, dining hall, and river proximity.
+o	Disclaimer: Must include text: "Note: This is a representative layout. Actual camp location depends on the plot allotted by the Mela Adhikari."
+C. Puja & Karm Kand Services (Updated)
+•	Header: "Divine Rituals & Vedic Services" (English) / "दैवीय पूजा और वैदिक अनुष्ठान" (Hindi).
+•	Sub-text: Rates depend on Samagri and Dakshina. Contact us for customization.
+•	Service List (Content):
+1.	Rudrabhishek (रुद्राभिषेक): For peace and prosperity (Lord Shiva worship).
+2.	Pitra Dosh Nivaran (पितृ दोष निवारण): Ancestral peace rituals (Pind Daan).
+3.	Mahamrityunjaya Jaap (महामृत्युंजय जाप): For health and longevity.
+4.	Satyanarayan Katha (सत्यनारायण कथा): For household harmony.
+5.	Vishesh Ganga Pujan (विशेष गंगा पूजन): Personalized worship at Sangam.
+•	Action Button: "Enquire Now" ( पूछताछ करें).
+o	Logic: Opens the Enquiry Form and auto-fills the message: "I am interested in [Puja Name]."
+D. Kumbh Guide (Content Page)
+•	Event Calendar: A clear Table view of Bathing Dates.
+•	SEO Content: Rich text describing the significance of the Mela.
+________________________________________
+5. TECHNICAL & DESIGN SPECS
+•	Mobile Responsiveness: 100% optimized for mobile.
+•	Speed: Page load time under 3 seconds on 4G networks.
+•	WhatsApp Integration: Floating "Chat on WhatsApp" button visible on all pages.
+
