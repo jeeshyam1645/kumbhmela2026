@@ -1,8 +1,11 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { serveStatic } from "./static";
+import path from "path"; // <--- ADDED
+import { fileURLToPath } from "url"; // <--- ADDED
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middleware to parse JSON and Raw Body
 app.use(
@@ -67,12 +70,23 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // 3. SETUP VITE OR STATIC FILES
+  // 3. SETUP PRODUCTION ASSETS OR DEV SERVER
   if (process.env.NODE_ENV === "production") {
-    serveStatic(app);
+    // Serve built frontend from dist/public (Matches your package.json build script)
+    const publicPath = path.join(process.cwd(), "dist", "public");
+    
+    app.use(express.static(publicPath));
+
+    // Serve index.html for all non-API routes (SPA Fallback)
+    app.get("*", (req, res) => {
+      // Don't serve HTML for API 404s
+      if (req.path.startsWith("/api")) {
+        return res.status(404).json({ message: "API Endpoint Not Found" });
+      }
+      res.sendFile(path.join(publicPath, "index.html"));
+    });
   } else {
     const { setupVite } = await import("./vite");
-    // FIXED ORDER: Pass httpServer first, then app
     await setupVite(httpServer, app);
   }
 
