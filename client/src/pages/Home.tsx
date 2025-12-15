@@ -7,7 +7,7 @@ import { AccommodationCard } from "@/components/AccommodationCard";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
-import { bathingDates, Camp, PujaService } from "@shared/schema"; // Import Types only
+import { bathingDates, Camp, PujaService } from "@shared/types"; // Import Types only
 
 // Fallback images if admin hasn't uploaded one yet
 const campImages = [

@@ -3,7 +3,7 @@ import { useLocation, Link } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { apiRequest } from "@/lib/queryClient";
-import { Booking, Camp } from "@shared/schema";
+import { Booking, Camp } from "@shared/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { Loader2, CalendarDays, Users, Tent, Clock, CheckCircle, XCircle, Phone, AlertTriangle, X } from "lucide-react";
 import { Card } from "@/components/ui/card";

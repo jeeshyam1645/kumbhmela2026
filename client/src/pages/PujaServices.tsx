@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
 import { useLanguage } from "@/context/LanguageContext";
-import { PujaService } from "@shared/schema"; // Import TYPE, not the variable
+import { PujaService } from "@shared/types"; // Import TYPE, not the variable
 import { Loader2 } from "lucide-react";
 
 export default function PujaServices() {

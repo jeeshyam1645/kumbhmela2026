@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { apiRequest } from "@/lib/queryClient";
-import { Booking, Camp, PujaService } from "@shared/schema";
+import { Booking, Camp, PujaService } from "@shared/types";
 
 // UI Components
 import { Button } from "@/components/ui/button";
