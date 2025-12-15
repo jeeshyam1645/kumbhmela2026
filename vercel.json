@@ -12,8 +12,5 @@
       "use": "@vercel/static-build",
       "config": { "distDir": "dist/public" }
     }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
