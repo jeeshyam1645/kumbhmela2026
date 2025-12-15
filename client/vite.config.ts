@@ -7,11 +7,11 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
-      "@shared": path.resolve(__dirname, "shared"),
+      "@shared": path.resolve(__dirname, "../shared"),
     },
   },
   build: {
-    outDir: "dist",   // Vercel expects this
+    outDir: "dist",
     emptyOutDir: true,
   },
 });
