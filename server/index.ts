@@ -1,11 +1,20 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import path from "path"; // <--- ADDED
-import { fileURLToPath } from "url"; // <--- ADDED
+import path from "path";
+import { fileURLToPath } from "url";
+import cors from "cors"; // <--- 1. IMPORT CORS
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// 2. CONFIGURE CORS (Critical for Vercel -> Render communication)
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "*", // Allow Vercel URL
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  credentials: true, // Allow cookies/sessions if needed
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 // Middleware to parse JSON and Raw Body
 app.use(
@@ -70,22 +79,15 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // 3. SETUP PRODUCTION ASSETS OR DEV SERVER
-  if (process.env.NODE_ENV === "production") {
-    // Serve built frontend from dist/public (Matches your package.json build script)
-    const publicPath = path.join(process.cwd(), "dist", "public");
-    
-    app.use(express.static(publicPath));
-
-    // Serve index.html for all non-API routes (SPA Fallback)
-    app.get("*", (req, res) => {
-      // Don't serve HTML for API 404s
-      if (req.path.startsWith("/api")) {
-        return res.status(404).json({ message: "API Endpoint Not Found" });
-      }
-      res.sendFile(path.join(publicPath, "index.html"));
+  // 3. SETUP - PRODUCTION MODE (Backend Only)
+  if (app.get("env") === "production") {
+    // NOTE: Since you are deploying Frontend to Vercel, Render doesn't need to serve static files.
+    // However, we keep a simple message for the root URL so you know the API is alive.
+    app.get("/", (_req, res) => {
+      res.json({ message: "Magh Mela API is running. Frontend is hosted on Vercel." });
     });
   } else {
+    // Development: Use Vite middleware so you can still work locally
     const { setupVite } = await import("./vite");
     await setupVite(httpServer, app);
   }
