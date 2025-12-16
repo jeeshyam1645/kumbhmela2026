@@ -2,18 +2,41 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import path from "path";
 import { fileURLToPath } from "url";
-import cors from "cors"; // <--- 1. IMPORT CORS
+import cors from "cors";
 
 const app = express();
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
+// --- FIX 1: TRUST PROXY (REQUIRED FOR RENDER) ---
+// Render puts your app behind a load balancer. 
+// This allows Express to trust the "X-Forwarded-Proto" header (https).
+app.set("trust proxy", 1); 
 
-// 2. CONFIGURE CORS (Critical for Vercel -> Render communication)
+// --- FIX 2: CONFIGURE CORS CORRECTLY ---
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "*", // Allow Vercel URL
+  origin: (origin, callback) => {
+    // 1. Allow requests with no origin (like mobile apps or Postman)
+    if (!origin) return callback(null, true);
+
+    // 2. Define your allowed static domains
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://kumbhmela2026.vercel.app", // Main production domain
+      process.env.FRONTEND_URL            // From your Render env vars
+    ];
+
+    // 3. Check if origin matches allowed list OR ends with .vercel.app
+    if (
+      allowedOrigins.includes(origin) || 
+      origin.endsWith(".vercel.app") // Automatically allows ALL Vercel previews
+    ) {
+      callback(null, true);
+    } else {
+      console.log("Blocked by CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Essential for cookies
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  credentials: true, // Allow cookies/sessions if needed
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
@@ -70,6 +93,8 @@ app.use((req, res, next) => {
 
 (async () => {
   // 1. REGISTER ROUTES & CREATE SERVER
+  // NOTE: Your session/auth setup is likely inside this function.
+  // See the "IMPORTANT" note below.
   const httpServer = await registerRoutes(app);
 
   // 2. ERROR HANDLING
@@ -80,15 +105,12 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // 3. SETUP - PRODUCTION MODE (Backend Only)
+  // 3. SETUP - PRODUCTION MODE
   if (app.get("env") === "production") {
-    // NOTE: Since you are deploying Frontend to Vercel, Render doesn't need to serve static files.
-    // However, we keep a simple message for the root URL so you know the API is alive.
     app.get("/", (_req, res) => {
       res.json({ message: "Magh Mela API is running. Frontend is hosted on Vercel." });
     });
   } else {
-    // Development: Use Vite middleware so you can still work locally
     const { setupVite } = await import("./vite");
     await setupVite(httpServer, app);
   }
