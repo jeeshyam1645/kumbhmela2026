@@ -5,12 +5,5 @@
       "source": "/api/:path*",
       "destination": "https://magh-mela-backend.onrender.com/api/:path*"
     }
-  ],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist/public" }
-    }
   ]
 }
