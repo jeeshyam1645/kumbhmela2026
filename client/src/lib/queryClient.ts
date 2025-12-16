@@ -1,5 +1,9 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// 1. DEFINE YOUR BACKEND URL
+// This ensures Vercel points to Render, while keeping localhost flexible if you use env vars.
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://magh-mela-backend.onrender.com";
+
 /* -------------------- helpers -------------------- */
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -14,11 +18,15 @@ export async function apiRequest(
   url: string,
   data?: unknown
 ): Promise<Response> {
-  const res = await fetch(url, {
+  // 2. PREPEND BASE_URL TO THE REQUEST URL
+  // If url is "/api/login", fullUrl becomes "https://magh-mela-backend.onrender.com/api/login"
+  const fullUrl = url.startsWith("http") ? url : `${BASE_URL}${url}`;
+
+  const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include", // ✅ REQUIRED for session cookies
+    credentials: "include", // ✅ REQUIRED: Sends the session cookie to Render
   });
 
   await throwIfResNotOk(res);
@@ -31,8 +39,12 @@ type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn =
   <T>({ on401 }: { on401: UnauthorizedBehavior }): QueryFunction<T> =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include", // ✅ REQUIRED
+    // 3. CONSTRUCT FULL URL FROM QUERY KEY
+    const path = queryKey.join("/");
+    const fullUrl = path.startsWith("http") ? path : `${BASE_URL}${path}`;
+
+    const res = await fetch(fullUrl, {
+      credentials: "include", // ✅ REQUIRED: Sends the session cookie to Render
     });
 
     if (res.status === 401) {
