@@ -1,5 +1,5 @@
 import { useLanguage } from "@/context/LanguageContext";
-import { bathingDates } from "@shared/types";
+import { bathingDates } from "@app/shared";
 import { Calendar, Star, Droplets, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 

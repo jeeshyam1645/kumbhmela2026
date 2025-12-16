@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from "react";
 import { useQuery, useMutation, UseMutationResult } from "@tanstack/react-query";
-import { insertUserSchema, User as SelectUser, InsertUser } from "@shared/types";
+import { insertUserSchema, User as SelectUser, InsertUser } from "@app/shared";
 import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient"; // <--- FIXED IMPORT
 import { useToast } from "@/hooks/use-toast";
 

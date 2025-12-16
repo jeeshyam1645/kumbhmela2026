@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Camp } from "@shared/types";
+import { Camp } from "@app/shared";
 import { Loader2 } from "lucide-react";
 import { AccommodationCard } from "@/components/AccommodationCard";
 import { useLanguage } from "@/context/LanguageContext"; // <--- Import

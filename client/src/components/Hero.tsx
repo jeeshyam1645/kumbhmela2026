@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { ChevronDown, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
-import { bathingDates } from "@shared/types";
+import { bathingDates } from"@app/shared";
 
 export function Hero() {
   const { t } = useLanguage();

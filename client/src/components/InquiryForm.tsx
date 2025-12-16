@@ -29,7 +29,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 // FIX 1: Import Types only, do not import the schema variable 'pujaServices'
-import { Camp, PujaService } from "@shared/types"; 
+import { Camp, PujaService } from "@app/shared"; 
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { AuthModal } from "@/components/AuthModal";
