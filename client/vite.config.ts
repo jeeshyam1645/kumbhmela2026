@@ -13,5 +13,9 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+  },server: {
+    fs: {
+      allow: [".."], // 👈 VERY IMPORTANT
+    },
   },
 });
