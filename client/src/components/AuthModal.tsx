@@ -20,6 +20,8 @@ import { Loader2 } from "lucide-react";
 export function AuthModal({ trigger }: { trigger?: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
+  
+const BACKEND_URL = "https://magh-mela-backend.onrender.com";
 
   // If logged in, don't show login forms
   if (user) return null;
@@ -38,11 +40,10 @@ export function AuthModal({ trigger }: { trigger?: React.ReactNode }) {
 
         {/* SOCIAL LOGIN BUTTONS */}
         <div className="grid gap-3 py-4">
-          <Button 
-            variant="outline" 
-            className="w-full flex gap-2 relative h-11" 
-            onClick={() => window.location.href = "/api/auth/google"}
-          >
+
+<Button onClick={() => window.location.href = `${BACKEND_URL}/api/auth/google`}>
+  Login with Google
+</Button>
             <svg className="h-5 w-5 absolute left-4" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
