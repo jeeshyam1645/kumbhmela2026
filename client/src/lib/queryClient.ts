@@ -23,8 +23,6 @@ export async function apiRequest(
   return res;
 }
 
-=======
->>>>>>> parent of 8036c87 (new code +++)
 type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn: <T>(options: {
   on401: "returnNull" | "throw";
@@ -35,7 +33,7 @@ export const getQueryFn: <T>(options: {
       credentials: "include",
     });
 
-    if (on401 === "returnNull" && res.status === 401) {
+    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
       return null;
     }
 
