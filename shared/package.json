@@ -1,5 +1,5 @@
 {
-  "name": "@app/shared",
+  "name": "@shared/types",
   "version": "1.0.0",
   "type": "module",
   "main": "types.ts",

@@ -5,7 +5,7 @@ import { Express } from "express";
 import session from "express-session";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { users, insertUserSchema } from "@app/shared";
+import { users, insertUserSchema } from "";
 import { db, pool } from "./db";
 import { eq } from "drizzle-orm";
 import connectPgSimple from "connect-pg-simple";
