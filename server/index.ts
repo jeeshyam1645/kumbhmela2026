@@ -5,8 +5,9 @@ import { fileURLToPath } from "url";
 import cors from "cors"; // <--- 1. IMPORT CORS
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
 
 // 2. CONFIGURE CORS (Critical for Vercel -> Render communication)
 app.use(cors({
