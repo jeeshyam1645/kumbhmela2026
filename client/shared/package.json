@@ -1,0 +1,12 @@
+{
+  "name": "@app/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "types.ts",
+  "exports": {
+    ".": "./types.ts"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  }
+}
