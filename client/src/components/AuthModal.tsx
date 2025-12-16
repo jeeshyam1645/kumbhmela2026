@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useAuth } from "@/hooks/use-auth";
 import { insertUserSchema } from "@app/shared";
 import { Button } from "@/components/ui/button";
@@ -17,12 +16,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
 
+// ✅ Hardcoded Backend URL to ensure cross-domain redirects work
+const BACKEND_URL = "https://magh-mela-backend.onrender.com";
+
 export function AuthModal({ trigger }: { trigger?: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
   
-const BACKEND_URL = "https://magh-mela-backend.onrender.com";
-
   // If logged in, don't show login forms
   if (user) return null;
 
@@ -40,10 +40,13 @@ const BACKEND_URL = "https://magh-mela-backend.onrender.com";
 
         {/* SOCIAL LOGIN BUTTONS */}
         <div className="grid gap-3 py-4">
-
-<Button onClick={() => window.location.href = `${BACKEND_URL}/api/auth/google`}>
-  Login with Google
-</Button>
+          
+          {/* ✅ Google Login - FIXED */}
+          <Button 
+            variant="outline" 
+            className="w-full flex gap-2 relative h-11"
+            onClick={() => window.location.href = `${BACKEND_URL}/api/auth/google`}
+          >
             <svg className="h-5 w-5 absolute left-4" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -53,10 +56,11 @@ const BACKEND_URL = "https://magh-mela-backend.onrender.com";
             Continue with Google
           </Button>
 
+          {/* ✅ Facebook Login - FIXED */}
           <Button 
             variant="outline" 
             className="w-full flex gap-2 relative h-11" 
-            onClick={() => window.location.href = "/api/auth/facebook"}
+            onClick={() => window.location.href = `${BACKEND_URL}/api/auth/facebook`}
           >
              <svg className="h-5 w-5 absolute left-4 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036c-2.148 0-2.797 1.66-2.797 3.592v1.472h4.908l-.499 3.667h-4.409v7.98h-4.991Z" />
