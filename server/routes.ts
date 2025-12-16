@@ -111,7 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/my-bookings", async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send("Not logged in");
+    if (!req.isAuthenticated()) return res.status(401).send("Not logged in from routes.ts booking");
     
     const userId = (req.user as any).id;
 
@@ -125,7 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // PATCH: Cancel Booking (User)
   app.patch("/api/bookings/:id/cancel", async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send("Not logged in");
+    if (!req.isAuthenticated()) return res.status(401).send("Not logged in from bookings cancel. ");
     
     const bookingId = parseInt(req.params.id);
     const userId = (req.user as any).id;

@@ -1,8 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-// 1. DEFINE YOUR BACKEND URL
-// This ensures Vercel points to Render, while keeping localhost flexible if you use env vars.
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://magh-mela-backend.onrender.com";
+// 1. HARDCODE THIS URL TEMPORARILY TO BE 100% SURE
+const BASE_URL = "https://magh-mela-backend.onrender.com";
 
 /* -------------------- helpers -------------------- */
 async function throwIfResNotOk(res: Response) {
@@ -12,42 +11,48 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-/* -------------------- apiRequest (mutations) -------------------- */
+/* -------------------- apiRequest (For Mutations like Login/Logout) -------------------- */
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown
 ): Promise<Response> {
-  // 2. PREPEND BASE_URL TO THE REQUEST URL
-  // If url is "/api/login", fullUrl becomes "https://magh-mela-backend.onrender.com/api/login"
+  // Construct the URL
   const fullUrl = url.startsWith("http") ? url : `${BASE_URL}${url}`;
+
+  // 🔍 DEBUG LOG: Check this in your browser console
+  console.log(`[DEBUG-MUTATION] Method: ${method}, Full URL:`, fullUrl);
 
   const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include", // ✅ REQUIRED: Sends the session cookie to Render
+    credentials: "include", // ✅ CRITICAL
   });
 
   await throwIfResNotOk(res);
   return res;
 }
 
-/* -------------------- queryFn factory -------------------- */
+/* -------------------- queryFn (For useAuth / useQuery) -------------------- */
 type UnauthorizedBehavior = "returnNull" | "throw";
 
 export const getQueryFn =
   <T>({ on401 }: { on401: UnauthorizedBehavior }): QueryFunction<T> =>
   async ({ queryKey }) => {
-    // 3. CONSTRUCT FULL URL FROM QUERY KEY
+    // Construct the URL
     const path = queryKey.join("/");
     const fullUrl = path.startsWith("http") ? path : `${BASE_URL}${path}`;
 
+    // 🔍 DEBUG LOG: Check this in your browser console
+    console.log(`[DEBUG-QUERY] Fetching Data, Full URL:`, fullUrl);
+
     const res = await fetch(fullUrl, {
-      credentials: "include", // ✅ REQUIRED: Sends the session cookie to Render
+      credentials: "include", // ✅ CRITICAL
     });
 
     if (res.status === 401) {
+      console.warn(`[DEBUG-QUERY] 401 Unauthorized received from:`, fullUrl);
       if (on401 === "returnNull") {
         return null as T;
       }
@@ -58,15 +63,14 @@ export const getQueryFn =
     return res.json();
   };
 
-/* -------------------- QueryClient -------------------- */
+/* -------------------- QueryClient Config -------------------- */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn({ on401: "throw" }), // default behavior
-      staleTime: Infinity,
+      queryFn: getQueryFn({ on401: "throw" }),
+      staleTime: 5 * 60 * 1000, 
       retry: false,
       refetchOnWindowFocus: false,
-      refetchInterval: false,
     },
     mutations: {
       retry: false,

@@ -253,6 +253,6 @@ export function setupAuth(app: Express) {
     if (req.isAuthenticated()) {
       return res.json(req.user);
     }
-    res.status(401).send("Not logged in");
+    res.status(401).send("Not logged in from auth.ts. ");
   });
 }
