@@ -7,9 +7,8 @@
   "dev": "cross-env NODE_ENV=development tsx server/index.ts",
 
   "build:client": "vite build --outDir public --emptyOutDir",
-  "build:server": "esbuild server/index.ts --platform=node --bundle --format=esm --outfile=dist/index.js --external:@babel/* --external:lightningcss --external:tailwindcss",
-
-  "start": "node dist/index.js",
+ "build:server": "esbuild server/index.ts --platform=node --bundle --format=cjs --outfile=dist/index.cjs --external:@babel/* --external:lightningcss --external:tailwindcss",
+"start": "node dist/index.cjs",
   "check": "tsc",
   "db:push": "drizzle-kit push"
 },
