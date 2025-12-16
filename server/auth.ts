@@ -50,12 +50,11 @@ export function setupAuth(app: Express) {
     resave: false,
     saveUninitialized: false,
     proxy: true,
-    cookie: {
-      httpOnly: true,
-      secure: true,            // REQUIRED for SameSite=None
-      sameSite: "none",        // REQUIRED for Google OAuth
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    },
+cookie: {
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  secure: true,          // REQUIRED for SameSite=None
+  sameSite: "none",      // REQUIRED for cross-site cookies
+}
   };
 
   app.use(session(sessionSettings));
