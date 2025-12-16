@@ -5,7 +5,7 @@ import { Express } from "express";
 import session from "express-session";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { users , insertUserSchema } from "@shared/schema";
+import { users, insertUserSchema } from "@shared/schema";
 import { db, pool } from "./db";
 import { eq } from "drizzle-orm";
 import connectPgSimple from "connect-pg-simple";
@@ -37,27 +37,31 @@ async function comparePasswords(supplied: string, stored: string) {
 
 /* ===================== AUTH SETUP ===================== */
 export function setupAuth(app: Express) {
-  /* ---------- REQUIRED FOR RENDER / VERCEL ---------- */
+  /* REQUIRED FOR RENDER / PROXY */
   app.set("trust proxy", 1);
 
-  /* ---------------- SESSION CONFIG ---------------- */
-  const sessionSettings: session.SessionOptions = {
-    store: new PgSession({
-      pool,
-      createTableIfMissing: true,
-    }),
-    secret: process.env.SESSION_SECRET || "CHANGE_ME_IN_PRODUCTION",
-    resave: false,
-    saveUninitialized: false,
-    proxy: true,
-cookie: {
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-  secure: true,          // REQUIRED for SameSite=None
-  sameSite: "none",      // REQUIRED for cross-site cookies
-}
-  };
+  const FRONTEND_URL = process.env.FRONTEND_URL!;
+  const BACKEND_URL = process.env.BACKEND_URL!;
 
-  app.use(session(sessionSettings));
+  /* ---------------- SESSION CONFIG ---------------- */
+  app.use(
+    session({
+      store: new PgSession({
+        pool,
+        createTableIfMissing: true,
+      }),
+      secret: process.env.SESSION_SECRET!,
+      resave: false,
+      saveUninitialized: false,
+      proxy: true,
+      cookie: {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        secure: true,       // required for SameSite=None
+        sameSite: "none",   // required for cross-domain cookies
+      },
+    })
+  );
+
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -77,7 +81,7 @@ cookie: {
 
         if (!user.password) {
           return done(null, false, {
-            message: "This account uses Google login.",
+            message: "Please login using Google.",
           });
         }
 
@@ -99,8 +103,7 @@ cookie: {
       {
         clientID: process.env.GOOGLE_CLIENT_ID!,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        callbackURL:
-          "https://magh-mela-backend.onrender.com/api/auth/google/callback",
+        callbackURL: `${BACKEND_URL}/api/auth/google/callback`,
       },
       async (_accessToken, _refreshToken, profile, done) => {
         try {
@@ -161,17 +164,20 @@ cookie: {
 
   /* ===================== ROUTES ===================== */
 
-  // --- GOOGLE LOGIN ---
+  // --- GOOGLE LOGIN (IMPORTANT: must be backend URL) ---
   app.get(
     "/api/auth/google",
     passport.authenticate("google", { scope: ["profile", "email"] })
   );
 
+  // --- GOOGLE CALLBACK ---
   app.get(
     "/api/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/" }),
+    passport.authenticate("google", {
+      failureRedirect: `${FRONTEND_URL}/login`,
+    }),
     (_req, res) => {
-      res.redirect("https://kumbhmela2026-1216-1458.vercel.app");
+      res.redirect(FRONTEND_URL);
     }
   );
 
