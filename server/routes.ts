@@ -80,8 +80,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           user: process.env.GMAIL_USER,
           pass: process.env.GMAIL_APP_PASSWORD,
         },
-        tls: { rejectUnauthorized: false },
+tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false,
+        },
         family: 4, // <--- CRITICAL FIX FOR TIMEOUTS (Forces IPv4)
+        connectionTimeout: 10000, // 10 seconds
+        greetingTimeout: 10000,   // 10 seconds
+        socketTimeout: 10000,     // 10 seconds
+        logger: true,             // Log details to console
+        debug: true               // Debug info
       });
 
       // 2. Email Content
