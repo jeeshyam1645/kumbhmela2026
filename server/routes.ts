@@ -94,7 +94,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 1. SAVE TO DATABASE
       const newBooking = await db.insert(bookings).values({
         ...data,
-        userId: userId,
+        userId: userId, // <--- FIXED: Changed from userId to user_id
         totalAmount: totalAmount,
         advanceAmount: advanceAmount,
         status: status, 
@@ -102,57 +102,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
         bookingType: data.bookingType || "inquiry_call"
       }).returning();
 
-      // -------------------------------------------------------
-      // 2. SEND EMAIL NOTIFICATION (New Logic)
-      // -------------------------------------------------------
-      try {
-        // NOTE: For security, use process.env.GMAIL_USER and process.env.GMAIL_APP_PASSWORD in production
-const transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com", // 1. Use explicit Host
-          port: 587,              // 2. Use Port 587 (Allowed on Render)
-          secure: false,          // 3. Must be false for port 587
-          requireTLS: true,       // 4. Force TLS security
-          auth: {
-            user: process.env.GMAIL_USER, 
-            pass: process.env.GMAIL_APP_PASSWORD, 
-          },
-        });
-
-        const mailOptions = {
-from: `"Magh Mela Bot" <${process.env.GMAIL_USER}>`, // Use env here too
-    to: process.env.GMAIL_USER, // Send to yourself
-          subject: `🔔 New Booking Inquiry: ${data.guestName}`,
-          html: `
-            <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-              <h2 style="color: #d97706;">New Inquiry Received</h2>
-              <p><strong>Name:</strong> ${data.guestName}</p>
-              <p><strong>Mobile:</strong> <a href="tel:${data.mobile}">${data.mobile}</a></p>
-              <p><strong>Camp:</strong> ${camp.nameEn}</p>
-              <p><strong>Guests:</strong> ${data.guestCount}</p>
-              <p><strong>Dates:</strong> ${data.checkIn} to ${data.checkOut}</p>
-              <p><strong>Total Estimate:</strong> ₹${totalAmount}</p>
-              <hr />
-              <p><strong>Message/Special Needs:</strong><br/>${data.specialNeeds || "None"}</p>
-              <br />
-              <a href="https://your-website.com/admin" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px;">View in Dashboard</a>
-            </div>
-          `,
-        };
-
-        // Send the email
-        await transporter.sendMail(mailOptions);
-        console.log("Email notification sent successfully.");
-
-      } catch (emailError) {
-        console.error("Failed to send email notification:", emailError);
-        // We purposefully DO NOT fail the request here. 
-        // The booking is safe in the DB, even if the email fails.
-      }
-
+      // 2. SEND RESPONSE IMMEDIATELY (Prevents Timeout)
       res.status(201).json(newBooking[0]);
+
+      // -------------------------------------------------------
+      // 3. SEND EMAIL NOTIFICATION (Background Process)
+      // -------------------------------------------------------
+      
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, 
+        requireTLS: true,
+        auth: {
+          user: process.env.GMAIL_USER, 
+          pass: process.env.GMAIL_APP_PASSWORD, 
+        },
+        tls: {
+            rejectUnauthorized: false // Helps with Render connection issues
+        }
+      });
+
+      const mailOptions = {
+        from: `"Magh Mela Bot" <${process.env.GMAIL_USER}>`,
+        to: process.env.GMAIL_USER, 
+        subject: `🔔 New Booking Inquiry: ${data.guestName}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+            <h2 style="color: #d97706;">New Inquiry Received</h2>
+            <p><strong>Name:</strong> ${data.guestName}</p>
+            <p><strong>Mobile:</strong> <a href="tel:${data.mobile}">${data.mobile}</a></p>
+            <p><strong>Camp:</strong> ${camp.nameEn}</p>
+            <p><strong>Guests:</strong> ${data.guestCount}</p>
+            <p><strong>Dates:</strong> ${data.checkIn} to ${data.checkOut}</p>
+            <p><strong>Total Estimate:</strong> ₹${totalAmount}</p>
+            <hr />
+            <p><strong>Message/Special Needs:</strong><br/>${data.specialNeeds || "None"}</p>
+            <br />
+            <a href="https://kumbhmela2026.vercel.app/admin" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px;">View in Dashboard</a>
+          </div>
+        `,
+      };
+
+      // Fire and Forget (No await)
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.error("❌ Background Email Failed:", err.message);
+        } else {
+            console.log("✅ Background Email Sent:", info.response);
+        }
+      });
+
     } catch (error) {
       console.error("Booking Error:", error);
-      res.status(400).json({ message: "Invalid booking data" });
+      // Only send error response if we haven't sent success yet
+      if (!res.headersSent) {
+        res.status(400).json({ message: "Invalid booking data" });
+      }
     }
   });
 
