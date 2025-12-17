@@ -34,7 +34,7 @@ export default function Accommodation() {
   return (
     <div className="container mx-auto pt-24 pb-12 px-4">
       <h1 className="text-4xl font-bold text-center mb-4 font-serif text-primary">
-        {t("Luxury Accommodation", "लक्जरी आवास")}
+        {t("Comfort-First Pilgrimage", "लक्जरी आवास")}
       </h1>
       <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
         {t(

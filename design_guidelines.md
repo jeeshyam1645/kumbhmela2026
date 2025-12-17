@@ -159,4 +159,4 @@
 - Certifications/awards badges in footer
 - Camp layout disclaimer clearly visible
 
-**Design Principle**: Balance spiritual reverence with modern hospitality standards - create a premium, trustworthy experience that respects the cultural significance while showcasing luxury accommodations.
+**Design Principle**: Balance spiritual reverence with modern hospitality standards - create a premium, trustworthy experience that respects the cultural significance while showcasing Comfort-First Pilgrimages.
