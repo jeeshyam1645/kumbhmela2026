@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,62 +24,32 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/context/LanguageContext";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Camp, PujaService } from "@app/shared"; 
 import { useAuth } from "@/hooks/use-auth";
 import { AuthModal } from "@/components/AuthModal";
 
-// --- 1. DEFINE API BASE URL ---
-// Fallback to absolute URL if env is missing to prevent relative path errors
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://magh-mela-backend.onrender.com";
-
+// Simplified Schema: Just Name, Mobile, Message
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   mobile: z.string().min(10, "Mobile must be at least 10 digits").max(15, "Mobile too long"), 
   countryCode: z.string().default("+91"),
-  checkIn: z.string().optional(),
-  checkOut: z.string().optional(),
-  persons: z.string().optional(),
-  campPreference: z.string().optional(),
-  specialNeeds: z.string().optional(),
-  agreedToTerms: z.boolean().default(true),
+  message: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
 interface InquiryFormProps {
-  defaultCamp?: string;
+  defaultCamp?: string; // Kept only to pre-fill message text if needed
   defaultPuja?: string;
 }
 
 export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const { user } = useAuth();
 
-  // --- 2. FETCH CAMPS ---
-  const { data: camps, isLoading: isLoadingCamps } = useQuery<Camp[]>({
-    queryKey: ["/api/camps"],
-    queryFn: async () => {
-      const response = await fetch(`${API_BASE}/api/camps`);
-      if (!response.ok) throw new Error("Failed to load camps");
-      return response.json();
-    },
-  });
-
-  // --- 3. FETCH PUJAS ---
-  const { data: pujas } = useQuery<PujaService[]>({
-    queryKey: ["/api/puja-services"],
-    queryFn: async () => {
-      const response = await fetch(`${API_BASE}/api/puja-services`);
-      if (!response.ok) throw new Error("Failed to load pujas");
-      return response.json();
-    },
-  });
-
-  // Clean mobile number for default value
   const cleanMobile = user?.mobile ? user.mobile.replace("+91", "").replace(/\D/g, "") : "";
 
   const form = useForm<FormData>({
@@ -89,64 +58,34 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
       name: user?.name || "",
       mobile: cleanMobile,
       countryCode: "+91",
-      checkIn: "",
-      checkOut: "",
-      persons: "2",
-      campPreference: defaultCamp || "",
-      specialNeeds: "",
-      agreedToTerms: true,
+      message: "",
     },
   });
 
-  useEffect(() => {
-    if (defaultPuja && pujas) {
-      const targetId = parseInt(defaultPuja);
-      const service = pujas.find((p) => p.id === targetId);
-      if (service) {
-        const msg = `${t("I am interested in", "मुझे रुचि है")} ${service.nameEn} (${service.nameHi})`;
-        form.setValue("specialNeeds", msg);
-      }
-    }
-  }, [defaultPuja, pujas, t, form]);
-
   const mutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const dayAfter = new Date();
-      dayAfter.setDate(dayAfter.getDate() + 2);
-
-      const defaultCampId = camps && camps.length > 0 ? camps[0].id : 1;
-      const selectedCampId = data.campPreference ? parseInt(data.campPreference) : defaultCampId;
-
+      // ✅ CLEAN PAYLOAD: No dummy dates, no camp IDs.
       const payload = {
-        guestName: data.name,
+        name: data.name,
         mobile: `${data.countryCode}${data.mobile}`,
-        checkIn: data.checkIn || tomorrow.toISOString().split('T')[0],
-        checkOut: data.checkOut || dayAfter.toISOString().split('T')[0],
-        guestCount: data.persons ? parseInt(data.persons) : 2,
-        campId: isNaN(selectedCampId) ? 1 : selectedCampId,
-        specialNeeds: data.specialNeeds || "",
-        pujaRequest: defaultPuja || undefined, 
-        bookingType: "inquiry_call", // This ensures it's treated as an inquiry, not a confirmed booking
-        totalAmount: 0, 
+        message: data.message,
       };
       
-      const response = await apiRequest("POST", "/api/bookings", payload);
+      // Hit the NEW contact endpoint
+      const response = await apiRequest("POST", "/api/contact", payload);
       return response.json();
     },
     onSuccess: () => {
       toast({
-        title: t("Inquiry Sent Successfully!", "पूछताछ सफलतापूर्वक भेजी गई!"),
-        description: t("Our team will contact you shortly.", "हमारी टीम जल्द ही आपसे संपर्क करेगी।"),
+        title: t("Message Sent!", "संदेश भेजा गया!"),
+        description: t("Our team will contact you shortly.", "हमारी टीम आपको जल्द ही कॉल करेगी।"),
       });
-      // ✅ CHANGED: Redirect to Home instead of Bookings
       setLocation("/"); 
     },
     onError: (error: Error) => {
       toast({
         title: t("Error", "त्रुटि"),
-        description: error.message || t("Something went wrong", "कुछ गलत हो गया"),
+        description: t("Failed to send message. Please try WhatsApp.", "संदेश भेजने में विफल। कृपया व्हाट्सएप का प्रयास करें।"),
         variant: "destructive",
       });
     },
@@ -156,7 +95,7 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
     if (!user) {
       toast({
         title: t("Login Required", "लॉगिन आवश्यक"),
-        description: t("Please login to submit.", "कृपया जमा करने के लिए लॉगिन करें।"),
+        description: t("Please login to send a message.", "कृपया संदेश भेजने के लिए लॉगिन करें।"),
         variant: "destructive"
       });
       return;
@@ -165,20 +104,19 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
   };
 
   const onError = (errors: any) => {
-    console.log("Form Validation Errors:", errors);
+    console.log("Validation Errors:", errors);
     toast({
-      title: "Form Error",
-      description: "Please check the highlighted fields.",
+      title: "Validation Error",
+      description: "Please check the red fields.",
       variant: "destructive"
     });
   };
-
-  const today = new Date().toISOString().split("T")[0];
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6" data-testid="inquiry-form">
         
+        {/* Name Field */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -193,6 +131,8 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
               </FormItem>
             )}
           />
+
+          {/* Mobile Field */}
           <div className="space-y-2">
             <Label>{t("Mobile Number", "मोबाइल नंबर")} <span className="text-red-500">*</span></Label>
             <div className="flex gap-2">
@@ -228,58 +168,16 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
           </div>
         </div>
 
-        <div className="text-sm font-medium text-muted-foreground mt-4 mb-2">
-          {t("Optional Details (We can discuss this on call)", "वैकल्पिक विवरण (हम कॉल पर चर्चा कर सकते हैं)")}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-muted/20 rounded-lg">
-          <FormField
-            control={form.control}
-            name="checkIn"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("Check-in (Tentative)", "चेक-इन (संभावित)")}</FormLabel>
-                <FormControl>
-                  <Input type="date" min={today} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="campPreference"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("Camp Preference", "कैंप वरीयता")}</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger disabled={isLoadingCamps}>
-                      <SelectValue placeholder={t("Any / Not Sure", "कोई भी / निश्चित नहीं")} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {camps?.map((camp) => (
-                      <SelectItem key={camp.id} value={camp.id.toString()}>
-                        {language === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
+        {/* Message Field */}
         <FormField
           control={form.control}
-          name="specialNeeds"
+          name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Message / Puja Request", "संदेश / पूजा अनुरोध")}</FormLabel>
+              <FormLabel>{t("Message / Requirement", "संदेश / आवश्यकता")}</FormLabel>
               <FormControl>
                 <Textarea 
+                  className="min-h-[120px]"
                   placeholder={t("Tell us what you are looking for...", "हमें बताएं कि आप क्या ढूंढ रहे हैं...")} 
                   {...field} 
                 />
@@ -289,19 +187,20 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
           )}
         />
 
+        {/* Action Button */}
         {user ? (
-          <Button type="submit" size="lg" className="w-full py-6 text-lg bg-green-700 hover:bg-green-800" disabled={mutation.isPending}>
+          <Button type="submit" size="lg" className="w-full py-6 text-lg" disabled={mutation.isPending}>
             {mutation.isPending ? (
               <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> {t("Sending...", "भेज रहा है...")}</>
             ) : (
-              t("Request Callback", "कॉलबैक का अनुरोध करें")
+              <><Send className="mr-2 h-5 w-5" /> {t("Send Message", "संदेश भेजें")}</>
             )}
           </Button>
         ) : (
           <div className="space-y-3 p-4 border border-dashed border-primary/30 rounded-lg text-center bg-primary/5">
-            <p className="text-sm text-muted-foreground">{t("Please login to verify your phone number", "कृपया अपना फोन नंबर सत्यापित करने के लिए लॉगिन करें")}</p>
+            <p className="text-sm text-muted-foreground">{t("Please login to send us a message", "कृपया हमें संदेश भेजने के लिए लॉगिन करें")}</p>
             <div className="flex justify-center">
-               <AuthModal trigger={<Button variant="default">{t("Login & Send Inquiry", "लॉगिन करें और पूछताछ भेजें")}</Button>} />
+               <AuthModal trigger={<Button variant="default">{t("Login & Send", "लॉगिन करें और भेजें")}</Button>} />
             </div>
           </div>
         )}

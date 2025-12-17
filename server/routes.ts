@@ -60,6 +60,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ---------------------------------------------------------
+  // NEW CONTACT ROUTE (Email Only - No Database Record)
+  // ---------------------------------------------------------
+  app.post("/api/contact", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Please login to send a message" });
+    }
+
+    try {
+      const { name, mobile, message } = req.body;
+
+      // 1. Configure Transporter
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_APP_PASSWORD,
+        },
+        tls: { rejectUnauthorized: false },
+        family: 4, // <--- CRITICAL FIX FOR TIMEOUTS (Forces IPv4)
+      });
+
+      // 2. Email Content
+      const mailOptions = {
+        from: `"Magh Mela Website" <${process.env.GMAIL_USER}>`,
+        to: process.env.GMAIL_USER, // Send to Admin
+        subject: `📩 New General Inquiry: ${name}`,
+        html: `
+          <div style="font-family: sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+            <h2 style="color: #2563eb;">New Contact Request</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Mobile:</strong> <a href="tel:${mobile}">${mobile}</a></p>
+            <hr />
+            <p><strong>Message:</strong><br/>${message || "No message provided"}</p>
+          </div>
+        `,
+      };
+
+      // 3. Fire and Forget Email
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) console.error("❌ Contact Email Failed:", err.message);
+        else console.log("✅ Contact Email Sent:", info.response);
+      });
+
+      // 4. Respond Immediately
+      res.json({ success: true, message: "Inquiry received" });
+
+    } catch (error) {
+      console.error("Contact API Error:", error);
+      res.status(500).json({ message: "Failed to process inquiry" });
+    }
+  });
+
+  // ---------------------------------------------------------
   // USER ROUTES
   // ---------------------------------------------------------
 
@@ -94,7 +150,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 1. SAVE TO DATABASE
       const newBooking = await db.insert(bookings).values({
         ...data,
-        userId: userId, // <--- FIXED: Changed from userId to user_id
+        userId: userId, 
         totalAmount: totalAmount,
         advanceAmount: advanceAmount,
         status: status, 
@@ -102,28 +158,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         bookingType: data.bookingType || "inquiry_call"
       }).returning();
 
-      // 2. SEND RESPONSE IMMEDIATELY (Prevents Timeout)
+      // 2. SEND RESPONSE IMMEDIATELY
       res.status(201).json(newBooking[0]);
 
-      // -------------------------------------------------------
-      // 3. SEND EMAIL NOTIFICATION (Background Process)
-      // -------------------------------------------------------
-      
-const transporter = nodemailer.createTransport({
+      // 3. SEND EMAIL NOTIFICATION (Background)
+      const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
-        secure: false, 
-        requireTLS: true,       // ✅ Force TLS
+        secure: false,
+        requireTLS: true,
         auth: {
           user: process.env.GMAIL_USER, 
           pass: process.env.GMAIL_APP_PASSWORD, 
         },
-        tls: {
-          ciphers: "SSLv3",     // ✅ Helps with compatibility
-          rejectUnauthorized: false,
-        },
-        // 👇 THIS IS THE KEY FIX FOR TIMEOUTS
-        family: 4,              // ✅ Force IPv4 (Fixes Node timeout issues)
+        tls: { rejectUnauthorized: false },
+        family: 4, // <--- CRITICAL FIX
       });
 
       const mailOptions = {
@@ -141,24 +190,17 @@ const transporter = nodemailer.createTransport({
             <p><strong>Total Estimate:</strong> ₹${totalAmount}</p>
             <hr />
             <p><strong>Message/Special Needs:</strong><br/>${data.specialNeeds || "None"}</p>
-            <br />
-            <a href="https://kumbhmela2026.vercel.app/admin" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px;">View in Dashboard</a>
           </div>
         `,
       };
 
-      // Fire and Forget (No await)
       transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-            console.error("❌ Background Email Failed:", err.message);
-        } else {
-            console.log("✅ Background Email Sent:", info.response);
-        }
+        if (err) console.error("❌ Email Failed:", err.message);
+        else console.log("✅ Email Sent:", info.response);
       });
 
     } catch (error) {
       console.error("Booking Error:", error);
-      // Only send error response if we haven't sent success yet
       if (!res.headersSent) {
         res.status(400).json({ message: "Invalid booking data" });
       }
