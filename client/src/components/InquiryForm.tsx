@@ -62,92 +62,35 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
     },
   });
 
-  // const mutation = useMutation({
-  //   mutationFn: async (data: FormData) => {
-  //     // ✅ CLEAN PAYLOAD: No dummy dates, no camp IDs.
-  //     const payload = {
-  //       name: data.name,
-  //       mobile: `${data.countryCode}${data.mobile}`,
-  //       message: data.message,
-  //     };
-      
-  //     // Hit the NEW contact endpoint
-  //     const response = await apiRequest("POST", "/api/contact", payload);
-  //     return response.json();
-  //   },
-  //   onSuccess: () => {
-  //     toast({
-  //       title: t("Message Sent!", "संदेश भेजा गया!"),
-  //       description: t("Our team will contact you shortly.", "हमारी टीम आपको जल्द ही कॉल करेगी।"),
-  //     });
-  //     setLocation("/"); 
-  //   },
-  //   onError: (error: Error) => {
-  //     toast({
-  //       title: t("Error", "त्रुटि"),
-  //       description: t("Failed to send message. Please try WhatsApp.", "संदेश भेजने में विफल। कृपया व्हाट्सएप का प्रयास करें।"),
-  //       variant: "destructive",
-  //     });
-  //   },
-  // });
-
   const mutation = useMutation({
-  mutationFn: async (data: FormData) => {
-    const payload = {
-      name: data.name,
-      mobile: `${data.countryCode}${data.mobile}`,
-      message: data.message,
-    };
+    mutationFn: async (data: FormData) => {
+      // ✅ CLEAN PAYLOAD: No dummy dates, no camp IDs.
+      const payload = {
+        name: data.name,
+        mobile: `${data.countryCode}${data.mobile}`,
+        message: data.message,
+      };
+      
+      // Hit the NEW contact endpoint
+      const response = await apiRequest("POST", "/api/contact", payload);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: t("Message Sent!", "संदेश भेजा गया!"),
+        description: t("Our team will contact you shortly.", "हमारी टीम आपको जल्द ही कॉल करेगी।"),
+      });
+      setLocation("/"); 
+    },
+    onError: (error: Error) => {
+      toast({
+        title: t("Error", "त्रुटि"),
+        description: t("Failed to send message. Please try WhatsApp.", "संदेश भेजने में विफल। कृपया व्हाट्सएप का प्रयास करें।"),
+        variant: "destructive",
+      });
+    },
+  });
 
-    // 1️⃣ Call Web3Forms DIRECTLY from browser
-    const web3Res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        access_key: import.meta.env.VITE_WEB3_ACCESS_KEY,
-        subject: `New Inquiry from ${payload.name}`,
-        from_name: "Magh Mela Website",
-        message: `
-Name: ${payload.name}
-Mobile: ${payload.mobile}
-Message: ${payload.message}
-        `,
-      }),
-    });
-
-    if (!web3Res.ok) {
-      throw new Error("Web3Forms submission failed");
-    }
-
-    // 2️⃣ OPTIONAL: Notify backend (for logging / auth validation)
-    await apiRequest("POST", "/api/contact", payload);
-
-    return true;
-  },
-  onSuccess: () => {
-    toast({
-      title: t("Message Sent!", "संदेश भेजा गया!"),
-      description: t(
-        "Our team will contact you shortly.",
-        "हमारी टीम आपको जल्द ही कॉल करेगी।"
-      ),
-    });
-    setLocation("/");
-  },
-  onError: () => {
-    toast({
-      title: t("Error", "त्रुटि"),
-      description: t(
-        "Failed to send message. Please try WhatsApp.",
-        "संदेश भेजने में विफल। कृपया व्हाट्सएप का प्रयास करें।"
-      ),
-      variant: "destructive",
-    });
-  },
-});
 
 
   const onSubmit = (data: FormData) => {

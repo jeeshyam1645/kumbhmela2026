@@ -13,6 +13,10 @@ import {
   insertPujaSchema 
 } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
 
 // Middleware to check if user is Admin
 function requireAdmin(req: any, res: any, next: any) {
@@ -61,6 +65,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 // ---------------------------------------------------------
 // CONTACT ROUTE (Frontend handles Web3Forms)
 // ---------------------------------------------------------
+
 app.post("/api/contact", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Please login to send a message" });
@@ -69,19 +74,27 @@ app.post("/api/contact", async (req, res) => {
   try {
     const { name, mobile, message } = req.body;
 
-    // OPTIONAL: Save inquiry to DB later if needed
-    // await db.insert(inquiries).values({ name, mobile, message, userId })
+    await resend.emails.send({
+      from: "Magh Mela <onboarding@resend.dev>", // free tier sender
+      to: ["info@maghmela.com"], // or your email
+      subject: `New Inquiry from ${name}`,
+      text: `
+Name: ${name}
+Mobile: ${mobile}
 
-    console.log("📩 Inquiry received:", { name, mobile, message });
+Message:
+${message}
+      `,
+    });
 
-    // Just acknowledge success
+    console.log("✅ Email sent via Resend");
+
     res.json({ success: true });
   } catch (error) {
-    console.error("Contact API Error:", error);
-    res.status(500).json({ message: "Failed to process inquiry" });
+    console.error("❌ Resend Error:", error);
+    res.status(500).json({ message: "Failed to send inquiry" });
   }
 });
-
 
   // ---------------------------------------------------------
   // USER ROUTES
