@@ -1,4 +1,4 @@
-import { useEffect } from "react"; // Added useEffect
+import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +7,6 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -28,16 +27,18 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/context/LanguageContext";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-// FIX 1: Import Types only, do not import the schema variable 'pujaServices'
 import { Camp, PujaService } from "@app/shared"; 
-import { Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { AuthModal } from "@/components/AuthModal";
 
-// 1. RELAXED SCHEMA
+// --- 1. DEFINE API BASE URL ---
+// If you have a VITE_API_URL in .env, use it. Otherwise, fallback to your Render URL.
+const API_BASE = import.meta.env.VITE_API_URL || "https://magh-mela-backend.onrender.com";
+
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  mobile: z.string().regex(/^[0-9]{10}$/, "Please enter a valid 10-digit mobile number"),
+  // Relaxed regex to allow simple numbers
+  mobile: z.string().min(10, "Mobile must be at least 10 digits").max(15, "Mobile too long"), 
   countryCode: z.string().default("+91"),
   checkIn: z.string().optional(),
   checkOut: z.string().optional(),
@@ -60,48 +61,50 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
   const [, setLocation] = useLocation();
   const { user } = useAuth();
 
-  // 2. FETCH CAMPS
+  // --- 2. FIX FETCH URLS (Use API_BASE) ---
   const { data: camps, isLoading: isLoadingCamps } = useQuery<Camp[]>({
     queryKey: ["/api/camps"],
     queryFn: async () => {
-      const response = await fetch("/api/camps");
-      if (!response.ok) throw new Error("Network response was not ok");
+      // Use Absolute URL
+      const response = await fetch(`${API_BASE}/api/camps`);
+      if (!response.ok) throw new Error("Failed to load camps");
       return response.json();
     },
   });
 
-  // 3. FETCH PUJAS (New Addition)
   const { data: pujas } = useQuery<PujaService[]>({
     queryKey: ["/api/puja-services"],
     queryFn: async () => {
-      const response = await fetch("/api/puja-services");
-      if (!response.ok) throw new Error("Network response was not ok");
+      // Use Absolute URL
+      const response = await fetch(`${API_BASE}/api/puja-services`);
+      if (!response.ok) throw new Error("Failed to load pujas");
       return response.json();
     },
   });
+
+  // --- 3. CLEAN MOBILE NUMBER ---
+  // If user.mobile has +91, remove it so it fits the input field
+  const cleanMobile = user?.mobile ? user.mobile.replace("+91", "").replace(/\D/g, "") : "";
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: user?.name || "",
-      mobile: user?.mobile || "",
+      mobile: cleanMobile, // Use cleaned mobile
       countryCode: "+91",
       checkIn: "",
       checkOut: "",
       persons: "2",
       campPreference: defaultCamp || "",
-      specialNeeds: "", // Will populate via useEffect
+      specialNeeds: "",
       agreedToTerms: true,
     },
   });
 
-  // 4. POPULATE PUJA MESSAGE WHEN DATA LOADS
   useEffect(() => {
     if (defaultPuja && pujas) {
-      // IDs are numbers in DB, but might be string in URL props
       const targetId = parseInt(defaultPuja);
       const service = pujas.find((p) => p.id === targetId);
-      
       if (service) {
         const msg = `${t("I am interested in", "मुझे रुचि है")} ${service.nameEn} (${service.nameHi})`;
         form.setValue("specialNeeds", msg);
@@ -111,7 +114,6 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
 
   const mutation = useMutation({
     mutationFn: async (data: FormData) => {
-      // CALCULATE DEFAULTS
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const dayAfter = new Date();
@@ -128,7 +130,6 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
         guestCount: data.persons ? parseInt(data.persons) : 2,
         campId: isNaN(selectedCampId) ? 1 : selectedCampId,
         specialNeeds: data.specialNeeds || "",
-        // Only send pujaRequest if defaultPuja exists
         pujaRequest: defaultPuja || undefined, 
         bookingType: "inquiry_call",
         totalAmount: 0, 
@@ -142,7 +143,7 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
         title: t("Inquiry Sent!", "पूछताछ भेजी गई!"),
         description: t("We will call you shortly on your mobile.", "हम जल्द ही आपके मोबाइल पर कॉल करेंगे।"),
       });
-      setLocation("/thank-you");
+      setLocation("/bookings"); // Redirect to bookings or thank you
     },
     onError: (error: Error) => {
       toast({
@@ -157,7 +158,7 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
     if (!user) {
       toast({
         title: t("Login Required", "लॉगिन आवश्यक"),
-        description: t("Please login to submit an inquiry.", "कृपया पूछताछ जमा करने के लिए लॉगिन करें।"),
+        description: t("Please login to submit.", "कृपया जमा करने के लिए लॉगिन करें।"),
         variant: "destructive"
       });
       return;
@@ -165,13 +166,24 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
     mutation.mutate(data);
   };
 
+  // --- 4. DEBUG FORM ERRORS ---
+  // This helps you see why the button "does nothing"
+  const onError = (errors: any) => {
+    console.log("Form Validation Errors:", errors);
+    toast({
+      title: "Form Error",
+      description: "Please check the red fields.",
+      variant: "destructive"
+    });
+  };
+
   const today = new Date().toISOString().split("T")[0];
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="inquiry-form">
+      {/* Pass onError to handleSubmit to catch validation issues */}
+      <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6" data-testid="inquiry-form">
         
-        {/* REQUIRED FIELDS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -211,7 +223,7 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormControl>
-                      <Input type="tel" maxLength={10} placeholder="9876543210" {...field} />
+                      <Input type="tel" maxLength={15} placeholder="9876543210" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -221,7 +233,8 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
           </div>
         </div>
 
-        {/* OPTIONAL FIELDS */}
+        {/* ... (Rest of your fields: Optional Details, CheckIn, Camp Preference, Special Needs - No changes needed below) ... */}
+        
         <div className="text-sm font-medium text-muted-foreground mt-4 mb-2">
           {t("Optional Details (We can discuss this on call)", "वैकल्पिक विवरण (हम कॉल पर चर्चा कर सकते हैं)")}
         </div>
@@ -283,7 +296,6 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
           )}
         />
 
-        {/* Auth Check Wrapper */}
         {user ? (
           <Button type="submit" size="lg" className="w-full py-6 text-lg bg-green-700 hover:bg-green-800" disabled={mutation.isPending}>
             {mutation.isPending ? (
