@@ -107,11 +107,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // -------------------------------------------------------
       try {
         // NOTE: For security, use process.env.GMAIL_USER and process.env.GMAIL_APP_PASSWORD in production
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
+const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com", // 1. Use explicit Host
+          port: 587,              // 2. Use Port 587 (Allowed on Render)
+          secure: false,          // 3. Must be false for port 587
+          requireTLS: true,       // 4. Force TLS security
           auth: {
-            user: process.env.GMAIL_USER, // <--- REPLACE THIS WITH YOUR GMAIL
-            pass: process.env.GMAIL_APP_PASSWORD,  // <--- REPLACE THIS WITH YOUR 16-CHAR APP PASSWORD
+            user: process.env.GMAIL_USER, 
+            pass: process.env.GMAIL_APP_PASSWORD, 
           },
         });
 
