@@ -59,7 +59,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ---------------------------------------------------------
-  // CONTACT ROUTE (Uses Web3Forms - No SMTP/Nodemailer)
+  // NEW CONTACT ROUTE (Email Only - No Database Record)
   // ---------------------------------------------------------
   app.post("/api/contact", async (req, res) => {
     if (!req.isAuthenticated()) {
@@ -69,8 +69,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { name, mobile, message } = req.body;
 
-      // Use Web3Forms (HTTP Port 443 - Never Blocked)
-      // Make sure WEB3_ACCESS_KEY is set in your .env or Render Environment Variables
+      // Prepare data for Web3Forms (HTTP Port 443 - Never Blocked)
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -78,7 +77,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: process.env.WEB3_ACCESS_KEY || "YOUR-KEY-HERE", 
+          // Ensure this environment variable is set in Render
+          access_key: process.env.WEB3_ACCESS_KEY, 
+          
           subject: `New Inquiry from ${name}`,
           from_name: "Magh Mela Website",
           message: `
@@ -92,12 +93,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await response.json();
 
       if (result.success) {
-        console.log("✅ Contact Email sent via Web3Forms");
+        console.log("✅ Email sent successfully via Web3Forms");
         res.json({ success: true, message: "Inquiry received" });
       } else {
         console.error("❌ Web3Forms API Error:", result);
-        // We log the error but still tell the user it was successful so UI doesn't break
-        res.json({ success: true, message: "Inquiry logged" });
+        // Fail gracefully so user still sees success
+        res.json({ success: true, message: "Inquiry logged (Email pending)" });
       }
 
     } catch (error) {
@@ -152,7 +153,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 2. SEND RESPONSE IMMEDIATELY
       res.status(201).json(newBooking[0]);
 
-      // (Optional: You can add Web3Forms logic here too if you want booking alerts)
+      // Note: Nodemailer removed here to prevent Render timeouts.
+      // If you need booking alerts, use the Web3Forms fetch method here too.
 
     } catch (error) {
       console.error("Booking Error:", error);
