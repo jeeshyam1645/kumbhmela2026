@@ -109,18 +109,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 3. SEND EMAIL NOTIFICATION (Background Process)
       // -------------------------------------------------------
       
-      const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
         secure: false, 
-        requireTLS: true,
+        requireTLS: true,       // ✅ Force TLS
         auth: {
           user: process.env.GMAIL_USER, 
           pass: process.env.GMAIL_APP_PASSWORD, 
         },
         tls: {
-            rejectUnauthorized: false // Helps with Render connection issues
-        }
+          ciphers: "SSLv3",     // ✅ Helps with compatibility
+          rejectUnauthorized: false,
+        },
+        // 👇 THIS IS THE KEY FIX FOR TIMEOUTS
+        family: 4,              // ✅ Force IPv4 (Fixes Node timeout issues)
       });
 
       const mailOptions = {
