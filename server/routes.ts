@@ -71,25 +71,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { name, mobile, message } = req.body;
 
       // 1. Configure Transporter
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        requireTLS: true,
+const transporter = nodemailer.createTransport({
+        service: "gmail", // <--- USE THIS SHORTCUT
         auth: {
           user: process.env.GMAIL_USER,
           pass: process.env.GMAIL_APP_PASSWORD,
         },
-tls: {
-          ciphers: "SSLv3",
-          rejectUnauthorized: false,
-        },
-        family: 4, // <--- CRITICAL FIX FOR TIMEOUTS (Forces IPv4)
-        connectionTimeout: 10000, // 10 seconds
-        greetingTimeout: 10000,   // 10 seconds
-        socketTimeout: 10000,     // 10 seconds
-        logger: true,             // Log details to console
-        debug: true               // Debug info
+        // Only keep these network-level fixes
+        family: 4, 
+        logger: true,
+        debug: true
       });
 
       // 2. Email Content
@@ -170,17 +161,16 @@ tls: {
       res.status(201).json(newBooking[0]);
 
       // 3. SEND EMAIL NOTIFICATION (Background)
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        requireTLS: true,
+const transporter = nodemailer.createTransport({
+        service: "gmail", // <--- USE THIS SHORTCUT
         auth: {
-          user: process.env.GMAIL_USER, 
-          pass: process.env.GMAIL_APP_PASSWORD, 
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_APP_PASSWORD,
         },
-        tls: { rejectUnauthorized: false },
-        family: 4, // <--- CRITICAL FIX
+        // Only keep these network-level fixes
+        family: 4, 
+        logger: true,
+        debug: true
       });
 
       const mailOptions = {
