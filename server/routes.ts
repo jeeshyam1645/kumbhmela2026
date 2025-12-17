@@ -2,7 +2,6 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
 import { db } from "./db";
-// FIX 1: Added all missing imports here
 import { 
   users, 
   camps, 
@@ -14,10 +13,10 @@ import {
   insertPujaSchema 
 } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
+import nodemailer from "nodemailer";
 
 // Middleware to check if user is Admin
 function requireAdmin(req: any, res: any, next: any) {
-  // FIX 2: Type assertion for req.user
   const user = req.user as any;
   if (req.isAuthenticated() && user.role === "admin") {
     return next();
@@ -90,9 +89,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         paymentStatus = "partial";
       }
 
-      // FIX 3: Cast req.user to any to access .id
       const userId = (req.user as any).id;
 
+      // 1. SAVE TO DATABASE
       const newBooking = await db.insert(bookings).values({
         ...data,
         userId: userId,
@@ -102,6 +101,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         paymentStatus: paymentStatus,
         bookingType: data.bookingType || "inquiry_call"
       }).returning();
+
+      // -------------------------------------------------------
+      // 2. SEND EMAIL NOTIFICATION (New Logic)
+      // -------------------------------------------------------
+      try {
+        // NOTE: For security, use process.env.GMAIL_USER and process.env.GMAIL_APP_PASSWORD in production
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: process.env.GMAIL_USER, // <--- REPLACE THIS WITH YOUR GMAIL
+            pass: process.env.GMAIL_APP_PASSWORD,  // <--- REPLACE THIS WITH YOUR 16-CHAR APP PASSWORD
+          },
+        });
+
+        const mailOptions = {
+from: `"Magh Mela Bot" <${process.env.GMAIL_USER}>`, // Use env here too
+    to: process.env.GMAIL_USER, // Send to yourself
+          subject: `🔔 New Booking Inquiry: ${data.guestName}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+              <h2 style="color: #d97706;">New Inquiry Received</h2>
+              <p><strong>Name:</strong> ${data.guestName}</p>
+              <p><strong>Mobile:</strong> <a href="tel:${data.mobile}">${data.mobile}</a></p>
+              <p><strong>Camp:</strong> ${camp.nameEn}</p>
+              <p><strong>Guests:</strong> ${data.guestCount}</p>
+              <p><strong>Dates:</strong> ${data.checkIn} to ${data.checkOut}</p>
+              <p><strong>Total Estimate:</strong> ₹${totalAmount}</p>
+              <hr />
+              <p><strong>Message/Special Needs:</strong><br/>${data.specialNeeds || "None"}</p>
+              <br />
+              <a href="https://your-website.com/admin" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px;">View in Dashboard</a>
+            </div>
+          `,
+        };
+
+        // Send the email
+        await transporter.sendMail(mailOptions);
+        console.log("Email notification sent successfully.");
+
+      } catch (emailError) {
+        console.error("Failed to send email notification:", emailError);
+        // We purposefully DO NOT fail the request here. 
+        // The booking is safe in the DB, even if the email fails.
+      }
 
       res.status(201).json(newBooking[0]);
     } catch (error) {
