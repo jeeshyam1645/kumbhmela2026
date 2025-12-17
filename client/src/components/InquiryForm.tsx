@@ -32,12 +32,11 @@ import { useAuth } from "@/hooks/use-auth";
 import { AuthModal } from "@/components/AuthModal";
 
 // --- 1. DEFINE API BASE URL ---
-// If you have a VITE_API_URL in .env, use it. Otherwise, fallback to your Render URL.
-const API_BASE = import.meta.env.VITE_API_URL || "https://magh-mela-backend.onrender.com";
+// Fallback to absolute URL if env is missing to prevent relative path errors
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://magh-mela-backend.onrender.com";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  // Relaxed regex to allow simple numbers
   mobile: z.string().min(10, "Mobile must be at least 10 digits").max(15, "Mobile too long"), 
   countryCode: z.string().default("+91"),
   checkIn: z.string().optional(),
@@ -61,36 +60,34 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
   const [, setLocation] = useLocation();
   const { user } = useAuth();
 
-  // --- 2. FIX FETCH URLS (Use API_BASE) ---
+  // --- 2. FETCH CAMPS ---
   const { data: camps, isLoading: isLoadingCamps } = useQuery<Camp[]>({
     queryKey: ["/api/camps"],
     queryFn: async () => {
-      // Use Absolute URL
       const response = await fetch(`${API_BASE}/api/camps`);
       if (!response.ok) throw new Error("Failed to load camps");
       return response.json();
     },
   });
 
+  // --- 3. FETCH PUJAS ---
   const { data: pujas } = useQuery<PujaService[]>({
     queryKey: ["/api/puja-services"],
     queryFn: async () => {
-      // Use Absolute URL
       const response = await fetch(`${API_BASE}/api/puja-services`);
       if (!response.ok) throw new Error("Failed to load pujas");
       return response.json();
     },
   });
 
-  // --- 3. CLEAN MOBILE NUMBER ---
-  // If user.mobile has +91, remove it so it fits the input field
+  // Clean mobile number for default value
   const cleanMobile = user?.mobile ? user.mobile.replace("+91", "").replace(/\D/g, "") : "";
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: user?.name || "",
-      mobile: cleanMobile, // Use cleaned mobile
+      mobile: cleanMobile,
       countryCode: "+91",
       checkIn: "",
       checkOut: "",
@@ -131,7 +128,7 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
         campId: isNaN(selectedCampId) ? 1 : selectedCampId,
         specialNeeds: data.specialNeeds || "",
         pujaRequest: defaultPuja || undefined, 
-        bookingType: "inquiry_call",
+        bookingType: "inquiry_call", // This ensures it's treated as an inquiry, not a confirmed booking
         totalAmount: 0, 
       };
       
@@ -140,10 +137,11 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
     },
     onSuccess: () => {
       toast({
-        title: t("Inquiry Sent!", "पूछताछ भेजी गई!"),
-        description: t("We will call you shortly on your mobile.", "हम जल्द ही आपके मोबाइल पर कॉल करेंगे।"),
+        title: t("Inquiry Sent Successfully!", "पूछताछ सफलतापूर्वक भेजी गई!"),
+        description: t("Our team will contact you shortly.", "हमारी टीम जल्द ही आपसे संपर्क करेगी।"),
       });
-      setLocation("/bookings"); // Redirect to bookings or thank you
+      // ✅ CHANGED: Redirect to Home instead of Bookings
+      setLocation("/"); 
     },
     onError: (error: Error) => {
       toast({
@@ -166,13 +164,11 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
     mutation.mutate(data);
   };
 
-  // --- 4. DEBUG FORM ERRORS ---
-  // This helps you see why the button "does nothing"
   const onError = (errors: any) => {
     console.log("Form Validation Errors:", errors);
     toast({
       title: "Form Error",
-      description: "Please check the red fields.",
+      description: "Please check the highlighted fields.",
       variant: "destructive"
     });
   };
@@ -181,7 +177,6 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
 
   return (
     <Form {...form}>
-      {/* Pass onError to handleSubmit to catch validation issues */}
       <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6" data-testid="inquiry-form">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -233,8 +228,6 @@ export function InquiryForm({ defaultCamp, defaultPuja }: InquiryFormProps) {
           </div>
         </div>
 
-        {/* ... (Rest of your fields: Optional Details, CheckIn, Camp Preference, Special Needs - No changes needed below) ... */}
-        
         <div className="text-sm font-medium text-muted-foreground mt-4 mb-2">
           {t("Optional Details (We can discuss this on call)", "वैकल्पिक विवरण (हम कॉल पर चर्चा कर सकते हैं)")}
         </div>
