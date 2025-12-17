@@ -58,69 +58,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // ---------------------------------------------------------
-  // CONTACT ROUTE (Uses Web3Forms - No SMTP - Reliable)
-  // ---------------------------------------------------------
-  app.post("/api/contact", async (req, res) => {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ message: "Please login to send a message" });
-    }
+// ---------------------------------------------------------
+// CONTACT ROUTE (Frontend handles Web3Forms)
+// ---------------------------------------------------------
+app.post("/api/contact", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Please login to send a message" });
+  }
 
-    try {
-      const { name, mobile, message } = req.body;
+  try {
+    const { name, mobile, message } = req.body;
 
-      // Prepare data for Web3Forms (HTTP Port 443 - Never Blocked)
-      // MAKE SURE 'WEB3_ACCESS_KEY' IS SET IN YOUR RENDER ENVIRONMENT VARIABLES
-      if (!process.env.WEB3_ACCESS_KEY) {
-  console.error("❌ WEB3_ACCESS_KEY is missing");
-}
+    // OPTIONAL: Save inquiry to DB later if needed
+    // await db.insert(inquiries).values({ name, mobile, message, userId })
 
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: process.env.WEB3_ACCESS_KEY, 
-          subject: `New Inquiry from ${name}`,
-          from_name: "Magh Mela Website",
-          message: `
-            Name: ${name}
-            Mobile: ${mobile}
-            Message: ${message}
-          `,
-        }),
-      });
+    console.log("📩 Inquiry received:", { name, mobile, message });
 
-const text = await response.text();
+    // Just acknowledge success
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Contact API Error:", error);
+    res.status(500).json({ message: "Failed to process inquiry" });
+  }
+});
 
-let result;
-try {
-  result = JSON.parse(text);
-} catch {
-  console.error("❌ Web3Forms returned non-JSON:", text);
-  return res.json({
-    success: true,
-    message: "Inquiry received (Email service unavailable)",
-  });
-}
-
-
-      if (result.success) {
-        console.log("✅ Contact Email sent via Web3Forms");
-        res.json({ success: true, message: "Inquiry received" });
-      } else {
-        console.error("❌ Web3Forms API Error:", result);
-        // Fail gracefully so user still sees success
-        res.json({ success: true, message: "Inquiry logged (Email pending)" });
-      }
-
-    } catch (error) {
-      console.error("Contact API Error:", error);
-      res.status(500).json({ message: "Failed to process inquiry" });
-    }
-  });
 
   // ---------------------------------------------------------
   // USER ROUTES
