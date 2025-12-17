@@ -4,6 +4,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { PujaService } from "@app/shared"; // Import TYPE, not the variable
 import { Loader2 } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_API_URL || "";
 export default function PujaServices() {
   const { t } = useLanguage();
 
@@ -11,7 +12,7 @@ export default function PujaServices() {
   const { data: services, isLoading } = useQuery<PujaService[]>({
     queryKey: ["/api/puja-services"],
     queryFn: async () => {
-      const response = await fetch("/api/puja-services");
+      const response = await fetch(`${API_BASE}/api/puja-services`);
       if (!response.ok) throw new Error("Failed to load puja services");
       return response.json();
     },

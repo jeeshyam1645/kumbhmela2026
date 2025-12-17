@@ -9,6 +9,7 @@ const campImages = [
   "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d",
   "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4",
 ];
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function Accommodation() {
   const { t } = useLanguage(); // <--- Hook
@@ -16,7 +17,7 @@ export default function Accommodation() {
   const { data: camps, isLoading } = useQuery<Camp[]>({
     queryKey: ["/api/camps"],
     queryFn: async () => {
-      const response = await fetch("/api/camps");
+      const response = await fetch(`${API_BASE}/api/camps`);
       if (!response.ok) throw new Error("Network response was not ok");
       return response.json();
     },

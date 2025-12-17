@@ -28,7 +28,7 @@ export default function Bookings() {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-
+const API_BASE = import.meta.env.VITE_API_URL || "";
   // State for cancelling
   const [bookingToCancel, setBookingToCancel] = useState<number | null>(null);
   const [showSupportDialog, setShowSupportDialog] = useState(false);
@@ -43,7 +43,7 @@ export default function Bookings() {
   const { data: bookings, isLoading: bookingsLoading } = useQuery<Booking[]>({
     queryKey: ["/api/my-bookings"],
     queryFn: async () => {
-        const res = await fetch("/api/my-bookings");
+        const res = await fetch(`${API_BASE}/api/my-bookings`);
         if (!res.ok) throw new Error("Failed to fetch bookings");
         return res.json();
     },
@@ -53,7 +53,7 @@ export default function Bookings() {
   const { data: camps } = useQuery<Camp[]>({
     queryKey: ["/api/camps"],
     queryFn: async () => {
-        const res = await fetch("/api/camps");
+        const res = await fetch(`${API_BASE}/api/camps`);
         if (!res.ok) throw new Error("Failed to fetch camps");
         return res.json();
     },
