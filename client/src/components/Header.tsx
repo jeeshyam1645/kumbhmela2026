@@ -113,7 +113,7 @@ export function Header() {
             {/* Language Toggle */}
             <div
               className={cn(
-                "flex items-center rounded-full border overflow-hidden transition-colors hidden sm:flex",
+                "flex items-center rounded-full border overflow-hidden transition-colors flex",
                 useDarkTheme ? "border-border bg-background" : "border-white/30 bg-black/20 backdrop-blur-sm"
               )}
             >

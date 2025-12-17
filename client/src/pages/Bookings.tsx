@@ -43,7 +43,9 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
   const { data: bookings, isLoading: bookingsLoading } = useQuery<Booking[]>({
     queryKey: ["/api/my-bookings"],
     queryFn: async () => {
-        const res = await fetch(`${API_BASE}/api/my-bookings`);
+        const res = await fetch(`${API_BASE}/api/my-bookings`, {
+        credentials: "include", // <--- THIS IS REQUIRED TO SEND COOKIES
+      });
         if (!res.ok) throw new Error("Failed to fetch bookings");
         return res.json();
     },
