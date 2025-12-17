@@ -71,6 +71,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Prepare data for Web3Forms (HTTP Port 443 - Never Blocked)
       // MAKE SURE 'WEB3_ACCESS_KEY' IS SET IN YOUR RENDER ENVIRONMENT VARIABLES
+      if (!process.env.WEB3_ACCESS_KEY) {
+  console.error("❌ WEB3_ACCESS_KEY is missing");
+}
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
