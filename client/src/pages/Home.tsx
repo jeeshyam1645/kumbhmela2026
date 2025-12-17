@@ -15,6 +15,7 @@ const campImages = [
   "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1520277739336-7bf67edfa768?q=80&w=2069&auto=format&fit=crop",
 ];
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function Home() {
   const { t } = useLanguage();
@@ -23,7 +24,8 @@ export default function Home() {
   const { data: camps, isLoading: isLoadingCamps } = useQuery<Camp[]>({
     queryKey: ["/api/camps"],
     queryFn: async () => {
-      const response = await fetch("/api/camps");
+      const response = await fetch(`${API_BASE}/api/camps`);;
+      
       if (!response.ok) throw new Error("Failed to load camps");
       return response.json();
     },
@@ -33,7 +35,7 @@ export default function Home() {
   const { data: pujas, isLoading: isLoadingPujas } = useQuery<PujaService[]>({
     queryKey: ["/api/puja-services"],
     queryFn: async () => {
-      const response = await fetch("/api/puja-services");
+      const response = await fetch(`${API_BASE}/api/puja-services`);
       if (!response.ok) throw new Error("Failed to load pujas");
       return response.json();
     },
