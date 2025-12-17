@@ -159,7 +159,7 @@ export default function Privacy() {
           </p>
           <ul>
             <li>{t("Phone:", "फोन:")} +91 70617 62868</li>
-            <li>{t("Email:", "ईमेल:")} info@maghmela.com</li>
+            <li>{t("Email:", "ईमेल:")} maghmelastays@gmail.com</li>
           </ul>
         </div>
       </section>

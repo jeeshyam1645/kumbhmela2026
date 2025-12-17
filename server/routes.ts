@@ -76,7 +76,7 @@ app.post("/api/contact", async (req, res) => {
 
     await resend.emails.send({
       from: "Magh Mela <onboarding@resend.dev>", // free tier sender
-      to: ["info@maghmela.com"], // or your email
+      to: ["maghmelastays@gmail.com"], // or your email
       subject: `New Inquiry from ${name}`,
       text: `
 Name: ${name}

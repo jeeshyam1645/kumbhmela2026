@@ -72,7 +72,7 @@ export default function Contact() {
                     <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                     <div>
                       <p className="font-medium text-foreground">
-                        info@maghmela.com
+                        maghmelastays@gmail.com
                       </p>
                       <p className="text-sm text-muted-foreground">
                         {t("Email us anytime", "कभी भी ईमेल करें")}
