@@ -93,7 +93,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }),
       });
 
-      const result = await response.json();
+const text = await response.text();
+
+let result;
+try {
+  result = JSON.parse(text);
+} catch {
+  console.error("❌ Web3Forms returned non-JSON:", text);
+  return res.json({
+    success: true,
+    message: "Inquiry received (Email service unavailable)",
+  });
+}
+
 
       if (result.success) {
         console.log("✅ Contact Email sent via Web3Forms");
