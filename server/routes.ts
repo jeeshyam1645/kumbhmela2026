@@ -59,7 +59,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ---------------------------------------------------------
-  // NEW CONTACT ROUTE (Email Only - No Database Record)
+  // CONTACT ROUTE (Uses Web3Forms - No SMTP - Reliable)
   // ---------------------------------------------------------
   app.post("/api/contact", async (req, res) => {
     if (!req.isAuthenticated()) {
@@ -70,6 +70,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { name, mobile, message } = req.body;
 
       // Prepare data for Web3Forms (HTTP Port 443 - Never Blocked)
+      // MAKE SURE 'WEB3_ACCESS_KEY' IS SET IN YOUR RENDER ENVIRONMENT VARIABLES
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -77,9 +78,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          // Ensure this environment variable is set in Render
           access_key: process.env.WEB3_ACCESS_KEY, 
-          
           subject: `New Inquiry from ${name}`,
           from_name: "Magh Mela Website",
           message: `
@@ -93,7 +92,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await response.json();
 
       if (result.success) {
-        console.log("✅ Email sent successfully via Web3Forms");
+        console.log("✅ Contact Email sent via Web3Forms");
         res.json({ success: true, message: "Inquiry received" });
       } else {
         console.error("❌ Web3Forms API Error:", result);
@@ -152,9 +151,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // 2. SEND RESPONSE IMMEDIATELY
       res.status(201).json(newBooking[0]);
-
-      // Note: Nodemailer removed here to prevent Render timeouts.
-      // If you need booking alerts, use the Web3Forms fetch method here too.
 
     } catch (error) {
       console.error("Booking Error:", error);
