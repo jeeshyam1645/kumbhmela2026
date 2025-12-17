@@ -191,43 +191,28 @@ export function BookingModal({
           )}
 
           {/* HYBRID ACTION BUTTONS */}
+{/* ACTION BUTTONS: Request Callback Only */}
           <div className="pt-4 flex flex-col gap-3">
-            
-            {/* OPTION 1: PAY TOKEN (Only show if defaultTab isn't strictly 'inquiry' or you want both) */}
             <Button 
-              size="lg" 
-              className="w-full bg-green-700 hover:bg-green-800 text-white flex justify-between items-center h-auto py-3"
-              onClick={() => handleBooking("online_token")}
-              disabled={mutation.isPending}
-            >
-              <span className="flex items-center gap-3">
-                <CreditCard className="w-5 h-5" /> 
-                <div className="text-left leading-tight">
-                  <div className="font-semibold text-base">{t("Instant Booking", "तत्काल बुकिंग")}</div>
-                  {advanceAmount > 0 && (
-                    <div className="text-xs opacity-90 font-normal">
-                      {t("Pay 10% Advance", "10% अग्रिम भुगतान करें")}: ₹{advanceAmount}
-                    </div>
-                  )}
-                </div>
-              </span>
-              {mutation.isPending ? <Loader2 className="animate-spin" /> : <span className="font-bold text-xl">→</span>}
-            </Button>
-            
-            <div className="relative flex justify-center text-xs uppercase my-1">
-              <span className="bg-background px-2 text-muted-foreground">{t("OR", "या")}</span>
-            </div>
-
-            {/* OPTION 2: REQUEST CALLBACK */}
-            <Button 
-              variant="outline" 
-              className="w-full border-primary text-primary hover:bg-primary/5 h-12"
+              size="lg"
+              className="w-full h-12 text-base font-semibold shadow-md"
               onClick={() => handleBooking("inquiry_call")}
               disabled={mutation.isPending}
             >
-              <Phone className="w-4 h-4 mr-2" />
-              {t("Request Callback (Pay Later)", "कॉलबैक का अनुरोध करें")}
+              {mutation.isPending ? (
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+              ) : (
+                <Phone className="w-5 h-5 mr-2" />
+              )}
+              {t("Request Callback to Book", "बुक करने के लिए कॉलबैक का अनुरोध करें")}
             </Button>
+            
+            <p className="text-xs text-center text-muted-foreground mt-3">
+              {t(
+                "Our team will call you shortly to confirm availability and payment details.", 
+                "हमारी टीम उपलब्धता और भुगतान विवरण की पुष्टि करने के लिए आपको शीघ्र ही कॉल करेगी।"
+              )}
+            </p>
           </div>
         </div>
       </DialogContent>
