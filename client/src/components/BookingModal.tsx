@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Added useEffect
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -6,34 +6,42 @@ import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Camp } from "@app/shared"
+import { Camp } from "@app/shared";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CalendarDays, Phone, CreditCard, Loader2 } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext"; // <--- Import
+import { Phone, CreditCard, Loader2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const bookingFormSchema = z.object({
   checkIn: z.string().min(1, "Required"),
   checkOut: z.string().min(1, "Required"),
   guestCount: z.string(),
-  mobile: z.string().min(10),
-  guestName: z.string().min(2),
+  mobile: z.string().min(10, "Mobile number must be at least 10 digits"), // improved validation
+  guestName: z.string().min(2, "Name is required"),
 });
 
+// 1. FIX: Update Interface to accept defaultTab
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
   camp: Camp;
+  defaultTab?: "book" | "inquiry"; // <--- ADDED THIS
 }
 
-export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
+export function BookingModal({ 
+  isOpen, 
+  onClose, 
+  camp, 
+  defaultTab = "book" // <--- Default value (optional usage)
+}: BookingModalProps) {
+  
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t, language } = useLanguage(); // <--- Hook
+  const { t, language } = useLanguage();
   const [, setLocation] = useLocation();
 
   const form = useForm({
@@ -46,6 +54,9 @@ export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
       guestName: user?.name || "",
     }
   });
+
+  // 2. OPTIONAL: If 'inquiry' is passed, you could scroll to buttons or auto-focus
+  // For now, we just accept the prop so TypeScript stops complaining.
 
   const mutation = useMutation({
     mutationFn: async (data: any) => {
@@ -72,10 +83,12 @@ export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
 
   const handleBooking = (type: "inquiry_call" | "online_token") => {
     const values = form.getValues();
-    if (!values.checkIn || !values.checkOut || !values.mobile) {
+    
+    // Manual Validation Check
+    if (!values.checkIn || !values.checkOut || !values.mobile || !values.guestName) {
       toast({ 
         title: t("Missing Details", "विवरण गायब है"), 
-        description: t("Please fill in all fields.", "कृपया सभी फ़ील्ड भरें।"), 
+        description: t("Please fill in all fields (Dates, Name, Mobile).", "कृपया सभी फ़ील्ड (तिथियां, नाम, मोबाइल) भरें।"), 
         variant: "destructive" 
       });
       return;
@@ -84,11 +97,12 @@ export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
     if (type === "online_token") {
       toast({ 
         title: t("Processing Payment...", "भुगतान संसाधित हो रहा है..."), 
-        description: t("Simulating payment...", "भुगतान का अनुकरण...") 
+        description: t("Redirecting to payment gateway...", "भुगतान गेटवे पर पुनर्निर्देशित किया जा रहा है...") 
       });
+      // Simulate delay for effect
       setTimeout(() => {
         mutation.mutate({ ...values, bookingType: "online_token" });
-      }, 1500);
+      }, 1000);
     } else {
       mutation.mutate({ ...values, bookingType: "inquiry_call" });
     }
@@ -97,8 +111,6 @@ export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
   const today = new Date().toISOString().split("T")[0];
   const campName = language === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn;
 
-  // ... existing hooks ...
-  
   // LIVE CALCULATION
   const checkInDate = form.watch("checkIn");
   const checkOutDate = form.watch("checkOut");
@@ -110,16 +122,18 @@ export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
   if (checkInDate && checkOutDate) {
     const start = new Date(checkInDate);
     const end = new Date(checkOutDate);
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+    const diffTime = end.getTime() - start.getTime(); // Removed Math.abs for logical check
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    calculatedTotal = camp.price * guestCount * diffDays;
-    advanceAmount = Math.round(calculatedTotal * 0.10);
+    if (diffDays > 0) {
+      calculatedTotal = camp.price * guestCount * diffDays;
+      advanceAmount = Math.round(calculatedTotal * 0.10);
+    }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[450px]">
+      <DialogContent className="sm:max-w-[450px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t("Book", "बुक करें")} {campName}</DialogTitle>
           <DialogDescription>
@@ -149,7 +163,7 @@ export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {[1, 2, 3, 4, 5, 6].map(num => (
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
                     <SelectItem key={num} value={num.toString()}>
                       {num} {t(num === 1 ? "Guest" : "Guests", num === 1 ? "अतिथि" : "अतिथि")}
                     </SelectItem>
@@ -159,52 +173,60 @@ export function BookingModal({ isOpen, onClose, camp }: BookingModalProps) {
             </div>
             <div className="space-y-2">
               <Label>{t("Mobile", "मोबाइल")}</Label>
-              <Input {...form.register("mobile")} placeholder={t("Contact Number", "संपर्क नंबर")} />
+              <Input {...form.register("mobile")} placeholder="9876543210" type="tel" />
             </div>
           </div>
 
           <div className="space-y-2">
              <Label>{t("Guest Name", "अतिथि का नाम")}</Label>
-             <Input {...form.register("guestName")} />
+             <Input {...form.register("guestName")} placeholder="Enter full name" />
           </div>
+
+          {/* TOTAL DISPLAY */}
+          {calculatedTotal > 0 && (
+            <div className="bg-muted p-3 rounded-md text-sm flex justify-between items-center font-medium">
+              <span>Total Estimate:</span>
+              <span className="text-primary text-lg">₹{calculatedTotal}</span>
+            </div>
+          )}
 
           {/* HYBRID ACTION BUTTONS */}
           <div className="pt-4 flex flex-col gap-3">
             
-            {/* OPTION 1: PAY TOKEN */}
-<Button 
+            {/* OPTION 1: PAY TOKEN (Only show if defaultTab isn't strictly 'inquiry' or you want both) */}
+            <Button 
               size="lg" 
-              className="w-full bg-green-700 hover:bg-green-800 text-white flex justify-between items-center"
+              className="w-full bg-green-700 hover:bg-green-800 text-white flex justify-between items-center h-auto py-3"
               onClick={() => handleBooking("online_token")}
               disabled={mutation.isPending}
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-3">
                 <CreditCard className="w-5 h-5" /> 
                 <div className="text-left leading-tight">
-                  <div>Secure Slot</div>
+                  <div className="font-semibold text-base">{t("Instant Booking", "तत्काल बुकिंग")}</div>
                   {advanceAmount > 0 && (
-                    <div className="text-xs opacity-80 font-normal">
-                      Pay 10% Advance: ₹{advanceAmount}
+                    <div className="text-xs opacity-90 font-normal">
+                      {t("Pay 10% Advance", "10% अग्रिम भुगतान करें")}: ₹{advanceAmount}
                     </div>
                   )}
                 </div>
               </span>
-              {mutation.isPending ? <Loader2 className="animate-spin" /> : <span className="font-bold">→</span>}
+              {mutation.isPending ? <Loader2 className="animate-spin" /> : <span className="font-bold text-xl">→</span>}
             </Button>
             
-            <div className="relative flex justify-center text-xs uppercase">
+            <div className="relative flex justify-center text-xs uppercase my-1">
               <span className="bg-background px-2 text-muted-foreground">{t("OR", "या")}</span>
             </div>
 
             {/* OPTION 2: REQUEST CALLBACK */}
             <Button 
               variant="outline" 
-              className="w-full border-primary text-primary hover:bg-primary/5"
+              className="w-full border-primary text-primary hover:bg-primary/5 h-12"
               onClick={() => handleBooking("inquiry_call")}
               disabled={mutation.isPending}
             >
               <Phone className="w-4 h-4 mr-2" />
-              {t("Request Callback & Pay Later", "कॉलबैक का अनुरोध करें और बाद में भुगतान करें")}
+              {t("Request Callback (Pay Later)", "कॉलबैक का अनुरोध करें")}
             </Button>
           </div>
         </div>

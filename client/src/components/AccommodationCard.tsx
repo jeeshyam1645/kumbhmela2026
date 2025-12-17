@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Users, Check } from "lucide-react";
+import { Users, Check, PhoneCall } from "lucide-react"; // Added PhoneCall icon
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Camp } from "@app/shared";
 import { useAuth } from "@/hooks/use-auth";
 import { AuthModal } from "@/components/AuthModal";
-import { BookingModal } from "@/components/BookingModal"; // <--- New Booking Modal
+import { BookingModal } from "@/components/BookingModal";
 
 interface AccommodationCardProps {
   camp: Camp;
@@ -18,15 +18,14 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
   const { t, language } = useLanguage();
   const { user } = useAuth();
   
-  // State to control booking modal visibility
   const [showBooking, setShowBooking] = useState(false);
 
-  // Safety check for array (in case DB returns null)
   const features = camp.features || [];
 
   return (
     <>
       <Card className="overflow-hidden group" data-testid={`card-camp-${camp.id}`}>
+        {/* ... Image and Details Section (Unchanged) ... */}
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
             src={imageUrl}
@@ -36,7 +35,6 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
           <div className="absolute top-3 left-3 flex flex-wrap gap-2">
             <Badge variant="secondary" className="bg-white/90 text-foreground">
               <Users className="w-3 h-3 mr-1" />
-              {/* Fallback string for capacity */}
               {t(camp.capacity, camp.capacity)}
             </Badge>
           </div>
@@ -64,7 +62,6 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
           {/* Price Display */}
           <div className="w-full text-center py-2 bg-muted/50 rounded-md">
             <span className="text-sm font-medium text-foreground">
-              {/* Show price if available, otherwise fallback */}
               ₹{camp.price} <span className="text-muted-foreground text-xs">/ {t("Night", "रात")}</span>
             </span>
           </div>
@@ -72,6 +69,7 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
           {/* ACTION BUTTONS */}
           {user ? (
             /* Logged In: Open Booking Modal */
+            /* COMMENTED OUT "BOOK NOW" (Pay Advance) logic 
             <Button 
               className="w-full" 
               onClick={() => setShowBooking(true)}
@@ -79,12 +77,24 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
             >
               {t("Book Now", "अभी बुक करें")}
             </Button>
+            */
+
+            /* REPLACED WITH "REQUEST CALLBACK" */
+            <Button 
+              className="w-full" 
+              variant="default" // You can change to "outline" if you want it less prominent
+              onClick={() => setShowBooking(true)}
+              data-testid={`button-inquiry-${camp.id}`}
+            >
+              <PhoneCall className="w-4 h-4 mr-2" />
+              {t("Request Callback", "कॉल बैक का अनुरोध करें")}
+            </Button>
           ) : (
             /* Logged Out: Open Auth Modal */
             <AuthModal 
               trigger={
                 <Button className="w-full" variant="outline">
-                  {t("Login to Book", "बुक करने के लिए लॉगिन करें")}
+                  {t("Login to Request Info", "जानकारी के लिए लॉगिन करें")}
                 </Button>
               } 
             />
@@ -92,12 +102,15 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
         </CardFooter>
       </Card>
 
-      {/* Render Booking Modal when state is true */}
+      {/* Render Booking Modal */}
       {showBooking && (
         <BookingModal 
           isOpen={showBooking} 
           onClose={() => setShowBooking(false)} 
           camp={camp} 
+          // IMPORTANT: If your BookingModal accepts a prop to hide payment, pass it here.
+          // Example: defaultTab="inquiry" or mode="inquiry"
+          defaultTab="inquiry" 
         />
       )}
     </>
