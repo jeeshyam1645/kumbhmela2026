@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Users, Check, MessageCircle, Phone, Info } from "lucide-react"; 
+import { Users, Check, MessageCircle, Phone } from "lucide-react"; 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,10 +22,12 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
 
   const features = camp.features || [];
 
-  // WhatsApp Logic for this specific camp
+  // WhatsApp Logic
   const WA_NUMBER = "919936399677"; 
   const campName = language === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn;
-  const waMessage = `Namaste, I am interested in ${campName}. Please share availability and best rates.`;
+  
+  // Updated message to be less transactional
+  const waMessage = `Namaste, I am interested in ${campName}. Please share availability and details.`; 
   const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMessage)}`;
 
   return (
@@ -46,12 +48,8 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
               {t(camp.capacity, camp.capacity)}
             </Badge>
           </div>
-          {/* Price Badge (Subtle Overlay) */}
-          {/* <div className="absolute bottom-3 right-3">
-             <div className="bg-black/60 text-white px-3 py-1 rounded-full backdrop-blur-md text-xs font-medium border border-white/20">
-                {t("Starts @", "शुरुआत @")} ₹{camp.price}
-             </div>
-          </div> */}
+          
+          {/* Note: Price badge removed as per request to focus on phone/inquiry */}
         </div>
 
         {/* --- CONTENT SECTION --- */}
@@ -81,7 +79,7 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
             <a href={waLink} target="_blank" rel="noopener noreferrer" className="w-full">
                 <Button className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold shadow-sm">
                     <MessageCircle className="w-4 h-4 mr-2" />
-                    {t("Chat for Best Rate", "रेट के लिए चैट करें")}
+                    {t("Check Availability", "उपलब्धता जांचें")} 
                 </Button>
             </a>
 
@@ -108,7 +106,7 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
         </CardFooter>
       </Card>
 
-      {/* Render Inquiry Modal (Reusing BookingModal in 'inquiry' mode) */}
+      {/* Render Inquiry Modal */}
       {showBooking && (
         <BookingModal 
           isOpen={showBooking} 

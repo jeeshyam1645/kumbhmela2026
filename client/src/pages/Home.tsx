@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Loader2, ChevronLeft, ChevronRight, Star, ShieldCheck, HeartHandshake, MessageCircle, Phone, Calendar } from "lucide-react";
+import { ArrowRight, Loader2, ChevronLeft, ChevronRight, Star, ShieldCheck, HeartHandshake, MessageCircle, Phone, Calendar, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AccommodationCard } from "@/components/AccommodationCard";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
@@ -13,7 +13,7 @@ const WA_NUMBER = "919936399677";
 const WA_MESSAGE = "Namaste, I am interested in Magh Mela 2026 accommodation. Please share details."; 
 const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
-// HERO CAROUSEL IMAGES (Updated with Spiritual Text)
+// HERO CAROUSEL IMAGES (Main Titles)
 const heroImages = [
   {
     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/knocksense_2025-01-13_jcozh2xg_manoj-chhabra-81_bi4x8l.avif",
@@ -36,6 +36,13 @@ const heroImages = [
     subtitleEn: "Where noise stops and serenity begins",
     subtitleHi: "जहाँ शोर रुक जाता है और सुकून शुरू होता है"
   }
+];
+
+// TICKER SLOGANS (To mix with dates)
+const tickerSlogans = [
+    { en: "Sangam call for the soul", hi: "संगम की पुकार, चलो प्रयागराज" },
+    { en: "Peace in every moment", hi: "संगम के पास एक शांत सा ठिकाना" },
+    { en: "Faith, Peace, and Comfort", hi: "आस्था, शांति और सुकून एक साथ" }
 ];
 
 // FALLBACK IMAGES
@@ -132,7 +139,7 @@ export default function Home() {
                   <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
                     <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-transform hover:scale-105 border-none">
                       <MessageCircle className="w-5 h-5 mr-2" />
-                      {t("Check Availability", "उपलब्धता जांचें")}
+                      {t("Plan Your Journey", "अपनी यात्रा की योजना बनाएं")}
                     </Button>
                   </a>
                   
@@ -169,19 +176,30 @@ export default function Home() {
           ))}
         </div>
 
-        {/* SCROLLING TICKER (Added back as requested) */}
+        {/* SCROLLING TICKER (MIXED CONTENT) */}
         <div className="absolute bottom-0 left-0 right-0 bg-orange-900/90 backdrop-blur-md py-3 overflow-hidden border-t border-orange-500/30 z-20">
           <div className="animate-scroll-ticker whitespace-nowrap flex items-center gap-12">
-             {/* Repeating logic for smooth scroll */}
-             {[1,2,3,4].map((i) => (
-                <span key={i} className="text-orange-50 font-medium flex items-center gap-3 text-sm md:text-base">
-                   <Calendar className="w-4 h-4 text-orange-400" />
-                   <span className="opacity-75">{t("Next Bathing Date:", "अगला स्नान तिथि:")}</span> 
-                   <span className="font-bold text-white">{t(nextBathingDate.nameEn, nextBathingDate.nameHi)}</span>
-                   <span className="bg-orange-500/20 px-2 py-0.5 rounded text-xs border border-orange-500/30">
-                      {new Date(nextBathingDate.date).toLocaleDateString(language === 'hi' ? 'hi-IN' : 'en-US', { day: 'numeric', month: 'short' })}
-                   </span>
-                </span>
+             {/* We repeat the pattern: Date -> Slogan -> Date -> Slogan */}
+             {[0, 1, 2].map((i) => (
+                <div key={i} className="flex items-center gap-12">
+                    
+                    {/* 1. Next Bathing Date */}
+                    <span className="text-orange-50 font-medium flex items-center gap-3 text-sm md:text-base">
+                        <Calendar className="w-4 h-4 text-orange-400" />
+                        <span className="opacity-75">{t("Next Bathing Date:", "अगला स्नान तिथि:")}</span> 
+                        <span className="font-bold text-white">{t(nextBathingDate.nameEn, nextBathingDate.nameHi)}</span>
+                        <span className="bg-orange-500/20 px-2 py-0.5 rounded text-xs border border-orange-500/30">
+                            {new Date(nextBathingDate.date).toLocaleDateString(language === 'hi' ? 'hi-IN' : 'en-US', { day: 'numeric', month: 'short' })}
+                        </span>
+                    </span>
+
+                    {/* 2. Slogan from your list */}
+                    <span className="text-orange-100 italic font-medium flex items-center gap-2 text-sm md:text-base">
+                        <Sparkles className="w-3 h-3 text-orange-400" />
+                        {t(tickerSlogans[i].en, tickerSlogans[i].hi)}
+                    </span>
+
+                </div>
              ))}
           </div>
         </div>
