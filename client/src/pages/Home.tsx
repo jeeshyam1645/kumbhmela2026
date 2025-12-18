@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Loader2, ChevronLeft, ChevronRight, Star, ShieldCheck, HeartHandshake, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Loader2, ChevronLeft, ChevronRight, Star, ShieldCheck, HeartHandshake, MessageCircle, Phone, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AccommodationCard } from "@/components/AccommodationCard";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
@@ -9,32 +9,32 @@ import { useQuery } from "@tanstack/react-query";
 import { bathingDates, Camp, PujaService } from "@app/shared"; 
 
 // --- CONFIGURATION ---
-const WA_NUMBER = "919936399677"; // Your number with Country Code
-const WA_MESSAGE = "Namaste, I am interested in Magh Mela 2026 accommodation. Please share rates and details."; // Pre-filled message
+const WA_NUMBER = "919936399677"; 
+const WA_MESSAGE = "Namaste, I am interested in Magh Mela 2026 accommodation. Please share details."; 
 const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
-// HERO CAROUSEL IMAGES
+// HERO CAROUSEL IMAGES (Updated with Spiritual Text)
 const heroImages = [
   {
     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/knocksense_2025-01-13_jcozh2xg_manoj-chhabra-81_bi4x8l.avif",
-    titleEn: "Experience Divinity at Sangam",
-    titleHi: "संगम पर दिव्यता का अनुभव करें",
-    subtitleEn: "Secure, Warm & Comfortable Swiss Tents for Magh Mela 2026",
-    subtitleHi: "माघ मेला 2026 के लिए सुरक्षित, गर्म और आरामदायक स्विस टेंट"
+    titleEn: "Sacred Dip at Sangam, Blessings for Life",
+    titleHi: "संगम में स्नान, जीवन का कल्याण",
+    subtitleEn: "Comfort is essential in your spiritual journey",
+    subtitleHi: "आस्था के सफर में आराम भी ज़रूरी"
   },
   {
     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055847/kumbh-mela-2025-tent-cities-1-2025-01-8be5d2fc3d38ece31a0c8da633e88743-scaled_ilkdkf.avif",
-    titleEn: "Your Home in the Holy City",
-    titleHi: "पवित्र शहर में आपका घर",
-    subtitleEn: "Starting from Just 500m from the Holy Bathing Ghats",
-    subtitleHi: "पवित्र स्नान घाटों से सिर्फ 500 मीटर की दूरी से शुरू"
+    titleEn: "Prayagraj is Calling",
+    titleHi: "प्रयागराज बुला रहा है",
+    subtitleEn: "Safe and comfortable stay near the holy Sangam",
+    subtitleHi: "संगम के पास सुरक्षित और आरामदायक ठहराव"
   },
   {
     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/Mahakumbh-tent-new_yhusf3.avif",
-    titleEn: "Warmth in Winter",
-    titleHi: "सर्दियों में गर्माहट",
-    subtitleEn: "Premium Woolen Bedding & 24/7 Assistance",
-    subtitleHi: "प्रीमियम ऊनी बिस्तर और 24/7 सहायता"
+    titleEn: "Where Faith Meets Peace",
+    titleHi: "चलो संगम की ओर",
+    subtitleEn: "Where noise stops and serenity begins",
+    subtitleHi: "जहाँ शोर रुक जाता है और सुकून शुरू होता है"
   }
 ];
 
@@ -47,8 +47,13 @@ const campImages = [
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  // LOGIC: Find next bathing date for ticker
+  const nextBathingDate = bathingDates.find(
+    (d) => new Date(d.date) >= new Date()
+  ) || bathingDates[0];
 
   // CAROUSEL LOGIC
   useEffect(() => {
@@ -94,37 +99,47 @@ export default function Home() {
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           >
+            {/* Image */}
             <div 
               className="absolute inset-0 bg-cover bg-center transform transition-transform duration-[10000ms] hover:scale-105"
               style={{ backgroundImage: `url(${slide.url})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80" />
             
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+            {/* Text Content */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-10">
               <div className={`transform transition-all duration-1000 delay-300 ${index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
-                <span className="inline-block py-1 px-3 rounded-full bg-orange-500/20 border border-orange-400 text-orange-200 text-sm font-semibold mb-4 backdrop-blur-sm">
-                  {t("Magh Mela 2026", "माघ मेला 2026")}
-                </span>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+                
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-6 shadow-xl">
+                   <Star className="w-4 h-4 text-orange-400 fill-orange-400" />
+                   <span className="text-orange-100 text-sm font-medium tracking-wide">
+                     {t("Magh Mela 2026 • Prayagraj", "माघ मेला 2026 • प्रयागराज")}
+                   </span>
+                </div>
+
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl leading-tight">
                   {t(slide.titleEn, slide.titleHi)}
                 </h1>
-                <p className="text-lg md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto drop-shadow-md font-medium">
+                
+                <p className="text-lg md:text-2xl text-gray-100 mb-10 max-w-2xl mx-auto drop-shadow-md font-medium leading-relaxed">
                   {t(slide.subtitleEn, slide.subtitleHi)}
                 </p>
+
+                {/* Primary Actions (No "Rates" word) */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  {/* WHATSAPP CTA - PRIMARY */}
                   <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
-                    <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-all hover:scale-105">
+                    <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-transform hover:scale-105 border-none">
                       <MessageCircle className="w-5 h-5 mr-2" />
-                      {t("Get Rates on WhatsApp", "व्हाट्सएप पर रेट जानें")}
+                      {t("Check Availability", "उपलब्धता जांचें")}
                     </Button>
                   </a>
                   
-                  {/* PHONE CALL - SECONDARY */}
                   <a href={`tel:${WA_NUMBER}`}>
-                     <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/50 font-semibold text-lg px-8 py-6 rounded-full backdrop-blur-sm">
+                     <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/50 font-semibold text-lg px-8 py-6 rounded-full backdrop-blur-md transition-all">
                         <Phone className="w-5 h-5 mr-2" />
-                        {t("Call Us", "हमें कॉल करें")}
+                        {t("Talk to Us", "हमसे बात करें")}
                      </Button>
                   </a>
                 </div>
@@ -133,26 +148,44 @@ export default function Home() {
           </div>
         ))}
         
-        {/* Carousel Controls */}
-        <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm transition-all hidden md:block">
-          <ChevronLeft className="w-8 h-8" />
+        {/* Navigation Arrows */}
+        <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm transition-all hidden md:block border border-white/10">
+          <ChevronLeft className="w-6 h-6" />
         </button>
-        <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm transition-all hidden md:block">
-          <ChevronRight className="w-8 h-8" />
+        <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm transition-all hidden md:block border border-white/10">
+          <ChevronRight className="w-6 h-6" />
         </button>
         
         {/* Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-20">
           {heroImages.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
-              className={`w-3 h-3 rounded-full transition-all ${
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
                 idx === currentSlide ? "bg-orange-500 w-8" : "bg-white/50 hover:bg-white"
               }`}
             />
           ))}
         </div>
+
+        {/* SCROLLING TICKER (Added back as requested) */}
+        <div className="absolute bottom-0 left-0 right-0 bg-orange-900/90 backdrop-blur-md py-3 overflow-hidden border-t border-orange-500/30 z-20">
+          <div className="animate-scroll-ticker whitespace-nowrap flex items-center gap-12">
+             {/* Repeating logic for smooth scroll */}
+             {[1,2,3,4].map((i) => (
+                <span key={i} className="text-orange-50 font-medium flex items-center gap-3 text-sm md:text-base">
+                   <Calendar className="w-4 h-4 text-orange-400" />
+                   <span className="opacity-75">{t("Next Bathing Date:", "अगला स्नान तिथि:")}</span> 
+                   <span className="font-bold text-white">{t(nextBathingDate.nameEn, nextBathingDate.nameHi)}</span>
+                   <span className="bg-orange-500/20 px-2 py-0.5 rounded text-xs border border-orange-500/30">
+                      {new Date(nextBathingDate.date).toLocaleDateString(language === 'hi' ? 'hi-IN' : 'en-US', { day: 'numeric', month: 'short' })}
+                   </span>
+                </span>
+             ))}
+          </div>
+        </div>
+
       </section>
 
       {/* --- TRUST INDICATORS --- */}
@@ -196,7 +229,7 @@ export default function Home() {
                 {t("Our Accommodation", "हमारा आवास")}
               </h2>
               <p className="text-gray-600 max-w-xl text-lg">
-                {t("Choose from our range of comfortable stays. Contact us for the best rates.", "हमारे आरामदायक प्रवास विकल्पों में से चुनें। सर्वोत्तम दरों के लिए हमसे संपर्क करें।")}
+                {t("Choose from our range of comfortable stays. Plan your visit today.", "हमारे आरामदायक प्रवास विकल्पों में से चुनें। आज ही अपनी यात्रा की योजना बनाएं।")}
               </p>
             </div>
             <Link href="/accommodation">
@@ -321,7 +354,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- CALL TO ACTION (WhatsApp Focused) --- */}
+      {/* --- CALL TO ACTION (Bottom) --- */}
       <section className="py-24 bg-gradient-to-r from-orange-600 to-red-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center relative z-10">
@@ -329,14 +362,14 @@ export default function Home() {
             {t("Ready to Book Your Spiritual Stay?", "अपना आध्यात्मिक प्रवास बुक करने के लिए तैयार हैं?")}
           </h2>
           <p className="text-orange-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-            {t("We have limited availability for the main bathing dates. Chat with us now to get the best quote.", "मुख्य स्नान तिथियों के लिए हमारे पास सीमित उपलब्धता है। सर्वोत्तम उद्धरण प्राप्त करने के लिए अभी हमारे साथ चैट करें।")}
+            {t("We have limited availability for the main bathing dates. Contact us to discuss your requirements.", "मुख्य स्नान तिथियों के लिए हमारे पास सीमित उपलब्धता है। अपनी आवश्यकताओं पर चर्चा करने के लिए हमसे संपर्क करें।")}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
              <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-xl px-10 py-8 rounded-full shadow-2xl transition-transform hover:scale-105">
+              <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-xl px-10 py-8 rounded-full shadow-2xl transition-transform hover:scale-105 border-none">
                 <MessageCircle className="w-6 h-6 mr-3" />
-                {t("Chat on WhatsApp", "व्हाट्सएप पर चैट करें")}
+                {t("Plan Your Journey", "अपनी यात्रा की योजना बनाएं")}
               </Button>
             </a>
           </div>
