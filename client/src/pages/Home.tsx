@@ -372,6 +372,68 @@ export default function Home() {
         </div>
       </section>
 
+      {/* --- ASTROLOGY / GUIDANCE SECTION --- */}
+      <section className="py-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] bg-indigo-950 text-white relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-950 via-purple-950 to-indigo-950 opacity-90"></div>
+        
+        <div className="max-w-6xl mx-auto px-4 md:px-8 relative z-10">
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            
+            {/* Text Side */}
+            <div className="flex-1 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 bg-indigo-800/50 border border-indigo-400/30 rounded-full px-4 py-1.5 mb-6">
+                <Sparkles className="w-4 h-4 text-yellow-400" />
+                <span className="text-indigo-100 text-sm font-medium">
+                  {t("Exclusive for Our Guests", "हमारे अतिथियों के लिए विशेष")}
+                </span>
+              </div>
+              
+              <h2 className="text-3xl md:text-5xl font-bold font-serif mb-6 leading-tight">
+                {t("Vedic Guidance & Jyotish Paramarsh", "वैदिक मार्गदर्शन और ज्योतिष परामर्श")}
+              </h2>
+              
+              <p className="text-indigo-200 text-lg mb-8 leading-relaxed">
+                {t(
+                  "A pilgrimage is the perfect time to seek clarity. Our camp is blessed by the presence of the revered Acharya Rajendra Mishra. Whether you seek answers regarding your future or spiritual growth, you may request a private session during your stay.",
+                  "तीर्थयात्रा स्पष्टता पाने का सही समय है। हमारा शिविर प्रतिष्ठित आचार्य राजेंद्र मिश्र की उपस्थिति से धन्य है। चाहे आप अपने भविष्य या आध्यात्मिक विकास के बारे में उत्तर चाहते हों, आप अपने प्रवास के दौरान एक निजी सत्र का अनुरोध कर सकते हैं।"
+                )}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                 <a href={`https://wa.me/919936399677?text=${encodeURIComponent("Namaste, I am interested in seeking guidance from Acharya Rajendra Mishra ji.")}`} target="_blank">
+                  <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-indigo-950 font-bold border-none text-lg px-8">
+                    {t("Request Appointment", "समय का अनुरोध करें")}
+                  </Button>
+                </a>
+              </div>
+              
+              <p className="mt-4 text-xs text-indigo-400 italic opacity-80">
+                {t("*Availability is limited. Dakshina is voluntary.", "*उपलब्धता सीमित है। दक्षिणा स्वैच्छिक है।")}
+              </p>
+            </div>
+
+            {/* Image/Visual Side */}
+            <div className="w-full md:w-1/3 relative">
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-yellow-500/20 shadow-2xl bg-indigo-900/50">
+                 {/* Tip: Replace this URL with a real photo of Acharya Ji for maximum trust */}
+                 <img 
+                   src="https://images.unsplash.com/photo-1605218427368-2c262a6df7a0?q=80&w=1956&auto=format&fit=crop" 
+                   alt="Acharya Rajendra Mishra" 
+                   className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
+                 />
+                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 text-center">
+                    <p className="text-yellow-400 font-serif text-xl italic font-semibold">
+                      {t("Acharya Rajendra Mishra", "आचार्य राजेंद्र मिश्र")}
+                    </p>
+                 </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* --- CALL TO ACTION (Bottom) --- */}
       <section className="py-24 bg-gradient-to-r from-orange-600 to-red-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
