@@ -35,7 +35,7 @@ export function Header() {
 
   const navLinks = [
     { href: "/", label: t("Home", "होम") },
-    { href: "/about", label: t("About Us", "हमारे बारे में") }, // ADDED THIS
+    { href: "/about-us", label: t("About Us", "हमारे बारे में") }, // ADDED THIS
     { href: "/accommodation", label: t("Accommodation", "आवास") },
     { href: "/puja-services", label: t("Vedic Rituals", "वैदिक अनुष्ठान") }, // UPDATED LABEL
     { href: "/kumbh-guide", label: t("Kumbh Guide", "कुंभ गाइड") },
