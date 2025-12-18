@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, LogOut, User, CalendarDays, Shield, Phone } from "lucide-react";
+import { Menu, X, LogOut, User, CalendarDays, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -35,9 +35,10 @@ export function Header() {
 
   const navLinks = [
     { href: "/", label: t("Home", "होम") },
-    { href: "/kumbh-guide", label: t("Kumbh Guide", "कुंभ गाइड") },
+    { href: "/about", label: t("About Us", "हमारे बारे में") }, // ADDED THIS
     { href: "/accommodation", label: t("Accommodation", "आवास") },
-    { href: "/puja-services", label: t("Puja Services", "पूजा सेवाएं") },
+    { href: "/puja-services", label: t("Vedic Rituals", "वैदिक अनुष्ठान") }, // UPDATED LABEL
+    { href: "/kumbh-guide", label: t("Kumbh Guide", "कुंभ गाइड") },
     { href: "/contact", label: t("Contact", "संपर्क") },
   ];
 
@@ -164,7 +165,6 @@ export function Header() {
                     </div>
                     <DropdownMenuSeparator />
                     
-                    {/* ADMIN LINK (Only for Admins) */}
                     {user.role === 'admin' && (
                       <>
                         <DropdownMenuItem asChild>

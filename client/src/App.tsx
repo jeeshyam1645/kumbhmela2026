@@ -24,6 +24,7 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import Bookings from "@/pages/Bookings"; // <--- 1. ADD IMPORT
 import { ProtectedRoute } from "@/lib/protected-route";
 import { useEffect } from "react"; // <--- 1. Import useEffect
+import About from "./pages/About";
 
 function Router() {
   return (
@@ -36,6 +37,7 @@ function Router() {
       <ProtectedRoute path="/bookings" component={Bookings} />
       <Route path="/accommodation" component={Accommodation} />
       <Route path="/puja-services" component={PujaServices} />
+      <Route path="/about-us" component={About} />
       <Route path="/kumbh-guide" component={KumbhGuide} />
       <Route path="/contact" component={Contact} />
       <Route path="/thank-you" component={ThankYou} />
