@@ -270,7 +270,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
           </AlertDialogHeader>
           <div className="p-4 bg-muted rounded-md flex items-center justify-between">
              <div className="text-sm font-medium">Support: +91 76675 86151</div>
-             <a href="tel:+917667586151">
+             <a href="tel:+919936399677">
                <Button size="sm" variant="outline"><Phone className="w-4 h-4 mr-2" /> Call Now</Button>
              </a>
           </div>

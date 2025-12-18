@@ -93,7 +93,7 @@ export function Footer() {
                 <Phone className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                 <div>
                   <a
-                    href="tel:+917061762868"
+                    href="tel:+919936399677"
                     className="text-background/70 hover:text-primary transition-colors text-sm"
                     data-testid="footer-phone"
                   >
