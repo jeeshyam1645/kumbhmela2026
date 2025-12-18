@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Users, Check, PhoneCall } from "lucide-react"; // Added PhoneCall icon
+import { Users, Check, MessageCircle, Phone, Info } from "lucide-react"; 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,94 +22,98 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
 
   const features = camp.features || [];
 
+  // WhatsApp Logic for this specific camp
+  const WA_NUMBER = "919936399677"; 
+  const campName = language === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn;
+  const waMessage = `Namaste, I am interested in ${campName}. Please share availability and best rates.`;
+  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMessage)}`;
+
   return (
     <>
-      <Card className="overflow-hidden group" data-testid={`card-camp-${camp.id}`}>
-        {/* ... Image and Details Section (Unchanged) ... */}
+      <Card className="overflow-hidden group border-orange-100 hover:shadow-lg transition-all duration-300" data-testid={`card-camp-${camp.id}`}>
+        
+        {/* --- IMAGE SECTION --- */}
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
             src={imageUrl}
-            alt={language === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            alt={campName}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
+          {/* Capacity Badge */}
           <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-            <Badge variant="secondary" className="bg-white/90 text-foreground">
+            <Badge variant="secondary" className="bg-white/90 text-orange-800 backdrop-blur-sm shadow-sm font-medium">
               <Users className="w-3 h-3 mr-1" />
               {t(camp.capacity, camp.capacity)}
             </Badge>
           </div>
+          {/* Price Badge (Subtle Overlay) */}
+          <div className="absolute bottom-3 right-3">
+             <div className="bg-black/60 text-white px-3 py-1 rounded-full backdrop-blur-md text-xs font-medium border border-white/20">
+                {t("Starts @", "शुरुआत @")} ₹{camp.price}
+             </div>
+          </div>
         </div>
 
-        <CardContent className="p-6">
-          <h3 className="text-xl font-semibold text-foreground mb-2">
-            {language === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn}
+        {/* --- CONTENT SECTION --- */}
+        <CardContent className="p-5">
+          <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight group-hover:text-orange-600 transition-colors">
+            {campName}
           </h3>
-          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+          <p className="text-gray-500 text-sm mb-4 line-clamp-2 leading-relaxed">
             {language === "hi" && camp.descriptionHi ? camp.descriptionHi : camp.descriptionEn}
           </p>
 
-          <div className="space-y-2">
-            {features.slice(0, 4).map((feature, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm">
-                <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="text-foreground">{feature}</span>
+          {/* Features List */}
+          <div className="space-y-2 mb-2">
+            {features.slice(0, 3).map((feature, index) => (
+              <div key={index} className="flex items-start gap-2 text-sm text-gray-600">
+                <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <span>{feature}</span>
               </div>
             ))}
           </div>
         </CardContent>
 
-        <CardFooter className="p-6 pt-0 flex flex-col gap-3">
-          {/* Price Display */}
-          <div className="w-full text-center py-2 bg-muted/50 rounded-md">
-            <span className="text-sm font-medium text-foreground">
-              ₹{camp.price} <span className="text-muted-foreground text-xs">/ {t("Night", "रात")}</span>
-            </span>
-          </div>
+        {/* --- ACTION FOOTER --- */}
+        <CardFooter className="p-5 pt-0 flex flex-col gap-3">
           
-          {/* ACTION BUTTONS */}
-          {user ? (
-            /* Logged In: Open Booking Modal */
-            /* COMMENTED OUT "BOOK NOW" (Pay Advance) logic 
-            <Button 
-              className="w-full" 
-              onClick={() => setShowBooking(true)}
-              data-testid={`button-book-${camp.id}`}
-            >
-              {t("Book Now", "अभी बुक करें")}
-            </Button>
-            */
-
-            /* REPLACED WITH "REQUEST CALLBACK" */
-            <Button 
-              className="w-full" 
-              variant="default" // You can change to "outline" if you want it less prominent
-              onClick={() => setShowBooking(true)}
-              data-testid={`button-inquiry-${camp.id}`}
-            >
-              <PhoneCall className="w-4 h-4 mr-2" />
-              {t("Request Callback", "कॉल बैक का अनुरोध करें")}
-            </Button>
-          ) : (
-            /* Logged Out: Open Auth Modal */
-            <AuthModal 
-              trigger={
-                <Button className="w-full" variant="outline">
-                  {t("Login to Request Info", "जानकारी के लिए लॉगिन करें")}
+            {/* Primary Action: WhatsApp Inquiry */}
+            <a href={waLink} target="_blank" rel="noopener noreferrer" className="w-full">
+                <Button className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold shadow-sm">
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    {t("Chat for Best Rate", "रेट के लिए चैट करें")}
                 </Button>
-              } 
-            />
-          )}
+            </a>
+
+            {/* Secondary Action: Callback Request (Requires Login) */}
+            {user ? (
+                <Button 
+                    variant="outline" 
+                    className="w-full border-orange-200 text-orange-700 hover:bg-orange-50"
+                    onClick={() => setShowBooking(true)}
+                >
+                    <Phone className="w-4 h-4 mr-2" />
+                    {t("Request Callback", "कॉल बैक का अनुरोध करें")}
+                </Button>
+            ) : (
+                <AuthModal 
+                    trigger={
+                        <Button variant="ghost" className="w-full text-xs text-muted-foreground hover:text-orange-600">
+                            {t("Login to Request Call", "कॉल के लिए लॉगिन करें")}
+                        </Button>
+                    } 
+                />
+            )}
+
         </CardFooter>
       </Card>
 
-      {/* Render Booking Modal */}
+      {/* Render Inquiry Modal (Reusing BookingModal in 'inquiry' mode) */}
       {showBooking && (
         <BookingModal 
           isOpen={showBooking} 
           onClose={() => setShowBooking(false)} 
           camp={camp} 
-          // IMPORTANT: If your BookingModal accepts a prop to hide payment, pass it here.
-          // Example: defaultTab="inquiry" or mode="inquiry"
           defaultTab="inquiry" 
         />
       )}

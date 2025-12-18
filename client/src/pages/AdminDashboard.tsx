@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { apiRequest } from "@/lib/queryClient";
 import { Booking, Camp, PujaService } from "@app/shared";
+import { useLanguage } from "@/context/LanguageContext"; // ADDED
 
 // UI Components
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,6 @@ import {
 } from "@/components/ui/alert-dialog";
 
 // --- HELPER COMPONENT: IMAGE UPLOAD ---
-// Handles toggling between URL input and File Upload
 const ImageUploadField = ({ form, name, label }: { form: UseFormReturn<any>, name: string, label: string }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageUrl = form.watch(name);
@@ -98,6 +98,7 @@ const ImageUploadField = ({ form, name, label }: { form: UseFormReturn<any>, nam
 
 export default function AdminDashboard() {
   const queryClient = useQueryClient();
+  const { t } = useLanguage(); // ADDED Language Hook
   
   // State
   const [rejectId, setRejectId] = useState<number | null>(null);
@@ -202,9 +203,9 @@ export default function AdminDashboard() {
   // Helper Components
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "confirmed": return <Badge className="bg-green-600">Confirmed</Badge>;
-      case "cancelled": return <Badge variant="destructive">Cancelled</Badge>;
-      default: return <Badge className="bg-yellow-500 text-black">Pending</Badge>;
+      case "confirmed": return <Badge className="bg-green-600">{t("Confirmed", "पुष्टि की गई")}</Badge>;
+      case "cancelled": return <Badge variant="destructive">{t("Cancelled", "रद्द")}</Badge>;
+      default: return <Badge className="bg-yellow-500 text-black">{t("Pending", "लंबित")}</Badge>;
     }
   };
 
@@ -212,12 +213,12 @@ export default function AdminDashboard() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Guest Details</TableHead>
-          <TableHead>Dates</TableHead>
-          <TableHead>Guests</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Financials</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
+          <TableHead>{t("Guest Details", "अतिथि विवरण")}</TableHead>
+          <TableHead>{t("Dates", "तारीखें")}</TableHead>
+          <TableHead>{t("Guests", "अतिथि")}</TableHead>
+          <TableHead>{t("Status", "स्थिति")}</TableHead>
+          <TableHead>{t("Financials", "वित्तीय")}</TableHead>
+          <TableHead className="text-right">{t("Actions", "कार्रवाई")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -274,14 +275,14 @@ export default function AdminDashboard() {
         ))}
         {data.length === 0 && (
           <TableRow>
-            <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No records found.</TableCell>
+            <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">{t("No records found", "कोई रिकॉर्ड नहीं मिला")}</TableCell>
           </TableRow>
         )}
       </TableBody>
     </Table>
   );
 
-  // --- FORMS (Now using ImageUploadField) ---
+  // --- FORMS ---
   const CampForm = ({ defaultValues, onSubmit }: any) => {
     const form = useForm({ defaultValues: defaultValues || { nameEn: "", price: 5000, capacity: "2-3 Persons", descriptionEn: "", imageUrl: "" } });
     return (
@@ -321,26 +322,26 @@ export default function AdminDashboard() {
 
   return (
     <div className="container mx-auto pt-24 pb-12 px-4">
-      <h1 className="text-3xl font-bold font-serif text-primary mb-6">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold font-serif text-primary mb-6">{t("Admin Dashboard", "प्रशासन डैशबोर्ड")}</h1>
 
       <Tabs defaultValue="bookings" className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-8">
-          <TabsTrigger value="bookings">Direct Bookings</TabsTrigger>
-          <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
-          <TabsTrigger value="camps">Manage Camps</TabsTrigger>
-          <TabsTrigger value="pujas">Manage Pujas</TabsTrigger>
+          <TabsTrigger value="bookings">{t("Direct Bookings", "सीधी बुकिंग")}</TabsTrigger>
+          <TabsTrigger value="inquiries">{t("Inquiries", "पूछताछ")}</TabsTrigger>
+          <TabsTrigger value="camps">{t("Manage Camps", "कैंप प्रबंधन")}</TabsTrigger>
+          <TabsTrigger value="pujas">{t("Manage Pujas", "पूजा प्रबंधन")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="bookings">
           <Card>
-            <CardHeader><CardTitle>Online Bookings ({onlineBookings.length})</CardTitle><CardDescription>Paid token bookings.</CardDescription></CardHeader>
+            <CardHeader><CardTitle>{t("Online Bookings", "ऑनलाइन बुकिंग")} ({onlineBookings.length})</CardTitle><CardDescription>{t("Paid token bookings.", "भुगतान की गई टोकन बुकिंग।")}</CardDescription></CardHeader>
             <CardContent><BookingTable data={onlineBookings} showRefundWarning={true} /></CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="inquiries">
           <Card>
-            <CardHeader><CardTitle>Callback Requests ({inquiryRequests.length})</CardTitle><CardDescription>Call to confirm.</CardDescription></CardHeader>
+            <CardHeader><CardTitle>{t("Callback Requests", "कॉलबैक अनुरोध")} ({inquiryRequests.length})</CardTitle><CardDescription>{t("Call to confirm.", "पुष्टि करने के लिए कॉल करें।")}</CardDescription></CardHeader>
             <CardContent><BookingTable data={inquiryRequests} showRefundWarning={false} /></CardContent>
           </Card>
         </TabsContent>
@@ -348,7 +349,7 @@ export default function AdminDashboard() {
         <TabsContent value="camps">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-                <div><CardTitle>Camps Inventory</CardTitle><CardDescription>Update prices and images.</CardDescription></div>
+                <div><CardTitle>{t("Camps Inventory", "कैंप इन्वेंटरी")}</CardTitle><CardDescription>Update prices and images.</CardDescription></div>
                 <Dialog open={isCampDialogOpen} onOpenChange={setIsCampDialogOpen}>
                     <DialogTrigger asChild><Button onClick={() => setEditingCamp(null)}><Plus className="w-4 h-4 mr-2" /> Add Camp</Button></DialogTrigger>
                     <DialogContent><DialogHeader><DialogTitle>{editingCamp ? "Edit Camp" : "Add New Camp"}</DialogTitle></DialogHeader><CampForm defaultValues={editingCamp} onSubmit={(data: any) => saveCampMutation.mutate(data)} /></DialogContent>
@@ -378,7 +379,7 @@ export default function AdminDashboard() {
         <TabsContent value="pujas">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-                <div><CardTitle>Puja Services</CardTitle><CardDescription>Update rituals and images.</CardDescription></div>
+                <div><CardTitle>{t("Puja Services", "पूजा सेवाएं")}</CardTitle><CardDescription>Update rituals and images.</CardDescription></div>
                 <Dialog open={isPujaDialogOpen} onOpenChange={setIsPujaDialogOpen}>
                     <DialogTrigger asChild><Button onClick={() => setEditingPuja(null)}><Plus className="w-4 h-4 mr-2" /> Add Service</Button></DialogTrigger>
                     <DialogContent><DialogHeader><DialogTitle>{editingPuja ? "Edit Service" : "Add New Service"}</DialogTitle></DialogHeader><PujaForm defaultValues={editingPuja} onSubmit={(data: any) => savePujaMutation.mutate(data)} /></DialogContent>
@@ -410,12 +411,12 @@ export default function AdminDashboard() {
       <AlertDialog open={!!rejectId} onOpenChange={() => setRejectId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 text-red-600"><AlertTriangle className="h-5 w-5" /> Cancel Booking?</AlertDialogTitle>
-            <AlertDialogDescription>Are you sure you want to reject/cancel this booking? <br/>The user will be notified about the refund.</AlertDialogDescription>
+            <AlertDialogTitle className="flex items-center gap-2 text-red-600"><AlertTriangle className="h-5 w-5" /> {t("Cancel Booking?", "बुकिंग रद्द करें?")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("Are you sure you want to reject/cancel this booking? The user will be notified.", "क्या आप वाकई इस बुकिंग को अस्वीकार/रद्द करना चाहते हैं? उपयोगकर्ता को सूचित किया जाएगा।")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Go Back</AlertDialogCancel>
-            <AlertDialogAction onClick={() => rejectId && rejectMutation.mutate(rejectId)} className="bg-red-600 hover:bg-red-700">Confirm Cancellation</AlertDialogAction>
+            <AlertDialogCancel>{t("Go Back", "वापस जाएं")}</AlertDialogCancel>
+            <AlertDialogAction onClick={() => rejectId && rejectMutation.mutate(rejectId)} className="bg-red-600 hover:bg-red-700">{t("Confirm Cancellation", "रद्दीकरण की पुष्टि करें")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

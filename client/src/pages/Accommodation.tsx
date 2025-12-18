@@ -1,18 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { Camp } from "@app/shared";
-import { Loader2 } from "lucide-react";
+import { Loader2, Tent } from "lucide-react";
 import { AccommodationCard } from "@/components/AccommodationCard";
-import { useLanguage } from "@/context/LanguageContext"; // <--- Import
+import { useLanguage } from "@/context/LanguageContext"; 
 
+// Fallback images
 const campImages = [
   "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7",
   "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d",
   "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4",
 ];
+
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function Accommodation() {
-  const { t } = useLanguage(); // <--- Hook
+  const { t } = useLanguage(); 
   
   const { data: camps, isLoading } = useQuery<Camp[]>({
     queryKey: ["/api/camps"],
@@ -32,25 +34,36 @@ export default function Accommodation() {
   }
 
   return (
-    <div className="container mx-auto pt-24 pb-12 px-4">
-      <h1 className="text-4xl font-bold text-center mb-4 font-serif text-primary">
-        {t("Comfort-First Pilgrimage", "लक्जरी आवास")}
-      </h1>
-      <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-        {t(
-          "Experience the divine atmosphere of Kumbh Mela with our premium camping options.",
-          "हमारे प्रीमियम कैंपिंग विकल्पों के साथ कुंभ मेले के दिव्य वातावरण का अनुभव करें।"
-        )}
-      </p>
+    <div className="min-h-screen pt-24 pb-12 bg-muted/10">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+            <h1 className="text-3xl md:text-5xl font-bold font-serif text-primary mb-4">
+            {t("Comfort-First Pilgrimage", "आरामदायक तीर्थयात्रा")}
+            </h1>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            {t(
+                "Experience the divine atmosphere of Kumbh Mela with our premium camping options. Clean, safe, and warm.",
+                "हमारे प्रीमियम कैंपिंग विकल्पों के साथ कुंभ मेले के दिव्य वातावरण का अनुभव करें। स्वच्छ, सुरक्षित और गर्म।"
+            )}
+            </p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {camps?.map((camp, index) => (
-          <AccommodationCard 
-            key={camp.id} 
-            camp={camp} 
-            imageUrl={camp.imageUrl || campImages[index % campImages.length]} 
-          />
-        ))}
+        {camps && camps.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {camps.map((camp, index) => (
+                <AccommodationCard 
+                key={camp.id} 
+                camp={camp} 
+                imageUrl={camp.imageUrl || campImages[index % campImages.length]} 
+                />
+            ))}
+            </div>
+        ) : (
+            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
+                <Tent className="h-16 w-16 mb-4 opacity-20" />
+                <p>{t("No camps available at the moment.", "फिलहाल कोई कैंप उपलब्ध नहीं है।")}</p>
+            </div>
+        )}
       </div>
     </div>
   );

@@ -28,7 +28,8 @@ export default function Bookings() {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-const API_BASE = import.meta.env.VITE_API_URL || "";
+  const API_BASE = import.meta.env.VITE_API_URL || "";
+  
   // State for cancelling
   const [bookingToCancel, setBookingToCancel] = useState<number | null>(null);
   const [showSupportDialog, setShowSupportDialog] = useState(false);
@@ -44,7 +45,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
     queryKey: ["/api/my-bookings"],
     queryFn: async () => {
         const res = await fetch(`${API_BASE}/api/my-bookings`, {
-        credentials: "include", // <--- THIS IS REQUIRED TO SEND COOKIES
+        credentials: "include",
       });
         if (!res.ok) throw new Error("Failed to fetch bookings");
         return res.json();
@@ -98,6 +99,14 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
     }
   };
 
+  const getStatusText = (status: string) => {
+     switch (status) {
+       case "confirmed": return t("Confirmed", "पुष्टि की गई");
+       case "cancelled": return t("Cancelled", "रद्द");
+       default: return t("Pending", "लंबित");
+     }
+  };
+
   return (
     <div className="container mx-auto pt-24 pb-12 px-4 min-h-screen">
       <h1 className="text-3xl font-bold font-serif text-primary mb-2">{t("My Bookings", "मेरी बुकिंग")}</h1>
@@ -139,7 +148,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
                            </Badge>
                            <Badge variant="outline" className={getStatusColor(booking.status || "pending")}>
                              {getStatusIcon(booking.status || "pending")}
-                             <span className="capitalize">{booking.status}</span>
+                             <span className="capitalize">{getStatusText(booking.status || "pending")}</span>
                            </Badge>
                         </div>
                       </div>
@@ -178,7 +187,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
                   {/* Action Section */}
                   <div className="w-full md:w-48 bg-muted/20 p-6 flex flex-col justify-center gap-3 border-t md:border-t-0 md:border-l border-border">
                     {isCancelled ? (
-                       <div className="text-center text-sm text-red-600 font-medium">{t("Booking Cancelled", "बुकिंग रद्द")}</div>
+                        <div className="text-center text-sm text-red-600 font-medium">{t("Booking Cancelled", "बुकिंग रद्द")}</div>
                     ) : isConfirmed ? (
                         <>
                           <Button variant="outline" size="sm" className="w-full border-primary text-primary">
@@ -269,7 +278,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "";
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="p-4 bg-muted rounded-md flex items-center justify-between">
-             <div className="text-sm font-medium">Support: +91 76675 86151</div>
+             <div className="text-sm font-medium">Support: +91 99363 99677</div>
              <a href="tel:+919936399677">
                <Button size="sm" variant="outline"><Phone className="w-4 h-4 mr-2" /> Call Now</Button>
              </a>

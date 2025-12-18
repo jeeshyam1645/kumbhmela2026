@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Loader2, ChevronLeft, ChevronRight, Star, ShieldCheck, HeartHandshake } from "lucide-react";
+import { ArrowRight, Loader2, ChevronLeft, ChevronRight, Star, ShieldCheck, HeartHandshake, MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TrustIndicators } from "@/components/TrustIndicators"; // Keep this if it's a small bar
 import { AccommodationCard } from "@/components/AccommodationCard";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { bathingDates, Camp, PujaService } from "@app/shared"; 
 
-// HERO CAROUSEL IMAGES (High Quality Kumbh/Tent vibes)
+// --- CONFIGURATION ---
+const WA_NUMBER = "919936399677"; // Your number with Country Code
+const WA_MESSAGE = "Namaste, I am interested in Magh Mela 2026 accommodation. Please share rates and details."; // Pre-filled message
+const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
+
+// HERO CAROUSEL IMAGES
 const heroImages = [
   {
     url: "https://images.unsplash.com/photo-1564053489984-317bbd824340?q=80&w=2070&auto=format&fit=crop",
@@ -19,14 +23,14 @@ const heroImages = [
     subtitleHi: "माघ मेला 2026 के लिए सुरक्षित, गर्म और आरामदायक स्विस टेंट"
   },
   {
-    url: "https://images.unsplash.com/photo-1598439210625-5067c578f3f6?q=80&w=2072&auto=format&fit=crop", // Ganges Aarti vibe
+    url: "https://images.unsplash.com/photo-1598439210625-5067c578f3f6?q=80&w=2072&auto=format&fit=crop",
     titleEn: "Your Home in the Holy City",
     titleHi: "पवित्र शहर में आपका घर",
     subtitleEn: "Just 500m from the Holy Bathing Ghats",
     subtitleHi: "पवित्र स्नान घाटों से मात्र 500 मीटर की दूरी पर"
   },
   {
-    url: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?q=80&w=2070&auto=format&fit=crop", // Camping/Tent vibe
+    url: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?q=80&w=2070&auto=format&fit=crop",
     titleEn: "Warmth in Winter",
     titleHi: "सर्दियों में गर्माहट",
     subtitleEn: "Premium Woolen Bedding & 24/7 Assistance",
@@ -34,7 +38,7 @@ const heroImages = [
   }
 ];
 
-// FALLBACK IMAGES FOR CARDS
+// FALLBACK IMAGES
 const campImages = [
   "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?q=80&w=2074&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop",
@@ -50,14 +54,14 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 5000); // Change slide every 5 seconds
+    }, 5000); 
     return () => clearInterval(timer);
   }, []);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroImages.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
 
-  // 1. FETCH CAMPS
+  // FETCH DATA
   const { data: camps, isLoading: isLoadingCamps } = useQuery<Camp[]>({
     queryKey: ["/api/camps"],
     queryFn: async () => {
@@ -67,7 +71,6 @@ export default function Home() {
     },
   });
 
-  // 2. FETCH PUJAS
   const { data: pujas, isLoading: isLoadingPujas } = useQuery<PujaService[]>({
     queryKey: ["/api/puja-services"],
     queryFn: async () => {
@@ -91,15 +94,12 @@ export default function Home() {
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           >
-            {/* Image */}
             <div 
               className="absolute inset-0 bg-cover bg-center transform transition-transform duration-[10000ms] hover:scale-105"
               style={{ backgroundImage: `url(${slide.url})` }}
             />
-            {/* Dark Overlay for Text Readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
             
-            {/* Text Content */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
               <div className={`transform transition-all duration-1000 delay-300 ${index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
                 <span className="inline-block py-1 px-3 rounded-full bg-orange-500/20 border border-orange-400 text-orange-200 text-sm font-semibold mb-4 backdrop-blur-sm">
@@ -112,16 +112,21 @@ export default function Home() {
                   {t(slide.subtitleEn, slide.subtitleHi)}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link href="/accommodation">
-                    <Button size="lg" className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg shadow-orange-900/20 transition-all hover:scale-105">
-                      {t("Book Your Stay", "अपना प्रवास बुक करें")}
+                  {/* WHATSAPP CTA - PRIMARY */}
+                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+                    <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-all hover:scale-105">
+                      <MessageCircle className="w-5 h-5 mr-2" />
+                      {t("Get Rates on WhatsApp", "व्हाट्सएप पर रेट जानें")}
                     </Button>
-                  </Link>
-                  <Link href="/contact">
+                  </a>
+                  
+                  {/* PHONE CALL - SECONDARY */}
+                  <a href={`tel:${WA_NUMBER}`}>
                      <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/50 font-semibold text-lg px-8 py-6 rounded-full backdrop-blur-sm">
-                        {t("Talk to Us", "हमसे बात करें")}
+                        <Phone className="w-5 h-5 mr-2" />
+                        {t("Call Us", "हमें कॉल करें")}
                      </Button>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -150,7 +155,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- TRUST INDICATORS (Warm & Clean) --- */}
+      {/* --- TRUST INDICATORS --- */}
       <section className="bg-[#FFFBF0] border-b border-orange-100">
          <div className="max-w-7xl mx-auto px-4 py-8 md:py-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -179,7 +184,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* --- ACCOMMODATION SECTION (Cream/Earthy Background) --- */}
+      {/* --- ACCOMMODATION SECTION --- */}
       <section className="py-20 bg-gradient-to-b from-[#FFFBF0] to-white" data-testid="section-accommodation-preview">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-12">
@@ -191,7 +196,7 @@ export default function Home() {
                 {t("Our Accommodation", "हमारा आवास")}
               </h2>
               <p className="text-gray-600 max-w-xl text-lg">
-                {t("Choose from our range of comfortable stays designed for the winter.", "सर्दियों के लिए डिज़ाइन किए गए हमारे आरामदायक प्रवास विकल्पों में से चुनें।")}
+                {t("Choose from our range of comfortable stays. Contact us for the best rates.", "हमारे आरामदायक प्रवास विकल्पों में से चुनें। सर्वोत्तम दरों के लिए हमसे संपर्क करें।")}
               </p>
             </div>
             <Link href="/accommodation">
@@ -220,9 +225,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- PUJA SERVICES SECTION (Warm Saffron Tint) --- */}
+      {/* --- PUJA SERVICES SECTION --- */}
       <section className="py-20 bg-orange-50/60 relative overflow-hidden">
-        {/* Background Decorative Pattern (Optional) */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-orange-200/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-orange-200/20 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
@@ -236,8 +240,8 @@ export default function Home() {
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
               {t(
-                "We facilitate connections with learned Purohits for your rituals. All Samagri arrangements are handled with devotion.", 
-                "हम आपके अनुष्ठानों के लिए विद्वान पुरोहितों के साथ संपर्क की सुविधा प्रदान करते हैं। सभी सामग्री की व्यवस्था भक्तिभाव से की जाती है।"
+                "We facilitate connections with learned Purohits. Samagri arrangements are handled with devotion.", 
+                "हम विद्वान पुरोहितों के साथ संपर्क की सुविधा प्रदान करते हैं। सामग्री की व्यवस्था भक्तिभाव से की जाती है।"
               )}
             </p>
           </div>
@@ -265,7 +269,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- BATHING DATES SECTION (Cool River Blue Tint) --- */}
+      {/* --- BATHING DATES SECTION --- */}
       <section className="py-20 bg-sky-50/50 border-t border-sky-100">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center mb-14">
@@ -317,7 +321,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- CALL TO ACTION (Strong Gradient) --- */}
+      {/* --- CALL TO ACTION (WhatsApp Focused) --- */}
       <section className="py-24 bg-gradient-to-r from-orange-600 to-red-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center relative z-10">
@@ -325,14 +329,22 @@ export default function Home() {
             {t("Ready to Book Your Spiritual Stay?", "अपना आध्यात्मिक प्रवास बुक करने के लिए तैयार हैं?")}
           </h2>
           <p className="text-orange-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-            {t("Contact us now to secure your accommodation at Magh Mela 2026. Our team will call you within 2 hours.", "माघ मेला 2026 में अपना आवास सुरक्षित करने के लिए अभी हमसे संपर्क करें। हमारी टीम 2 घंटे के भीतर आपको कॉल करेगी।")}
+            {t("We have limited availability for the main bathing dates. Chat with us now to get the best quote.", "मुख्य स्नान तिथियों के लिए हमारे पास सीमित उपलब्धता है। सर्वोत्तम उद्धरण प्राप्त करने के लिए अभी हमारे साथ चैट करें।")}
           </p>
-          <Link href="/contact">
-            <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100 font-bold text-xl px-10 py-8 rounded-full shadow-2xl transition-transform hover:scale-105">
-              {t("Check Availability Now", "अभी उपलब्धता जांचें")}
-              <ArrowRight className="ml-2 w-6 h-6" />
-            </Button>
-          </Link>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+             <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-xl px-10 py-8 rounded-full shadow-2xl transition-transform hover:scale-105">
+                <MessageCircle className="w-6 h-6 mr-3" />
+                {t("Chat on WhatsApp", "व्हाट्सएप पर चैट करें")}
+              </Button>
+            </a>
+          </div>
+          
+          <p className="mt-6 text-white/80 text-sm font-medium">
+             Or Call us at: <a href={`tel:${WA_NUMBER}`} className="underline hover:text-white">+91 99363 99677</a>
+          </p>
+
         </div>
       </section>
     </div>
