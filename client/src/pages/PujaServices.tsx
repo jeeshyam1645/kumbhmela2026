@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
 import { useLanguage } from "@/context/LanguageContext";
-import { PujaService } from "@app/shared"; // Import TYPE, not the variable
+import { PujaService } from "@app/shared"; 
 import { Loader2 } from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
@@ -23,12 +23,12 @@ export default function PujaServices() {
       <div className="py-12 md:py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-            {t("Divine Rituals & Vedic Services", "दैवीय पूजा और वैदिक अनुष्ठान")}
+            {t("Purohit Arrangements & Vedic Rituals", "पुरोहित व्यवस्था और वैदिक अनुष्ठान")}
           </h1>
           <p className="text-muted-foreground max-w-2xl">
             {t(
-              "Experience authentic Vedic rituals performed by learned priests at the sacred Sangam. Rates depend on Samagri and Dakshina. Contact us for customization.",
-              "पवित्र संगम पर विद्वान पुजारियों द्वारा किए गए प्रामाणिक वैदिक अनुष्ठानों का अनुभव करें। दरें सामग्री और दक्षिणा पर निर्भर करती हैं। अनुकूलन के लिए हमसे संपर्क करें।"
+              "We assist in arranging experienced Brahmins for your Sankalp and Rituals at the sacred Sangam. We handle the Samagri logistics so you can focus purely on devotion.",
+              "हम पवित्र संगम पर आपके संकल्प और अनुष्ठानों के लिए अनुभवी ब्राह्मणों की व्यवस्था करने में सहायता करते हैं। हम सामग्री रसद संभालते हैं ताकि आप पूरी तरह से भक्ति पर ध्यान केंद्रित कर सकें।"
             )}
           </p>
         </div>
@@ -58,25 +58,25 @@ export default function PujaServices() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
-              {t("About Our Puja Services", "हमारी पूजा सेवाओं के बारे में")}
+              {t("How We Assist Your Spiritual Journey", "हम आपकी आध्यात्मिक यात्रा में कैसे सहायता करते हैं")}
             </h2>
             <div className="space-y-4 text-muted-foreground text-left">
               <p>
                 {t(
-                  "At Magh Mela, we facilitate authentic Vedic rituals performed by experienced and learned Brahmin priests who have deep knowledge of the scriptures and traditions. Our services are designed to help devotees connect with the divine at this sacred confluence of rivers.",
-                  "माघ मेला में, हम अनुभवी और विद्वान ब्राह्मण पुजारियों द्वारा किए गए प्रामाणिक वैदिक अनुष्ठानों की सुविधा प्रदान करते हैं जिनके पास शास्त्रों और परंपराओं का गहन ज्ञान है। हमारी सेवाएं भक्तों को नदियों के इस पवित्र संगम पर परमात्मा से जुड़ने में मदद करने के लिए डिज़ाइन की गई हैं।"
+                  "Finding the right priest during the busy Magh Mela can be challenging. We bridge this gap by connecting you with trusted, learned Purohits who perform rituals with strict adherence to Vedic traditions.",
+                  "व्यस्त माघ मेला के दौरान सही पुजारी को खोजना चुनौतीपूर्ण हो सकता है। हम आपको विश्वसनीय, विद्वान पुरोहितों के साथ जोड़कर इस अंतर को पाटते हैं जो वैदिक परंपराओं का कड़ाई से पालन करते हुए अनुष्ठान करते हैं।"
                 )}
               </p>
               <p>
                 {t(
-                  "Each puja is customized according to your specific requirements and intentions. The rates vary based on the samagri (materials) used and the dakshina (honorarium) for the priests. We recommend discussing your needs with our team for an accurate quote.",
-                  "प्रत्येक पूजा आपकी विशिष्ट आवश्यकताओं और इरादों के अनुसार अनुकूलित है। दरें उपयोग की जाने वाली सामग्री और पुजारियों के लिए दक्षिणा (मानदेय) के आधार पर भिन्न होती हैं। हम सटीक उद्धरण के लिए हमारी टीम के साथ अपनी आवश्यकताओं पर चर्चा करने की सलाह देते हैं।"
+                  "Transparency is our core value. While we charge a nominal fee for arranging the Samagri (materials) and logistics, the Dakshina (honorarium) is a voluntary offering between you and the Priest.",
+                  "पारदर्शिता हमारा मूल मूल्य है। जबकि हम सामग्री और रसद की व्यवस्था के लिए नाममात्र शुल्क लेते हैं, दक्षिणा (मानदेय) आपके और पुजारी के बीच एक स्वैच्छिक पेशकश है।"
                 )}
               </p>
               <p>
                 {t(
-                  "All our rituals are performed with proper vidhi-vidhan (prescribed procedures) as mentioned in the scriptures. We provide all necessary arrangements including the sacred space, materials, and expert guidance throughout the ceremony.",
-                  "हमारे सभी अनुष्ठान शास्त्रों में उल्लिखित उचित विधि-विधान के साथ किए जाते हैं। हम पूरे समारोह में पवित्र स्थान, सामग्री और विशेषज्ञ मार्गदर्शन सहित सभी आवश्यक व्यवस्थाएं प्रदान करते हैं।"
+                  "From arranging the sacred space to guiding you through the Vidhi, our on-ground team ensures your ritual is conducted peacefully amidst the Mela crowd.",
+                  "पवित्र स्थान की व्यवस्था करने से लेकर विधि के माध्यम से आपका मार्गदर्शन करने तक, हमारी ऑन-ग्राउंड टीम यह सुनिश्चित करती है कि मेला भीड़ के बीच आपका अनुष्ठान शांतिपूर्वक आयोजित किया जाए।"
                 )}
               </p>
             </div>

@@ -7,7 +7,7 @@ import { AccommodationCard } from "@/components/AccommodationCard";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
-import { bathingDates, Camp, PujaService } from "@app/shared"; // Import Types only
+import { bathingDates, Camp, PujaService } from "@app/shared"; 
 
 // Fallback images if admin hasn't uploaded one yet
 const campImages = [
@@ -86,15 +86,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PUJA SERVICES SECTION */}
+      {/* PUJA SERVICES SECTION - UPDATED FOR TRUST */}
       <section className="py-16 md:py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-              {t("Divine Rituals & Vedic Services", "दैवीय पूजा और वैदिक अनुष्ठान")}
+              {t("Spiritual Assistance & Vedic Rituals", "आध्यात्मिक सहायता और वैदिक अनुष्ठान")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t("Rates depend on Samagri and Dakshina. Contact us for customization.", "दरें सामग्री और दक्षिणा पर निर्भर करती हैं। अनुकूलन के लिए हमसे संपर्क करें।")}
+              {t(
+                "We facilitate connections with learned Purohits for your rituals. All Samagri arrangements are handled with devotion.", 
+                "हम आपके अनुष्ठानों के लिए विद्वान पुरोहितों के साथ संपर्क की सुविधा प्रदान करते हैं। सभी सामग्री की व्यवस्था भक्तिभाव से की जाती है।"
+              )}
             </p>
           </div>
           
@@ -113,7 +116,7 @@ export default function Home() {
           <div className="text-center mt-8">
             <Link href="/puja-services">
               <Button variant="outline">
-                {t("View All Services", "सभी सेवाएं देखें")}
+                {t("View Ritual Arrangements", "अनुष्ठान व्यवस्था देखें")}
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
