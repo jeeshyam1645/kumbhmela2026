@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
 
 // ✅ Hardcoded Backend URL to ensure cross-domain redirects work
-const BACKEND_URL = "https://magh-mela-backend.onrender.com";
+const BACKEND_URL = "https://api.maghmelastays.in";
 
 export function AuthModal({ trigger }: { trigger?: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);

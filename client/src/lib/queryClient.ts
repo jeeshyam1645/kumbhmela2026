@@ -1,7 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 // 1. HARDCODE THIS URL TEMPORARILY TO BE 100% SURE
-const BASE_URL = "https://magh-mela-backend.onrender.com";
+const BASE_URL = "https://api.maghmelastays.in";
 
 /* -------------------- helpers -------------------- */
 async function throwIfResNotOk(res: Response) {
