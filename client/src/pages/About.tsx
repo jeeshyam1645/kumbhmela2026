@@ -1,5 +1,5 @@
 import { useLanguage } from "@/context/LanguageContext";
-import { Shield, Heart, Users, Coffee, ThermometerSun, MapPin } from "lucide-react";
+import { Shield, Users, Coffee, BedDouble } from "lucide-react"; // Changed ThermometerSun to BedDouble for better context
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
@@ -13,14 +13,14 @@ export default function About() {
       desc: t("We are Prayagraj locals. We know the Mela grounds better than Google Maps.", "हम प्रयागराज के स्थानीय निवासी हैं। हम मेला मैदान को गूगल मैप्स से बेहतर जानते हैं।")
     },
     {
-      icon: <ThermometerSun className="h-6 w-6 text-primary" />,
-      title: t("Warmth in Winter", "सर्दियों में गर्माहट"),
-      desc: t("Our priority is your health. Hot water and warm bedding are standard, not luxuries.", "हमारी प्राथमिकता आपका स्वास्थ्य है। गर्म पानी और गर्म बिस्तर मानक हैं, विलासिता नहीं।")
+      icon: <BedDouble className="h-6 w-6 text-primary" />, // Changed Icon
+      title: t("Cozy Winter Bedding", "आरामदायक बिस्तर"), // Changed Title
+      desc: t("We provide heavy-duty mattresses and premium wool blankets (Rajai) to keep you warm in the January cold.", "हम जनवरी की ठंड में आपको गर्म रखने के लिए भारी गद्दे और प्रीमियम ऊनी कंबल (रजाई) प्रदान करते हैं।") // Changed Desc
     },
     {
       icon: <Shield className="h-6 w-6 text-primary" />,
-      title: t("Safe & Secure", "सुरक्षित और संरक्षित"),
-      desc: t("24/7 guarded camp with CCTV and dedicated female staff for safety.", "CCTV और सुरक्षा के लिए समर्पित महिला कर्मचारियों के साथ 24/7 सुरक्षित शिविर।")
+      title: t("24/7 Guarded Camp", "24/7 सुरक्षित शिविर"), // Changed Title
+      desc: t("Gated compound with round-the-clock security guards and helpful staff present on-ground.", "चौबीसों घंटे सुरक्षा गार्ड और ऑन-ग्राउंड मौजूद सहायक कर्मचारियों के साथ गेटेड कंपाउंड।") // Changed Desc
     },
     {
       icon: <Coffee className="h-6 w-6 text-primary" />,
@@ -56,14 +56,14 @@ export default function About() {
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
               <p>
                 {t(
-                  "MaghMelaStays was born out of a simple observation: Pilgrims often struggle to find clean, safe, and warm accommodation near the Sangam. Many are promised 'luxury' but end up in cold tents with poor hygiene.",
-                  "माघ मेला स्टेज़ का जन्म एक साधारण अवलोकन से हुआ था: तीर्थयात्रियों को अक्सर संगम के पास स्वच्छ, सुरक्षित और गर्म आवास खोजने के लिए संघर्ष करना पड़ता है। कई लोगों को 'लक्जरी' का वादा किया जाता है लेकिन वे खराब स्वच्छता के साथ ठंडे तंबू में रहते हैं।"
+                  "MaghMelaStays was born out of a simple observation: Pilgrims often struggle to find clean and safe accommodation near the Sangam. Many are promised 'luxury' but end up in uncomfortable conditions.",
+                  "माघ मेला स्टेज़ का जन्म एक साधारण अवलोकन से हुआ था: तीर्थयात्रियों को अक्सर संगम के पास स्वच्छ और सुरक्षित आवास खोजने के लिए संघर्ष करना पड़ता है। कई लोगों को 'लक्जरी' का वादा किया जाता है लेकिन वे असुविधाजनक परिस्थितियों में समाप्त होते हैं।"
                 )}
               </p>
               <p>
                 {t(
-                  "We decided to change that. Founded by a group of Prayagraj residents, our goal is simple: To ensure that after your holy dip in the freezing Ganges, you have a warm home to return to.",
-                  "हमने इसे बदलने का फैसला किया। प्रयागराज के निवासियों के एक समूह द्वारा स्थापित, हमारा लक्ष्य सरल है: यह सुनिश्चित करना कि ठंड में पवित्र डुबकी लगाने के बाद, आपके पास लौटने के लिए एक गर्म घर हो।"
+                  "We decided to change that. Founded by a group of Prayagraj residents, our goal is simple: To ensure that after your holy dip in the Ganges, you have a safe and warm place to rest.",
+                  "हमने इसे बदलने का फैसला किया। प्रयागराज के निवासियों के एक समूह द्वारा स्थापित, हमारा लक्ष्य सरल है: यह सुनिश्चित करना कि गंगा में पवित्र डुबकी लगाने के बाद, आपके पास आराम करने के लिए एक सुरक्षित और गर्म जगह हो।"
                 )}
               </p>
             </div>
