@@ -97,7 +97,7 @@ export function Footer() {
                     className="text-background/70 hover:text-primary transition-colors text-sm"
                     data-testid="footer-phone"
                   >
-                    +91 70617 62868
+                    +91 99363 99677
                   </a>
                   <span className="block text-xs text-background/50">
                     {t("WhatsApp Available", "व्हाट्सएप उपलब्ध")}

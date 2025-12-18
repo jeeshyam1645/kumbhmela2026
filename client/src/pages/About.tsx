@@ -71,7 +71,7 @@ export default function About() {
           <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl bg-muted">
             {/* Placeholder for a team photo or camp photo */}
             <img 
-              src="https://images.unsplash.com/photo-1524443169398-9aa1ce60d7e1?q=80&w=2071&auto=format&fit=crop" 
+              src="https://res.cloudinary.com/dh7bx2qib/image/upload/v1766054218/Khumba-Mela_bfmcau.webp" 
               alt="Pilgrims at Ghat" 
               className="object-cover w-full h-full"
             />

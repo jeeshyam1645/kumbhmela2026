@@ -144,7 +144,7 @@ export default function Terms() {
             )}
           </p>
           <ul>
-            <li>{t("Phone:", "फोन:")} +91 70617 62868</li>
+            <li>{t("Phone:", "फोन:")} +91 99363 99677</li>
             <li>{t("Email:", "ईमेल:")} maghmelastays@gmail.com</li>
           </ul>
         </div>

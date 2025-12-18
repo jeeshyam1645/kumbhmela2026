@@ -61,7 +61,7 @@ export default function Contact() {
                     <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                     <div>
                       <p className="font-medium text-foreground">
-                        +91 70617 62868
+                        +91 99363 99677
                       </p>
                       <p className="text-sm text-muted-foreground">
                         {t("WhatsApp Available", "व्हाट्सएप उपलब्ध")}
