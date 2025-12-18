@@ -16,21 +16,21 @@ const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE
 // HERO CAROUSEL IMAGES
 const heroImages = [
   {
-    url: "https://images.unsplash.com/photo-1564053489984-317bbd824340?q=80&w=2070&auto=format&fit=crop",
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/knocksense_2025-01-13_jcozh2xg_manoj-chhabra-81_bi4x8l.avif",
     titleEn: "Experience Divinity at Sangam",
     titleHi: "संगम पर दिव्यता का अनुभव करें",
     subtitleEn: "Secure, Warm & Comfortable Swiss Tents for Magh Mela 2026",
     subtitleHi: "माघ मेला 2026 के लिए सुरक्षित, गर्म और आरामदायक स्विस टेंट"
   },
   {
-    url: "https://images.unsplash.com/photo-1598439210625-5067c578f3f6?q=80&w=2072&auto=format&fit=crop",
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055847/kumbh-mela-2025-tent-cities-1-2025-01-8be5d2fc3d38ece31a0c8da633e88743-scaled_ilkdkf.avif",
     titleEn: "Your Home in the Holy City",
     titleHi: "पवित्र शहर में आपका घर",
-    subtitleEn: "Just 500m from the Holy Bathing Ghats",
-    subtitleHi: "पवित्र स्नान घाटों से मात्र 500 मीटर की दूरी पर"
+    subtitleEn: "Starting from Just 500m from the Holy Bathing Ghats",
+    subtitleHi: "पवित्र स्नान घाटों से सिर्फ 500 मीटर की दूरी से शुरू"
   },
   {
-    url: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?q=80&w=2070&auto=format&fit=crop",
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/Mahakumbh-tent-new_yhusf3.avif",
     titleEn: "Warmth in Winter",
     titleHi: "सर्दियों में गर्माहट",
     subtitleEn: "Premium Woolen Bedding & 24/7 Assistance",

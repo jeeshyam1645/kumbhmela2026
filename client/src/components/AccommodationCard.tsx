@@ -47,11 +47,11 @@ export function AccommodationCard({ camp, imageUrl }: AccommodationCardProps) {
             </Badge>
           </div>
           {/* Price Badge (Subtle Overlay) */}
-          <div className="absolute bottom-3 right-3">
+          {/* <div className="absolute bottom-3 right-3">
              <div className="bg-black/60 text-white px-3 py-1 rounded-full backdrop-blur-md text-xs font-medium border border-white/20">
                 {t("Starts @", "शुरुआत @")} ₹{camp.price}
              </div>
-          </div>
+          </div> */}
         </div>
 
         {/* --- CONTENT SECTION --- */}
