@@ -57,7 +57,7 @@ export function AuthModal({ trigger }: { trigger?: React.ReactNode }) {
           </Button>
 
           {/* ✅ Facebook Login - FIXED */}
-          <Button 
+          {/* <Button 
             variant="outline" 
             className="w-full flex gap-2 relative h-11" 
             onClick={() => window.location.href = `${BACKEND_URL}/api/auth/facebook`}
@@ -66,7 +66,7 @@ export function AuthModal({ trigger }: { trigger?: React.ReactNode }) {
                 <path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036c-2.148 0-2.797 1.66-2.797 3.592v1.472h4.908l-.499 3.667h-4.409v7.98h-4.991Z" />
              </svg>
             Continue with Facebook
-          </Button>
+          </Button> */}
         </div>
 
         <div className="relative mb-4">
