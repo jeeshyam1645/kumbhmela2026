@@ -301,7 +301,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {isLoading ? (
               <div className="col-span-3 flex justify-center py-20">
                 <Loader2 className="h-10 w-10 animate-spin text-orange-500" />
@@ -312,8 +312,12 @@ export default function Home() {
                   key={camp.id}
                   camp={camp}
                   imageUrl={camp.imageUrl || campImages[index % campImages.length]}
-                  // PASS EXTRA MEDIA HERE
-                  gallery={campMediaData[camp.id] || []} 
+                  
+                  // --- CHANGE IS HERE ---
+                  // Use (index + 1) to force match the keys 1, 2, 3 in your campMediaData object
+                  // regardless of what the actual database ID is.
+                  gallery={campMediaData[index + 1] || []} 
+                  // ---------------------
                 />
               ))
             )}
