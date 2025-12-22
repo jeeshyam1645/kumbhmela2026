@@ -79,6 +79,21 @@ const campImages = [
   "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1520277739336-7bf67edfa768?q=80&w=2069&auto=format&fit=crop",
 ];
+
+const campMediaData: Record<number, string[]> = {
+  1: [ // Deluxe Tent (ID 1)
+    "https://img1.exportersindia.com/product_images/bc-full/2020/10/1791501/swiss-cottage-tents-1604062326-5622067.jpeg", // Extra Image 1
+    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766419870/WhatsApp_Video_2025-12-22_at_8.21.56_PM_mdcgd5.mp4", // Video
+    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766420195/whatsapp-video-2025-12-22-at-82302-pm_1IbTToLs_1_e4cduu.mp4"
+  ],
+  2: [ // Dormitory (ID 2)
+    "https://res.cloudinary.com/dh7bx2qib/image/upload/v1765948645/shared_image_2_b3je3d.jpg"
+  ],
+  3: [ // Swiss Cottage (ID 3)
+    "https://img1.exportersindia.com/product_images/bc-full/2020/10/1791501/swiss-cottage-tents-1604062326-5622067.jpeg",
+    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766420195/whatsapp-video-2025-12-22-at-82302-pm_1IbTToLs_1_e4cduu.mp4" // Video
+  ]
+};
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function Home() {
@@ -264,7 +279,7 @@ export default function Home() {
       </section>
 
       {/* --- ACCOMMODATION SECTION --- */}
-      <section className="py-20 bg-gradient-to-b from-[#FFFBF0] to-white" data-testid="section-accommodation-preview">
+<section className="py-20 bg-gradient-to-b from-[#FFFBF0] to-white" data-testid="section-accommodation-preview">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-12">
             <div>
@@ -297,6 +312,8 @@ export default function Home() {
                   key={camp.id}
                   camp={camp}
                   imageUrl={camp.imageUrl || campImages[index % campImages.length]}
+                  // PASS EXTRA MEDIA HERE
+                  gallery={campMediaData[camp.id] || []} 
                 />
               ))
             )}
