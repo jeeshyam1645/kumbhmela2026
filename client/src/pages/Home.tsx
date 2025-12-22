@@ -301,21 +301,34 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {isLoading ? (
               <div className="col-span-3 flex justify-center py-20">
                 <Loader2 className="h-10 w-10 animate-spin text-orange-500" />
               </div>
             ) : (
-              camps?.slice(0, 3).map((camp, index) => (
-                <AccommodationCard
-                  key={camp.id}
-                  camp={camp}
-                  imageUrl={campImages[index % campImages.length]}
-                  // PASS EXTRA MEDIA HERE
-                  gallery={campMediaData[index + 1] || []}
-                />
-              ))
+              camps?.slice(0, 3).map((camp, index) => {
+                
+                // 1. Get the specific media list for this card (1, 2, or 3)
+                // We use (index + 1) to map Array Index 0 -> ID 1, etc.
+                const fullMediaList = campMediaData[index + 1] || [];
+
+                // 2. Extract the first image for the 'imageUrl' prop
+                const mainImage = fullMediaList[0] || ""; 
+
+                // 3. Extract the rest for the 'gallery' prop
+                const extraImages = fullMediaList.slice(1);
+
+                return (
+                  <AccommodationCard
+                    key={camp.id}
+                    camp={camp}
+                    // This forces the card to ONLY use your hardcoded media
+                    imageUrl={mainImage} 
+                    gallery={extraImages} 
+                  />
+                );
+              })
             )}
           </div>
         </div>
