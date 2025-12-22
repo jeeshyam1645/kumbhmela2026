@@ -418,7 +418,7 @@ export default function Home() {
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-yellow-500/20 shadow-2xl bg-indigo-900/50">
                  {/* Tip: Replace this URL with a real photo of Acharya Ji for maximum trust */}
                  <img 
-                   src="https://images.unsplash.com/photo-1605218427368-2c262a6df7a0?q=80&w=1956&auto=format&fit=crop" 
+                   src="https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg" 
                    alt="Acharya Rajendra Mishra" 
                    className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
                  />

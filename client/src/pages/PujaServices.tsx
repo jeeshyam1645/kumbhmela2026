@@ -50,7 +50,7 @@ export default function PujaServices() {
             <div className="w-full md:w-1/3 flex justify-center md:justify-start">
                <div className="relative aspect-[3/4] w-64 md:w-full max-w-sm rounded-xl overflow-hidden border-4 border-yellow-500/30 shadow-2xl">
                  <img 
-                   src="https://images.unsplash.com/photo-1605218427368-2c262a6df7a0?q=80&w=1956&auto=format&fit=crop" 
+                   src="https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg" 
                    alt="Acharya Rajendra Mishra" 
                    className="w-full h-full object-cover"
                  />
