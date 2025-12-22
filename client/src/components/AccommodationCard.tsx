@@ -55,7 +55,6 @@ export function AccommodationCard({ camp, imageUrl, gallery = [] }: Accommodatio
     <>
       <Card className="overflow-hidden group border-orange-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full" data-testid={`card-camp-${camp.id}`}>
         
-// Inside AccommodationCard.tsx return statement
 
 {/* --- CAROUSEL SECTION --- */}
 {/* Added 'relative' and 'h-64' (or keep aspect ratio) to ensure arrows stay in place */}
