@@ -91,7 +91,7 @@ const campMediaData: Record<number, string[]> = {
   ],
   3: [ // Swiss Cottage (ID 3)
     "https://img1.exportersindia.com/product_images/bc-full/2020/10/1791501/swiss-cottage-tents-1604062326-5622067.jpeg",
-    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766420195/whatsapp-video-2025-12-22-at-82302-pm_1IbTToLs_1_e4cduu.mp4" // Video
+    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766424600/f6ce-6f5d-4077-a2f5-2858495dec39_o4lrrk.mp4" // Video
   ]
 };
 const API_BASE = import.meta.env.VITE_API_URL || "";
