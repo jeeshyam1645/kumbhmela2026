@@ -311,9 +311,9 @@ export default function Home() {
                 <AccommodationCard
                   key={camp.id}
                   camp={camp}
-                  imageUrl={camp.imageUrl || campImages[index % campImages.length]}
+                  imageUrl={campImages[index % campImages.length]}
                   // PASS EXTRA MEDIA HERE
-                  gallery={campMediaData[camp.id] || []} 
+                  gallery={campMediaData[index + 1] || []}
                 />
               ))
             )}
