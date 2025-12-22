@@ -43,6 +43,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // PUBLIC ROUTES
   // ---------------------------------------------------------
 
+  app.get("/ping", (req, res) => {
+  res.send("Pong");
+});
+
   app.get("/api/camps", async (req, res) => {
     try {
       const allCamps = await db.select().from(camps);
