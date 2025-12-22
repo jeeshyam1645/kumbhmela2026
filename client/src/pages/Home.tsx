@@ -50,7 +50,7 @@ const heroImages = [
   },
   {
     // HIGHLIGHT 2: POLICE/ADMIN PUJA
-    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766416628/WhatsApp_Image_2025-12-18_at_11.21.26_PM_l1lk7c.jpg", 
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766427144/WhatsApp_Image_2025-12-22_at_11.30.40_PM_pztjau.jpg", 
     titleEn: "Praying for Everyone's Safety",
     titleHi: "सर्वजन हिताय: सुरक्षा और शांति की प्रार्थना",
     subtitleEn: "Seeking divine blessings for a safe Mela alongside the Administration & Police force",
