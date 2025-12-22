@@ -42,7 +42,7 @@ const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE
 const heroImages = [
   {
     // HIGHLIGHT 1: BHUMI PUJAN
-    url: "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766416619/WhatsApp_Video_2025-12-20_at_12.42.42_PM_g3m1n4.mp4", 
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766417368/WhatsApp_Image_2025-12-20_at_12.41.46_PM_xyhvwm.jpg", 
     titleEn: "Magh Mela 2025: The Sacred Beginning",
     titleHi: "माघ मेला 2025: पवित्र शुभारंभ",
     subtitleEn: "Continuing our family's tradition of performing the Bhumi Pujan for the Mela grounds",
@@ -50,7 +50,7 @@ const heroImages = [
   },
   {
     // HIGHLIGHT 2: POLICE/ADMIN PUJA
-    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766416361/WhatsApp_Image_2025-12-18_at_11.21.23_PM_l48jen.jpg", 
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766416628/WhatsApp_Image_2025-12-18_at_11.21.26_PM_l1lk7c.jpg", 
     titleEn: "Praying for Everyone's Safety",
     titleHi: "सर्वजन हिताय: सुरक्षा और शांति की प्रार्थना",
     subtitleEn: "Seeking divine blessings for a safe Mela alongside the Administration & Police force",
