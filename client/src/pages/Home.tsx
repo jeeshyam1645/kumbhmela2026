@@ -14,27 +14,55 @@ const WA_MESSAGE = "Namaste, I am interested in Magh Mela 2026 accommodation. Pl
 const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
 // HERO CAROUSEL IMAGES (Main Titles)
+// const heroImages = [
+//   {
+//     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/knocksense_2025-01-13_jcozh2xg_manoj-chhabra-81_bi4x8l.avif",
+//     titleEn: "Sacred Dip at Sangam, Blessings for Life",
+//     titleHi: "संगम में स्नान, जीवन का कल्याण",
+//     subtitleEn: "Comfort is essential in your spiritual journey",
+//     subtitleHi: "आस्था के सफर में आराम भी ज़रूरी"
+//   },
+//   {
+//     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055847/kumbh-mela-2025-tent-cities-1-2025-01-8be5d2fc3d38ece31a0c8da633e88743-scaled_ilkdkf.avif",
+//     titleEn: "Prayagraj is Calling",
+//     titleHi: "प्रयागराज बुला रहा है",
+//     subtitleEn: "Safe and comfortable stay near the holy Sangam",
+//     subtitleHi: "संगम के पास सुरक्षित और आरामदायक ठहराव"
+//   },
+//   {
+//     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/Mahakumbh-tent-new_yhusf3.avif",
+//     titleEn: "Where Faith Meets Peace",
+//     titleHi: "चलो संगम की ओर",
+//     subtitleEn: "Where noise stops and serenity begins",
+//     subtitleHi: "जहाँ शोर रुक जाता है और सुकून शुरू होता है"
+//   }
+// ];
+
+// HERO CAROUSEL IMAGES (REFINED FOR HUMILITY & TRUST)
 const heroImages = [
   {
+    // HIGHLIGHT 1: BHUMI PUJAN
+    url: "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766416619/WhatsApp_Video_2025-12-20_at_12.42.42_PM_g3m1n4.mp4", 
+    titleEn: "Magh Mela 2025: The Sacred Beginning",
+    titleHi: "माघ मेला 2025: पवित्र शुभारंभ",
+    subtitleEn: "Continuing our family's tradition of performing the Bhumi Pujan for the Mela grounds",
+    subtitleHi: "मेला क्षेत्र के भूमि पूजन की पारिवारिक परंपरा का निर्वहन करते हुए आचार्य गण"
+  },
+  {
+    // HIGHLIGHT 2: POLICE/ADMIN PUJA
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766416361/WhatsApp_Image_2025-12-18_at_11.21.23_PM_l48jen.jpg", 
+    titleEn: "Praying for Everyone's Safety",
+    titleHi: "सर्वजन हिताय: सुरक्षा और शांति की प्रार्थना",
+    subtitleEn: "Seeking divine blessings for a safe Mela alongside the Administration & Police force",
+    subtitleHi: "मेला प्रशासन और पुलिस के साथ मिलकर निर्विघ्न आयोजन हेतु वैदिक प्रार्थना"
+  },
+  {
+    // HIGHLIGHT 3: ACCOMMODATION
     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/knocksense_2025-01-13_jcozh2xg_manoj-chhabra-81_bi4x8l.avif",
-    titleEn: "Sacred Dip at Sangam, Blessings for Life",
-    titleHi: "संगम में स्नान, जीवन का कल्याण",
-    subtitleEn: "Comfort is essential in your spiritual journey",
-    subtitleHi: "आस्था के सफर में आराम भी ज़रूरी"
-  },
-  {
-    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055847/kumbh-mela-2025-tent-cities-1-2025-01-8be5d2fc3d38ece31a0c8da633e88743-scaled_ilkdkf.avif",
-    titleEn: "Prayagraj is Calling",
-    titleHi: "प्रयागराज बुला रहा है",
-    subtitleEn: "Safe and comfortable stay near the holy Sangam",
-    subtitleHi: "संगम के पास सुरक्षित और आरामदायक ठहराव"
-  },
-  {
-    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/Mahakumbh-tent-new_yhusf3.avif",
-    titleEn: "Where Faith Meets Peace",
-    titleHi: "चलो संगम की ओर",
-    subtitleEn: "Where noise stops and serenity begins",
-    subtitleHi: "जहाँ शोर रुक जाता है और सुकून शुरू होता है"
+    titleEn: "Your Sanctuary at Sangam",
+    titleHi: "संगम तट पर आपका आध्यात्मिक घर",
+    subtitleEn: "A quiet, safe space to rest after your holy dip",
+    subtitleHi: "स्नान के बाद विश्राम के लिए एक शांत और सुरक्षित स्थान"
   }
 ];
 
