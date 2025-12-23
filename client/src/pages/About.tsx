@@ -1,5 +1,5 @@
 import { useLanguage } from "@/context/LanguageContext";
-import { Shield, Users, Coffee, BedDouble } from "lucide-react"; // Changed ThermometerSun to BedDouble for better context
+import { Shield, Users, Coffee, BedDouble, Heart, Landmark, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
@@ -13,19 +13,30 @@ export default function About() {
       desc: t("We are Prayagraj locals. We know the Mela grounds better than Google Maps.", "हम प्रयागराज के स्थानीय निवासी हैं। हम मेला मैदान को गूगल मैप्स से बेहतर जानते हैं।")
     },
     {
-      icon: <BedDouble className="h-6 w-6 text-primary" />, // Changed Icon
-      title: t("Cozy Winter Bedding", "आरामदायक बिस्तर"), // Changed Title
-      desc: t("We provide heavy-duty mattresses and premium wool blankets (Rajai) to keep you warm in the January cold.", "हम जनवरी की ठंड में आपको गर्म रखने के लिए भारी गद्दे और प्रीमियम ऊनी कंबल (रजाई) प्रदान करते हैं।") // Changed Desc
+      icon: <BedDouble className="h-6 w-6 text-primary" />,
+      title: t("Cozy Winter Bedding", "आरामदायक बिस्तर"),
+      desc: t("We provide heavy-duty mattresses and premium wool blankets (Rajai) to keep you warm in the January cold.", "हम जनवरी की ठंड में आपको गर्म रखने के लिए भारी गद्दे और प्रीमियम ऊनी कंबल (रजाई) प्रदान करते हैं।")
     },
     {
       icon: <Shield className="h-6 w-6 text-primary" />,
-      title: t("24/7 Guarded Camp", "24/7 सुरक्षित शिविर"), // Changed Title
-      desc: t("Gated compound with round-the-clock security guards and helpful staff present on-ground.", "चौबीसों घंटे सुरक्षा गार्ड और ऑन-ग्राउंड मौजूद सहायक कर्मचारियों के साथ गेटेड कंपाउंड।") // Changed Desc
+      title: t("24/7 Guarded Camp", "24/7 सुरक्षित शिविर"),
+      desc: t("Gated compound with round-the-clock security guards and helpful staff present on-ground.", "चौबीसों घंटे सुरक्षा गार्ड और ऑन-ग्राउंड मौजूद सहायक कर्मचारियों के साथ गेटेड कंपाउंड।")
     },
     {
-      icon: <Coffee className="h-6 w-6 text-primary" />,
-      title: t("Satvik Food", "सात्विक भोजन"),
-      desc: t("Fresh, hygienic, home-style Satvik meals prepared in our clean kitchen.", "हमारी साफ रसोई में तैयार ताजा, स्वच्छ, घर जैसा सात्विक भोजन।")
+      icon: <Landmark className="h-6 w-6 text-primary" />,
+      title: t("Spiritual Heritage", "आध्यात्मिक विरासत"),
+      desc: t("For years, we have been privileged to facilitate and support the Police Pooja traditions.", "वर्षों से, हमें पुलिस पूजा परंपराओं में सहयोग करने का सौभाग्य प्राप्त हुआ है।")
+    }
+  ];
+
+  const team = [
+    {
+      name: "Acharya Rajendra Mishra",
+      photo: "https://via.placeholder.com/400x500" // Replace with actual photo
+    },
+    {
+      name: "Acharya Ratan Mishra",
+      photo: "https://via.placeholder.com/400x500" // Replace with actual photo
     }
   ];
 
@@ -39,59 +50,89 @@ export default function About() {
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-8">
             {t(
-              "We are not a hotel chain. We are your hosts in the holy city.",
-              "हम कोई होटल चेन नहीं हैं। हम पवित्र शहर में आपके मेजबान हैं।"
+              "Rooted in tradition, serving with devotion in the holy city of Prayagraj.",
+              "परंपरा से जुड़े, पवित्र शहर प्रयागराज में सेवा और समर्पण के साथ।"
             )}
           </p>
         </div>
       </section>
 
-      {/* STORY SECTION */}
-      <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto">
+      {/* TRADITION & POLICE POOJA SECTION */}
+      <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto border-b">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-primary">
-              {t("Our Story", "हमारी कहानी")}
+            <h2 className="text-3xl font-bold text-primary flex items-center gap-3">
+              <Heart className="h-8 w-8" />
+              {t("Years of Service", "सेवा के वर्ष")}
             </h2>
-            <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
-              <p>
-                {t(
-                  "MaghMelaStays was born out of a simple observation: Pilgrims often struggle to find clean and safe accommodation near the Sangam. Many are promised 'luxury' but end up in uncomfortable conditions.",
-                  "माघ मेला स्टेज़ का जन्म एक साधारण अवलोकन से हुआ था: तीर्थयात्रियों को अक्सर संगम के पास स्वच्छ और सुरक्षित आवास खोजने के लिए संघर्ष करना पड़ता है। कई लोगों को 'लक्जरी' का वादा किया जाता है लेकिन वे असुविधाजनक परिस्थितियों में समाप्त होते हैं।"
-                )}
-              </p>
-              <p>
-                {t(
-                  "We decided to change that. Founded by a group of Prayagraj residents, our goal is simple: To ensure that after your holy dip in the Ganges, you have a safe and warm place to rest.",
-                  "हमने इसे बदलने का फैसला किया। प्रयागराज के निवासियों के एक समूह द्वारा स्थापित, हमारा लक्ष्य सरल है: यह सुनिश्चित करना कि गंगा में पवित्र डुबकी लगाने के बाद, आपके पास आराम करने के लिए एक सुरक्षित और गर्म जगह हो।"
-                )}
-              </p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {t(
+                "Our family has been deeply connected with the Magh Mela for generations. It has been our humble honor to assist in the 'Police Pooja' for years, maintaining the spiritual sanctity of our law enforcement traditions at the Sangam.",
+                "हमारा परिवार पीढ़ियों से माघ मेले से गहराई से जुड़ा हुआ है। संगम पर हमारी कानून प्रवर्तन परंपराओं की आध्यात्मिक पवित्रता को बनाए रखते हुए, वर्षों तक 'पुलिस पूजा' में सहयोग करना हमारा विनम्र सम्मान रहा है।"
+              )}
+            </p>
+          </div>
+          <div className="rounded-2xl overflow-hidden shadow-lg aspect-video bg-muted">
+            {/* Placeholder for Video/Image of Police Pooja */}
+            <div className="w-full h-full flex items-center justify-center text-muted-foreground italic">
+              [Video/Image: Police Pooja Tradition]
             </div>
           </div>
-          <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl bg-muted">
-            {/* Placeholder for a team photo or camp photo */}
-            <img 
-              src="https://res.cloudinary.com/dh7bx2qib/image/upload/v1766054218/Khumba-Mela_bfmcau.webp" 
-              alt="Pilgrims at Ghat" 
-              className="object-cover w-full h-full"
-            />
+        </div>
+      </section>
+
+      {/* BHOOMI PUJAN 2026 */}
+      <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-center md:flex-row-reverse">
+          <div className="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg aspect-video bg-muted">
+             {/* Placeholder for Bhoomi Pujan Image/Video */}
+             <div className="w-full h-full flex items-center justify-center text-muted-foreground italic">
+              [Video/Image: Bhoomi Pujan 2026]
+            </div>
+          </div>
+          <div className="space-y-6 order-1 md:order-2">
+            <h2 className="text-3xl font-bold text-primary flex items-center gap-3">
+              <Calendar className="h-8 w-8" />
+              {t("Magh Mela 2026", "माघ मेला 2026")}
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {t(
+                "The Bhoomi Pujan for Magh Mela 2026 was recently conducted with divine grace. The ceremony was performed by Shri Jairam Mishra, Rajendra Mishra, and Ratan Mishra, in the esteemed presence of the DIG and various IPS officers, marking a blessed beginning for the upcoming season.",
+                "माघ मेला 2026 का भूमि पूजन हाल ही में ईश्वरीय कृपा के साथ संपन्न हुआ। यह समारोह श्री जयराम मिश्रा, राजेंद्र मिश्रा और रतन मिश्रा द्वारा DIG और विभिन्न IPS अधिकारियों की गरिमामयी उपस्थिति में किया गया, जो आगामी सीजन के लिए एक शुभ शुरुआत है।"
+              )}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* TEAM SECTION */}
+      <section className="py-16 bg-muted/20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-12">{t("Our Guidance", "हमारा मार्गदर्शन")}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            {team.map((member, idx) => (
+              <div key={idx} className="space-y-4">
+                <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-md bg-muted">
+                  <img src={member.photo} alt={member.name} className="object-cover w-full h-full" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">{member.name}</h3>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* VALUES GRID */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{t("Why Pilgrims Trust Us", "तीर्थयात्री हम पर क्यों भरोसा करते हैं")}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t("We understand the challenges of Magh Mela. Here is how we solve them.", "हम माघ मेला की चुनौतियों को समझते हैं। यहां बताया गया है कि हम उन्हें कैसे हल करते हैं।")}
-            </p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, idx) => (
-              <div key={idx} className="bg-background p-6 rounded-xl shadow-sm border border-border hover:border-primary/50 transition-colors">
+              <div key={idx} className="bg-background p-6 rounded-xl shadow-sm border border-border hover:border-primary/50 transition-all">
                 <div className="mb-4 bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center">
                   {feature.icon}
                 </div>
@@ -107,23 +148,18 @@ export default function About() {
       <section className="py-20 px-4 text-center">
         <div className="max-w-3xl mx-auto bg-primary text-primary-foreground rounded-3xl p-8 md:p-12 shadow-2xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            {t("Come as a Guest, Leave as Family", "मेहमान बनकर आएं, परिवार बनकर जाएं")}
+            {t("Experience Prayagraj With Us", "हमारे साथ प्रयागराज का अनुभव करें")}
           </h2>
           <p className="text-lg opacity-90 mb-8">
             {t(
-              "We have limited tents available for the main bathing dates. Contact us directly to discuss your requirements.",
-              "मुख्य स्नान तिथियों के लिए हमारे पास सीमित तंबू उपलब्ध हैं। अपनी आवश्यकताओं पर चर्चा करने के लिए हमसे सीधे संपर्क करें।"
+              "Limited tents available for the main Snan dates. Join our spiritual family this Mela.",
+              "मुख्य स्नान तिथियों के लिए सीमित तंबू उपलब्ध हैं। इस मेले में हमारे आध्यात्मिक परिवार से जुड़ें।"
             )}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact">
               <Button size="lg" variant="secondary" className="font-bold text-lg h-14 px-8">
                 {t("Contact Us Now", "अभी संपर्क करें")}
-              </Button>
-            </Link>
-            <Link href="/accommodation">
-              <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary font-bold text-lg h-14 px-8">
-                {t("View Tents", "तंबू देखें")}
               </Button>
             </Link>
           </div>
