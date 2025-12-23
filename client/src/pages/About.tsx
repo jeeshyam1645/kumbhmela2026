@@ -75,7 +75,7 @@ export default function About() {
           
           <div className="rounded-2xl overflow-hidden shadow-lg aspect-video bg-black relative">
             <video 
-              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766508972/WhatsApp_Video_2025-12-22_at_9.01.30_PM_zhdhkk.mp4" 
+              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766509802/WhatsApp_Video_2025-12-22_at_9.01.30_PM_zhdhkk.mp4" 
               controls
               autoPlay
               muted
@@ -94,7 +94,7 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg aspect-video bg-black relative">
             <video 
-              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766509802/WhatsApp_Video_2025-12-22_at_9.01.30_PM_zhdhkk.mp4" 
+              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766508972/WhatsApp_Video_2025-12-22_at_9.01.30_PM_zhdhkk.mp4" 
               controls
               autoPlay
               muted
