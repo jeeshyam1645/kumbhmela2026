@@ -89,18 +89,18 @@ export default function About() {
         </div>
       </section>
 
-      {/* BHOOMI PUJAN 2026 */}
+{/* BHOOMI PUJAN 2026 */}
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg aspect-video bg-black relative">
             <video 
-              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766508972/WhatsApp_Video_2025-12-22_at_9.01.30_PM_zhdhkk.mp4" 
+              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766507687/WhatsApp_Video_2025-12-23_at_6.16.33_PM_l328qp.mp4" 
               controls
               autoPlay
               muted
               loop
               playsInline
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain" // Changed from object-cover to object-contain
             >
               {t("Your browser does not support the video tag.", "आपका ब्राउज़र वीडियो टैग का समर्थन नहीं करता है।")}
             </video>
@@ -113,8 +113,8 @@ export default function About() {
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
               {t(
-                "The Bhoomi Pujan for Magh Mela 2026 was recently conducted with divine grace. The ceremony was performed by Shri Jairam Mishra, Rajendra Mishra, and Ratan Mishra, in the esteemed presence of the DIG and various IPS officers, marking a blessed beginning for the upcoming season.",
-                "माघ मेला 2026 का भूमि पूजन हाल ही में ईश्वरीय कृपा के साथ संपन्न हुआ। यह समारोह श्री जयराम मिश्रा, राजेंद्र मिश्रा और रतन मिश्रा द्वारा DIG और विभिन्न IPS अधिकारियों की गरिमामयी उपस्थिति में किया गया, जो आगामी सीजन के लिए एक शुभ शुरुआत है।"
+                "The Bhoomi Pujan for the Reserve Police Line of Magh Mela 2026 was conducted with Vedic chants. The ceremony featured Shri Jairam Mishra, Rajendra Mishra, and Ratan Mishra, alongside Police Commissioner Tarun Gauba and senior officials, marking the start of preparations for three police lines in the Mela area.",
+                "वैदिक मंत्रोच्चार के बीच माघ मेला 2026 की रिजर्व पुलिस लाइन का भूमि पूजन संपन्न हुआ। इस समारोह में श्री जयराम मिश्रा, राजेंद्र मिश्रा और रतन मिश्रा के साथ पुलिस कमिश्नर तरुण गाबा और वरिष्ठ अधिकारी शामिल हुए, जो मेला क्षेत्र में तीन पुलिस लाइनों की तैयारी की शुरुआत है।"
               )}
             </p>
           </div>
