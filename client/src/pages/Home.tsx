@@ -43,8 +43,8 @@ const heroImages = [
   {
     // HIGHLIGHT 1: BHUMI PUJAN
     url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766417368/WhatsApp_Image_2025-12-20_at_12.41.46_PM_xyhvwm.jpg", 
-    titleEn: "Magh Mela 2025: The Sacred Beginning",
-    titleHi: "माघ मेला 2025: पवित्र शुभारंभ",
+    titleEn: "Magh Mela 2026: The Sacred Beginning",
+    titleHi: "माघ मेला 2026: पवित्र शुभारंभ",
     subtitleEn: "Continuing our family's tradition of performing the Bhumi Pujan for the Mela grounds",
     subtitleHi: "मेला क्षेत्र के भूमि पूजन की पारिवारिक परंपरा का निर्वहन करते हुए आचार्य गण"
   },
