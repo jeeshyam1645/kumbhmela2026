@@ -32,11 +32,11 @@ export default function About() {
   const team = [
     {
       name: "Acharya Rajendra Mishra",
-      photo: "https://via.placeholder.com/400x500" // Replace with actual photo
+      photo: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg" // Replace with actual photo
     },
     {
       name: "Acharya Ratan Mishra",
-      photo: "https://via.placeholder.com/400x500" // Replace with actual photo
+      photo: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766493490/WhatsApp_Image_2025-12-23_at_6.07.41_PM_bzfhtf.jpg" // Replace with actual photo
     }
   ];
 
@@ -57,7 +57,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* TRADITION & POLICE POOJA SECTION */}
+{/* TRADITION & POLICE POOJA SECTION */}
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto border-b">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
@@ -72,24 +72,40 @@ export default function About() {
               )}
             </p>
           </div>
-          <div className="rounded-2xl overflow-hidden shadow-lg aspect-video bg-muted">
-            {/* Placeholder for Video/Image of Police Pooja */}
-            <div className="w-full h-full flex items-center justify-center text-muted-foreground italic">
-              [Video/Image: Police Pooja Tradition]
-            </div>
+          
+          <div className="rounded-2xl overflow-hidden shadow-lg aspect-video bg-black relative">
+            <video 
+              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766508359/WhatsApp_Video_2025-12-23_at_10.11.16_PM_bprngq.mp4" 
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              {t("Your browser does not support the video tag.", "आपका ब्राउज़र वीडियो टैग का समर्थन नहीं करता है।")}
+            </video>
           </div>
         </div>
       </section>
 
       {/* BHOOMI PUJAN 2026 */}
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center md:flex-row-reverse">
-          <div className="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg aspect-video bg-muted">
-             {/* Placeholder for Bhoomi Pujan Image/Video */}
-             <div className="w-full h-full flex items-center justify-center text-muted-foreground italic">
-              [Video/Image: Bhoomi Pujan 2026]
-            </div>
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg aspect-video bg-black relative">
+            <video 
+              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766507687/WhatsApp_Video_2025-12-23_at_6.16.33_PM_l328qp.mp4" 
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              {t("Your browser does not support the video tag.", "आपका ब्राउज़र वीडियो टैग का समर्थन नहीं करता है।")}
+            </video>
           </div>
+          
           <div className="space-y-6 order-1 md:order-2">
             <h2 className="text-3xl font-bold text-primary flex items-center gap-3">
               <Calendar className="h-8 w-8" />
