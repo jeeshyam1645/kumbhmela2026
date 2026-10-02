@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Saffron for actions, warm cream for backgrounds,
+ * deep earth brown for text, gold for highlights, river blue for dates.
+ */
+@theme {
+  --color-cream: #fbf8f3;
+  --color-sand: #f4ecdf;
+  --color-earth: #3b2a1a;
+  --color-earth-muted: #7a6650;
+  --color-line: #eadfcd;
+
+  --color-saffron-50: #fff6ec;
+  --color-saffron-100: #ffe9d1;
+  --color-saffron-200: #fdd0a2;
+  --color-saffron-500: #f2851f;
+  --color-saffron-600: #e06d0c;
+  --color-saffron-700: #b9550a;
+  --color-saffron-800: #8f420d;
+  --color-saffron-900: #5c2c0b;
+
+  --color-gold: #d4a340;
+  --color-gold-soft: #f6e7c3;
+  --color-river: #1f5f7a;
+  --color-river-soft: #e6f1f5;
+  --color-whatsapp: #1fa855;
+  --color-whatsapp-dark: #168a45;
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-lora), var(--font-poppins), ui-serif, Georgia, serif;
+
+  --radius-card: 1.25rem;
+  --shadow-card: 0 1px 2px rgb(59 42 26 / 0.04), 0 8px 24px -12px rgb(59 42 26 / 0.18);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-cream);
+    color: var(--color-earth);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Devanagari needs a little more room between lines. */
+  :lang(hi) body {
+    line-height: 1.75;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-saffron-600);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

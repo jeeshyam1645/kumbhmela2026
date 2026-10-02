@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "title": "Magh Mela {season} Camp Stays in Prayagraj | Magh Mela Stays",
+    "description": "Safe, comfortable camps near Sangam for Magh Mela {season}, Prayagraj. Swiss cottages, deluxe tents and dormitory with satvik food, security and Vedic puja arrangements."
+  },
+  "brand": {
+    "short": "M",
+    "name": "Magh Mela Stays",
+    "tagline": "Prayagraj {season}"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "accommodation": "Accommodation",
+    "pujaServices": "Vedic Rituals",
+    "kumbhGuide": "Kumbh Guide",
+    "contact": "Contact",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "login": "Login"
+  },
+  "actions": {
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "book": "Book",
+    "planJourney": "Plan Your Journey",
+    "talkToUs": "Talk to Us",
+    "checkAvailability": "Check Availability",
+    "enquire": "Enquire",
+    "chatOnWhatsApp": "Chat on WhatsApp",
+    "quickActions": "Quick actions"
+  },
+  "language": {
+    "label": "Language",
+    "en": "EN",
+    "hi": "हिं"
+  },
+  "hero": {
+    "badge": "Magh Mela {season} • Prayagraj",
+    "previous": "Previous slide",
+    "next": "Next slide",
+    "goTo": "Go to slide {number}"
+  },
+  "countdown": {
+    "nextBath": "Next holy dip",
+    "daysToGo": "{days, plural, =0 {Today} =1 {Tomorrow} other {# days to go}}",
+    "seasonOver": "See you at Magh Mela {season}"
+  },
+  "trust": {
+    "safeTitle": "Safe & Secure",
+    "safeText": "Guarded camp, 24/7 security",
+    "hostsTitle": "Local Family Hosts",
+    "hostsText": "Authentic hospitality",
+    "locationTitle": "Prime Location",
+    "locationText": "Near the holy Sangam",
+    "foodTitle": "Satvik Food",
+    "foodText": "Pure vegetarian meals"
+  },
+  "camps": {
+    "eyebrow": "Your comfort is our duty",
+    "title": "Our Accommodation",
+    "intro": "Clean, warm and peaceful stays for families and pilgrims. Tell us your dates and we will help you choose.",
+    "viewAll": "View all stays",
+    "capacity": "{capacity}",
+    "empty": "Stay details are being updated. Please call or WhatsApp us for availability."
+  },
+  "pujas": {
+    "eyebrow": "Connect with the divine",
+    "title": "Vedic Rituals at Sangam",
+    "intro": "We arrange learned Purohits and all samagri, so your puja is performed with devotion.",
+    "rates": "Rates depend on samagri and dakshina",
+    "viewAll": "View all rituals",
+    "empty": "Ritual details are being updated. Please WhatsApp us to arrange a puja."
+  },
+  "dates": {
+    "eyebrow": "Mark your calendar",
+    "title": "Magh Mela {season} Bathing Dates",
+    "intro": "The most auspicious days for the holy dip. Rooms fill up early for these dates.",
+    "mostImportant": "Most important",
+    "guide": "Read the Kumbh guide"
+  },
+  "guidance": {
+    "badge": "Exclusive for our guests",
+    "title": "Vedic Guidance & Jyotish Paramarsh",
+    "text": "A pilgrimage is the perfect time to seek clarity. Our camp is blessed by the presence of the revered Acharya Rajendra Mishra. You may request a private session during your stay.",
+    "cta": "Request Appointment",
+    "note": "Availability is limited. Dakshina is voluntary.",
+    "name": "Acharya Rajendra Mishra"
+  },
+  "cta": {
+    "title": "Ready to plan your stay?",
+    "text": "Rooms for the main bathing dates are limited. Message us on WhatsApp or call, and we will help you plan.",
+    "orCall": "Or call us at"
+  },
+  "footer": {
+    "about": "Your trusted family hosts for a comfortable, spiritual stay at Magh Mela, Prayagraj.",
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Us",
+    "whatsappAvailable": "WhatsApp available",
+    "rights": "All rights reserved.",
+    "plotNote": "Exact camp location depends on the plot allotted by the Mela Adhikari."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist.",
+    "home": "Go to home page"
+  }
+}
