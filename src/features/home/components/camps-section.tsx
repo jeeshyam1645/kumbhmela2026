@@ -6,6 +6,7 @@ import { Container, Section, SectionHeading } from "@/components/ui/section";
 import { isOptimizableImage } from "@/config/images";
 import { LEGACY_PATHS } from "@/config/routes";
 import type { Camp } from "@/db/schema";
+import { campCapacity, campFeature } from "@/features/camps/translate";
 import { buildWhatsAppLink } from "@/features/whatsapp/link";
 import type { Locale } from "@/i18n/routing";
 import { pick } from "@/lib/utils";
@@ -51,7 +52,7 @@ export function CampsSection({ camps }: { camps: Camp[] }) {
                     <h3 className="font-serif text-2xl font-semibold text-earth">{name}</h3>
                     <p className="mt-2 flex items-center gap-2 text-sm text-earth-muted">
                       <Users className="size-4" />
-                      {camp.capacity}
+                      {campCapacity(locale, camp.capacity)}
                     </p>
                     <p className="mt-3 line-clamp-3 text-earth-muted">
                       {pick(locale, camp.descriptionEn, camp.descriptionHi)}
@@ -61,7 +62,7 @@ export function CampsSection({ camps }: { camps: Camp[] }) {
                         {camp.features.slice(0, 4).map((feature) => (
                           <li key={feature} className="flex items-start gap-2">
                             <Check className="mt-0.5 size-4 shrink-0 text-saffron-600" />
-                            {feature}
+                            {campFeature(locale, feature)}
                           </li>
                         ))}
                       </ul>

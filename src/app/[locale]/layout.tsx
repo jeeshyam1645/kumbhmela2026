@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[locale]">)
   if (!hasLocale(routing.locales, locale)) notFound();
 
   return (
-    <html lang={locale} className={`${poppins.variable} ${lora.variable}`}>
+    <html lang={locale} className={`${poppins.variable} ${lora.variable}`} data-scroll-behavior="smooth">
       <body className="flex min-h-svh flex-col font-sans antialiased">
         <NextIntlClientProvider>
           <Header />
