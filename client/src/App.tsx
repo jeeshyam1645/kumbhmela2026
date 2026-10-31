@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { MobileContactBar } from "@/components/MobileContactBar";
 
 // Pages
 import Home from "@/pages/Home";
@@ -58,13 +59,14 @@ function Layout() {
   }, [location]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0">
       <Header />
       <main className="flex-1">
         <Router />
       </main>
       <Footer />
       {!isThankYouPage && <WhatsAppButton />}
+      {!isThankYouPage && <MobileContactBar />}
     </div>
   );
 }

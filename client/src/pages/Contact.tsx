@@ -11,7 +11,7 @@ export default function Contact() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const camp = params.get("camp");
+    const camp = params.get("tent") || params.get("camp");
     const puja = params.get("puja");
     if (camp) setDefaultCamp(camp);
     if (puja) setDefaultPuja(puja);
@@ -26,8 +26,8 @@ export default function Contact() {
           </h1>
           <p className="text-muted-foreground max-w-2xl">
             {t(
-              "Fill out the form below and our team will call you within 2 hours to discuss your requirements and provide a customized quote.",
-              "नीचे दिया गया फॉर्म भरें और हमारी टीम आपकी आवश्यकताओं पर चर्चा करने और अनुकूलित कोट प्रदान करने के लिए 2 घंटे के भीतर आपको कॉल करेगी।"
+              "No login needed. Share your dates and tent preference and our team will call you within 2 hours, or message us on WhatsApp.",
+              "लॉगिन की ज़रूरत नहीं। अपनी तिथियाँ और टेंट की पसंद बताएं। हमारी टीम 2 घंटे के भीतर कॉल करेगी, या व्हाट्सएप पर लिखें।"
             )}
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function Contact() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <InquiryForm defaultCamp={defaultCamp} defaultPuja={defaultPuja} />
+                  <InquiryForm defaultTent={defaultCamp} defaultCamp={defaultCamp} defaultPuja={defaultPuja} />
                 </CardContent>
               </Card>
             </div>

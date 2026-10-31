@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Users, Check, MessageCircle, Phone, ChevronLeft, ChevronRight, PlayCircle } from "lucide-react"; 
+import { Link } from "wouter";
+import { Users, Check, MessageCircle, Phone, ChevronLeft, ChevronRight } from "lucide-react"; 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { Camp } from "@app/shared";
 import { useAuth } from "@/hooks/use-auth";
-import { AuthModal } from "@/components/AuthModal";
 import { BookingModal } from "@/components/BookingModal";
 
 interface AccommodationCardProps {
@@ -156,7 +156,6 @@ export function AccommodationCard({ camp, imageUrl, gallery = [] }: Accommodatio
                 </Button>
             </a>
 
-            {/* Secondary Action: Callback Request */}
             {user ? (
                 <Button 
                     variant="outline" 
@@ -167,13 +166,12 @@ export function AccommodationCard({ camp, imageUrl, gallery = [] }: Accommodatio
                     {t("Request Callback", "कॉल बैक का अनुरोध करें")}
                 </Button>
             ) : (
-                <AuthModal 
-                    trigger={
-                        <Button variant="ghost" className="w-full text-xs text-muted-foreground hover:text-orange-600">
-                            {t("Login to Request Call", "कॉल के लिए लॉगिन करें")}
-                        </Button>
-                    } 
-                />
+                <Link href={`/contact?tent=${encodeURIComponent(campName)}`} className="w-full">
+                    <Button variant="outline" className="w-full border-orange-200 text-orange-700 hover:bg-orange-50">
+                        <Phone className="w-4 h-4 mr-2" />
+                        {t("Send Enquiry", "पूछताछ भेजें")}
+                    </Button>
+                </Link>
             )}
 
         </CardFooter>

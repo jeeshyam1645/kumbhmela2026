@@ -14,9 +14,49 @@ import {
 } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
 import { Resend } from "resend";
+import rateLimit from "express-rate-limit";
+import { z } from "zod";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
+
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json({
+      message: "Too many enquiries. Please try WhatsApp or try again later.",
+    });
+  },
+});
+
+const contactSchema = z.object({
+  name: z.string().trim().min(2).max(80),
+  mobile: z.string().trim().min(10).max(20),
+  message: z.string().trim().max(2000).optional().or(z.literal("")),
+  tentType: z.string().trim().max(80).optional().or(z.literal("")),
+  checkIn: z.string().trim().max(20).optional().or(z.literal("")),
+  checkOut: z.string().trim().max(20).optional().or(z.literal("")),
+  guests: z.coerce.number().int().min(1).max(50).optional(),
+  company: z.string().max(200).optional(),
+  turnstileToken: z.string().optional(),
+});
+
+async function turnstileOk(token: string | undefined) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return true;
+  if (!token) return false;
+  const body = new URLSearchParams({ secret, response: token });
+  const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
+  });
+  const data = (await response.json()) as { success?: boolean };
+  return data.success === true;
+}
 
 // Middleware to check if user is Admin
 function requireAdmin(req: any, res: any, next: any) {
@@ -70,32 +110,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
 // CONTACT ROUTE (Frontend handles Web3Forms)
 // ---------------------------------------------------------
 
-app.post("/api/contact", async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: "Please login to send a message" });
-  }
-
+app.post("/api/contact", contactLimiter, async (req, res) => {
   try {
-    const { name, mobile, message } = req.body;
+    const parsed = contactSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Please check the enquiry details." });
+    }
+
+    const data = parsed.data;
+
+    // Honeypot: pretend success so automated posts are not retried.
+    if (data.company && data.company.trim()) {
+      return res.json({ success: true });
+    }
+
+    if (!(await turnstileOk(data.turnstileToken))) {
+      return res.status(400).json({ message: "Please complete the spam check and try again." });
+    }
 
     await resend.emails.send({
       from: "Magh Mela <onboarding@resend.dev>", // free tier sender
-      to: ["maghmelastays@gmail.com"], // or your email
-      subject: `New Inquiry from ${name}`,
-      text: `
-Name: ${name}
-Mobile: ${mobile}
-
-Message:
-${message}
-      `,
+      to: ["maghmelastays@gmail.com"],
+      subject: `New Inquiry from ${data.name}`,
+      text: [
+        `Name: ${data.name}`,
+        `Mobile: ${data.mobile}`,
+        `Tent: ${data.tentType || "-"}`,
+        `Check-in: ${data.checkIn || "-"}`,
+        `Check-out: ${data.checkOut || "-"}`,
+        `Guests: ${data.guests ?? "-"}`,
+        "",
+        "Message:",
+        data.message || "-",
+      ].join("\n"),
     });
 
-    console.log("✅ Email sent via Resend");
-
+    console.log("Enquiry email sent");
     res.json({ success: true });
   } catch (error) {
-    console.error("❌ Resend Error:", error);
+    console.error("Resend error:", error);
     res.status(500).json({ message: "Failed to send inquiry" });
   }
 });
