@@ -1,10 +1,11 @@
 import { useLanguage } from "@/context/LanguageContext";
+import { formatPrayagraj } from "@/lib/dates";
 import { bathingDates } from "@app/shared";
 import { Calendar, Star, Droplets, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function KumbhGuide() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="min-h-screen pt-20" data-testid="page-kumbh-guide">
@@ -133,7 +134,7 @@ export default function KumbhGuide() {
                     }`}
                   >
                     <td className="p-4 text-foreground">
-                      {new Date(date.date).toLocaleDateString("en-US", {
+                      {formatPrayagraj(date.date, language === "hi" ? "hi-IN" : "en-IN", {
                         weekday: "short",
                         month: "long",
                         day: "numeric",
