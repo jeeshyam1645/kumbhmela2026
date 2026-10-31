@@ -8,6 +8,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Camp } from "@app/shared";
 import { useAuth } from "@/hooks/use-auth";
 import { BookingModal } from "@/components/BookingModal";
+import { cloudinaryUrl, isVideoUrl } from "@/lib/media";
 
 interface AccommodationCardProps {
   camp: Camp;
@@ -50,10 +51,7 @@ export function AccommodationCard({ camp, imageUrl, gallery = [] }: Accommodatio
     }
   };
 
-  // Helper to check if URL is video
-  const isVideo = (url: string) => {
-    return url && url.match(/\.(mp4|webm|ogg)$/i);
-  };
+  const isVideo = (url: string) => isVideoUrl(url);
 
   return (
     <>
@@ -66,15 +64,18 @@ export function AccommodationCard({ camp, imageUrl, gallery = [] }: Accommodatio
           {slides.length > 0 ? (
             isVideo(slides[currentSlide]) ? (
               <video 
-                src={slides[currentSlide]} 
-                controls 
+                src={cloudinaryUrl(slides[currentSlide])} 
+                controls
+                preload="none"
                 className="w-full h-full object-cover"
-                poster={slides[0] !== slides[currentSlide] ? slides[0] : undefined} 
+                poster={slides[0] !== slides[currentSlide] ? cloudinaryUrl(slides[0]) : undefined} 
               />
             ) : (
               <img
-                src={slides[currentSlide]}
+                src={cloudinaryUrl(slides[currentSlide])}
                 alt={campName}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700"
               />
             )

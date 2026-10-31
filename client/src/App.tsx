@@ -20,15 +20,26 @@ import ThankYou from "@/pages/ThankYou";
 import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
 import NotFound from "@/pages/not-found";
-import Profile from "@/pages/Profile";
-import AdminDashboard from "@/pages/AdminDashboard";
-import Bookings from "@/pages/Bookings"; // <--- 1. ADD IMPORT
 import { ProtectedRoute } from "@/lib/protected-route";
-import { useEffect } from "react"; // <--- 1. Import useEffect
+import { lazy, Suspense, useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import About from "./pages/About";
+
+const Profile = lazy(() => import("@/pages/Profile"));
+const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
+const Bookings = lazy(() => import("@/pages/Bookings"));
+
+function PageLoader() {
+  return (
+    <div className="min-h-[40vh] flex items-center justify-center">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    </div>
+  );
+}
 
 function Router() {
   return (
+    <Suspense fallback={<PageLoader />}>
     <Switch>
       <Route path="/" component={Home} />
 <ProtectedRoute path="/admin" component={AdminDashboard} adminOnly={true} />
@@ -46,6 +57,7 @@ function Router() {
       <Route path="/privacy" component={Privacy} />
       <Route component={NotFound} />
     </Switch>
+    </Suspense>
   );
 }
 

@@ -4,6 +4,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { PujaService } from "@app/shared"; 
 import { Loader2, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cloudinaryUrl } from "@/lib/media";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
@@ -39,7 +40,7 @@ export default function PujaServices() {
       </div>
 
       {/* --- ASTROLOGY / GUIDANCE SECTION (Placed First for Logic) --- */}
-      <section className="py-16 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] bg-indigo-950 text-white relative overflow-hidden">
+      <section className="py-16 bg-[url('/textures/stardust.png')] bg-indigo-950 text-white relative overflow-hidden">
         {/* Background Gradient */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-950 via-purple-950 to-indigo-950 opacity-95"></div>
         
@@ -50,7 +51,9 @@ export default function PujaServices() {
             <div className="w-full md:w-1/3 flex justify-center md:justify-start">
                <div className="relative aspect-[3/4] w-64 md:w-full max-w-sm rounded-xl overflow-hidden border-4 border-yellow-500/30 shadow-2xl">
                  <img 
-                   src="https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg" 
+                   src={cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg")}
+                   loading="lazy"
+                   decoding="async" 
                    alt="Acharya Rajendra Mishra" 
                    className="w-full h-full object-cover"
                  />

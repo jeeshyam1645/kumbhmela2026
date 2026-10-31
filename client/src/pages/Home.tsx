@@ -8,7 +8,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
 import { bathingDates, Camp, PujaService } from "@app/shared";
 import { mediaForCamp } from "@/lib/campMedia";
-import { formatPrayagraj } from "@/lib/dates"; 
+import { formatPrayagraj } from "@/lib/dates";
+import { cloudinaryUrl } from "@/lib/media"; 
 
 // --- CONFIGURATION ---
 const WA_NUMBER = "919936399677"; 
@@ -134,7 +135,11 @@ export default function Home() {
             {/* Image */}
             <div 
               className="absolute inset-0 bg-cover bg-center transform transition-transform duration-[10000ms] hover:scale-105"
-              style={{ backgroundImage: `url(${slide.url})` }}
+              style={
+                index === 0 || index === currentSlide
+                  ? { backgroundImage: `url(${cloudinaryUrl(slide.url)})` }
+                  : undefined
+              }
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80" />
@@ -417,7 +422,7 @@ export default function Home() {
       </section>
 
       {/* --- ASTROLOGY / GUIDANCE SECTION --- */}
-      <section className="py-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] bg-indigo-950 text-white relative overflow-hidden">
+      <section className="py-20 bg-[url('/textures/stardust.png')] bg-indigo-950 text-white relative overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-950 via-purple-950 to-indigo-950 opacity-90"></div>
         
@@ -462,8 +467,10 @@ export default function Home() {
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-yellow-500/20 shadow-2xl bg-indigo-900/50">
                  {/* Tip: Replace this URL with a real photo of Acharya Ji for maximum trust */}
                  <img 
-                   src="https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg" 
+                   src={cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg")}
                    alt="Acharya Rajendra Mishra" 
+                   loading="lazy"
+                   decoding="async"
                    className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
                  />
                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 text-center">
@@ -480,7 +487,7 @@ export default function Home() {
 
       {/* --- CALL TO ACTION (Bottom) --- */}
       <section className="py-24 bg-gradient-to-r from-orange-600 to-red-600 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('/textures/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center relative z-10">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
             {t("Ready to Book Your Spiritual Stay?", "अपना आध्यात्मिक प्रवास बुक करने के लिए तैयार हैं?")}
