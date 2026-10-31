@@ -1,10 +1,16 @@
 import { useLanguage } from "@/context/LanguageContext";
+import { Seo } from "@/components/Seo";
 
 export default function Terms() {
   const { t } = useLanguage();
 
   return (
     <div className="min-h-screen pt-20" data-testid="page-terms">
+      <Seo
+        title="Terms | Magh Mela Stays"
+        description="Booking, cancellation, and stay terms for Magh Mela Stays camps near Sangam in Prayagraj."
+        path="/terms"
+      />
       <div className="py-12 md:py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">

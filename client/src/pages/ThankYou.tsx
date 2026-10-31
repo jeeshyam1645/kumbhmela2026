@@ -4,6 +4,8 @@ import { CheckCircle2, Phone, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/context/LanguageContext";
+import { CAMP_TOUR_YOUTUBE_ID } from "@/lib/site";
+import { Seo } from "@/components/Seo";
 
 export default function ThankYou() {
   const { t } = useLanguage();
@@ -17,6 +19,12 @@ export default function ThankYou() {
 
   return (
     <div className="min-h-screen pt-20 flex items-center justify-center" data-testid="page-thank-you">
+      <Seo
+        title="Thank You | Magh Mela Stays"
+        description="Your Magh Mela 2026 enquiry has been received. The camp team will call you shortly."
+        path="/thank-you"
+        noindex
+      />
       <div className="max-w-2xl mx-auto px-4 md:px-8 py-12">
         <Card className="text-center">
           <CardContent className="p-8 md:p-12">
@@ -47,18 +55,30 @@ export default function ThankYou() {
               <h2 className="font-semibold text-foreground mb-4">
                 {t("Watch Our Camp Tour", "हमारे कैंप का दौरा देखें")}
               </h2>
-              <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=example"
-                  title={t("Camp Tour Video", "कैंप टूर वीडियो")}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </div>
+              {CAMP_TOUR_YOUTUBE_ID ? (
+                <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube-nocookie.com/embed/${CAMP_TOUR_YOUTUBE_ID}`}
+                    title={t("Camp Tour Video", "कैंप टूर वीडियो")}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                    className="w-full h-full"
+                  />
+                </div>
+              ) : (
+                <div className="aspect-video bg-muted rounded-lg flex items-center justify-center px-6">
+                  <p className="text-sm text-muted-foreground">
+                    {t(
+                      "A camp tour video will be added here soon.",
+                      "कैंप टूर वीडियो जल्द ही यहाँ जोड़ा जाएगा।"
+                    )}
+                  </p>
+                </div>
+              )}
               <p className="text-xs text-muted-foreground mt-2">
                 {t(
                   "Get a glimpse of our premium facilities",

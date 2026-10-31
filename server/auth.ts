@@ -56,8 +56,11 @@ export function setupAuth(app: Express) {
       proxy: true,
       cookie: {
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        secure: true,       // required for SameSite=None
-        sameSite: "none",   // required for cross-domain cookies
+        httpOnly: true,
+        // api.maghmelastays.in and maghmelastays.in are the same site, so Lax
+        // is sent on credentialed fetches. Secure is required in production.
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "lax",
       },
     })
   );
@@ -191,8 +194,8 @@ export function setupAuth(app: Express) {
 
       const { username, password, name, mobile } = result.data;
 
-      if (!password) {
-        return res.status(400).send("Password required");
+      if (!password || password.length < 8) {
+        return res.status(400).json({ message: "Password must be at least 8 characters" });
       }
 
       const [existing] = await db
@@ -220,7 +223,7 @@ export function setupAuth(app: Express) {
 
       req.login(newUser, (err) => {
         if (err) return next(err);
-        res.status(201).json(newUser);
+        res.status(201).json(toPublicUser(newUser));
       });
     } catch (err) {
       next(err);
@@ -235,7 +238,7 @@ export function setupAuth(app: Express) {
 
       req.login(user, (err) => {
         if (err) return next(err);
-        res.json(user);
+        res.json(toPublicUser(user));
       });
     })(req, res, next);
   });
@@ -251,8 +254,13 @@ export function setupAuth(app: Express) {
   // --- CURRENT USER ---
   app.get("/api/user", (req, res) => {
     if (req.isAuthenticated()) {
-      return res.json(req.user);
+      return res.json(toPublicUser(req.user as any));
     }
     res.status(401).send("Not logged in from auth.ts. ");
   });
+}
+
+export function toPublicUser<T extends { password?: string | null }>(user: T) {
+  const { password: _password, ...safe } = user;
+  return safe;
 }

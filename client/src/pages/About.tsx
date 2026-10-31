@@ -2,6 +2,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Shield, Users, Coffee, BedDouble, Heart, Landmark, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { cloudinaryUrl } from "@/lib/media";
+import { Seo } from "@/components/Seo";
 
 export default function About() {
   const { t } = useLanguage();
@@ -32,16 +34,21 @@ export default function About() {
   const team = [
     {
       name: "Acharya Rajendra Mishra",
-      photo: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg" // Replace with actual photo
+      photo: cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg")
     },
     {
       name: "Acharya Ratan Mishra",
-      photo: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766493490/WhatsApp_Image_2025-12-23_at_6.07.41_PM_bzfhtf.jpg" // Replace with actual photo
+      photo: cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/image/upload/v1766493490/WhatsApp_Image_2025-12-23_at_6.07.41_PM_bzfhtf.jpg")
     }
   ];
 
   return (
     <div className="min-h-screen pt-20">
+      <Seo
+        title="About Us | Magh Mela Stays"
+        description="Meet the Prayagraj family hosting Magh Mela 2026 camps near Sangam, including Acharya Rajendra Mishra and the long-running Police Pooja tradition."
+        path="/about-us"
+      />
       {/* HERO SECTION */}
       <section className="relative bg-primary/5 py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 text-center">
@@ -75,11 +82,9 @@ export default function About() {
           
           <div className="rounded-2xl overflow-hidden shadow-lg aspect-video bg-black relative">
             <video 
-              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766509802/WhatsApp_Video_2025-12-22_at_9.01.30_PM_zhdhkk.mp4" 
+              src={cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/video/upload/v1766509802/WhatsApp_Video_2025-12-22_at_9.01.30_PM_zhdhkk.mp4")}
               controls
-              autoPlay
-              muted
-              loop
+              preload="none"
               playsInline
               className="w-full h-full object-cover"
             >
@@ -94,13 +99,11 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg aspect-video bg-black relative">
             <video 
-              src="https://res.cloudinary.com/dh7bx2qib/video/upload/v1766508359/WhatsApp_Video_2025-12-23_at_10.11.16_PM_bprngq.mp4" 
+              src={cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/video/upload/v1766508359/WhatsApp_Video_2025-12-23_at_10.11.16_PM_bprngq.mp4")}
               controls
-              autoPlay
-              muted
-              loop
+              preload="none"
               playsInline
-              className="w-full h-full object-contain" // Changed from object-cover to object-contain
+              className="w-full h-full object-contain"
             >
               {t("Your browser does not support the video tag.", "आपका ब्राउज़र वीडियो टैग का समर्थन नहीं करता है।")}
             </video>
@@ -129,7 +132,7 @@ export default function About() {
             {team.map((member, idx) => (
               <div key={idx} className="space-y-4">
                 <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-md bg-muted">
-                  <img src={member.photo} alt={member.name} className="object-cover w-full h-full" />
+                  <img src={member.photo} alt={member.name} loading="lazy" decoding="async" className="object-cover w-full h-full" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold">{member.name}</h3>

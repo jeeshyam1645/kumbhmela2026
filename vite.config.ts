@@ -12,7 +12,11 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "client", "src"),
       "@shared": path.resolve(__dirname, "shared"),
+      "@app/shared": path.resolve(__dirname, "shared/types.ts"),
     },
+  },
+  ssr: {
+    noExternal: ["react-helmet-async"],
   },
   root: path.resolve(__dirname, "client"),
   build: {

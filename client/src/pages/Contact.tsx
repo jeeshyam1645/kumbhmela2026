@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InquiryForm } from "@/components/InquiryForm";
 import { useLanguage } from "@/context/LanguageContext";
+import { Seo } from "@/components/Seo";
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -11,7 +12,7 @@ export default function Contact() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const camp = params.get("camp");
+    const camp = params.get("tent") || params.get("camp");
     const puja = params.get("puja");
     if (camp) setDefaultCamp(camp);
     if (puja) setDefaultPuja(puja);
@@ -19,6 +20,11 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" data-testid="page-contact">
+      <Seo
+        title="Contact | Magh Mela Stays"
+        description="Enquire without an account for a Magh Mela 2026 camp. Call or WhatsApp +91 99363 99677, or send your dates, guests, and tent type."
+        path="/contact"
+      />
       <div className="py-12 md:py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -26,8 +32,8 @@ export default function Contact() {
           </h1>
           <p className="text-muted-foreground max-w-2xl">
             {t(
-              "Fill out the form below and our team will call you within 2 hours to discuss your requirements and provide a customized quote.",
-              "नीचे दिया गया फॉर्म भरें और हमारी टीम आपकी आवश्यकताओं पर चर्चा करने और अनुकूलित कोट प्रदान करने के लिए 2 घंटे के भीतर आपको कॉल करेगी।"
+              "No login needed. Share your dates and tent preference and our team will call you within 2 hours, or message us on WhatsApp.",
+              "लॉगिन की ज़रूरत नहीं। अपनी तिथियाँ और टेंट की पसंद बताएं। हमारी टीम 2 घंटे के भीतर कॉल करेगी, या व्हाट्सएप पर लिखें।"
             )}
           </p>
         </div>
@@ -44,7 +50,7 @@ export default function Contact() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <InquiryForm defaultCamp={defaultCamp} defaultPuja={defaultPuja} />
+                  <InquiryForm defaultTent={defaultCamp} defaultCamp={defaultCamp} defaultPuja={defaultPuja} />
                 </CardContent>
               </Card>
             </div>

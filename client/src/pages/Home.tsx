@@ -6,7 +6,13 @@ import { AccommodationCard } from "@/components/AccommodationCard";
 import { PujaServiceCard } from "@/components/PujaServiceCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuery } from "@tanstack/react-query";
-import { bathingDates, Camp, PujaService } from "@app/shared"; 
+import { bathingDates, Camp, PujaService } from "@app/shared";
+import { mediaForCamp } from "@/lib/campMedia";
+import { formatPrayagraj } from "@/lib/dates";
+import { cloudinaryUrl } from "@/lib/media";
+import { Seo } from "@/components/Seo";
+import { GuestFaq, guestFaqs } from "@/components/GuestFaq";
+import { faqJsonLd, lodgingJsonLd, maghMelaEventJsonLd } from "@/lib/jsonld"; 
 
 // --- CONFIGURATION ---
 const WA_NUMBER = "919936399677"; 
@@ -73,27 +79,6 @@ const tickerSlogans = [
     { en: "Faith, Peace, and Comfort", hi: "आस्था, शांति और सुकून एक साथ" }
 ];
 
-// FALLBACK IMAGES
-const campImages = [
-  "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?q=80&w=2074&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1520277739336-7bf67edfa768?q=80&w=2069&auto=format&fit=crop",
-];
-
-const campMediaData: Record<number, string[]> = {
-  1: [ // Deluxe Tent (ID 1)
-    "https://img1.exportersindia.com/product_images/bc-full/2020/10/1791501/swiss-cottage-tents-1604062326-5622067.jpeg", // Extra Image 1
-    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766419870/WhatsApp_Video_2025-12-22_at_8.21.56_PM_mdcgd5.mp4", // Video
-    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766420195/whatsapp-video-2025-12-22-at-82302-pm_1IbTToLs_1_e4cduu.mp4"
-  ],
-  2: [ // Dormitory (ID 2)
-    "https://res.cloudinary.com/dh7bx2qib/image/upload/v1765948645/shared_image_2_b3je3d.jpg"
-  ],
-  3: [ // Swiss Cottage (ID 3)
-    "https://img1.exportersindia.com/product_images/bc-full/2020/10/1791501/swiss-cottage-tents-1604062326-5622067.jpeg",
-    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766424600/f6ce-6f5d-4077-a2f5-2858495dec39_o4lrrk.mp4" // Video
-  ]
-};
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function Home() {
@@ -139,6 +124,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen font-sans" data-testid="page-home">
+      <Seo
+        title="Magh Mela Camp Booking - Prayagraj 2026"
+        description="Book Swiss Cottage, Deluxe Tent, and Dormitory stays near Sangam for Magh Mela Prayagraj 2026. Satvik meals, a guarded compound, and help with vedic rituals."
+        path="/"
+        jsonLd={[lodgingJsonLd(), maghMelaEventJsonLd(), faqJsonLd(guestFaqs)]}
+      />
       
       {/* --- HERO SECTION (CAROUSEL) --- */}
       <section className="relative h-[600px] md:h-[700px] w-full overflow-hidden">
@@ -148,11 +139,16 @@ export default function Home() {
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
+            aria-hidden={index !== currentSlide}
           >
             {/* Image */}
             <div 
               className="absolute inset-0 bg-cover bg-center transform transition-transform duration-[10000ms] hover:scale-105"
-              style={{ backgroundImage: `url(${slide.url})` }}
+              style={
+                index === 0 || index === currentSlide
+                  ? { backgroundImage: `url(${cloudinaryUrl(slide.url)})` }
+                  : undefined
+              }
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80" />
@@ -169,9 +165,15 @@ export default function Home() {
                    </span>
                 </div>
 
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl leading-tight">
-                  {t(slide.titleEn, slide.titleHi)}
-                </h1>
+                {index === currentSlide ? (
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl leading-tight">
+                    {t(slide.titleEn, slide.titleHi)}
+                  </h1>
+                ) : (
+                  <p className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl leading-tight">
+                    {t(slide.titleEn, slide.titleHi)}
+                  </p>
+                )}
                 
                 <p className="text-lg md:text-2xl text-gray-100 mb-10 max-w-2xl mx-auto drop-shadow-md font-medium leading-relaxed">
                   {t(slide.subtitleEn, slide.subtitleHi)}
@@ -232,7 +234,7 @@ export default function Home() {
                         <span className="opacity-75">{t("Next Bathing Date:", "अगला स्नान तिथि:")}</span> 
                         <span className="font-bold text-white">{t(nextBathingDate.nameEn, nextBathingDate.nameHi)}</span>
                         <span className="bg-orange-500/20 px-2 py-0.5 rounded text-xs border border-orange-500/30">
-                            {new Date(nextBathingDate.date).toLocaleDateString(language === 'hi' ? 'hi-IN' : 'en-US', { day: 'numeric', month: 'short' })}
+                            {formatPrayagraj(nextBathingDate.date, language === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short" })}
                         </span>
                     </span>
 
@@ -307,11 +309,9 @@ export default function Home() {
                 <Loader2 className="h-10 w-10 animate-spin text-orange-500" />
               </div>
             ) : (
-              camps?.slice(0, 3).map((camp, index) => {
+              camps?.slice(0, 3).map((camp) => {
                 
-                // 1. Get the specific media list for this card (1, 2, or 3)
-                // We use (index + 1) to map Array Index 0 -> ID 1, etc.
-                const fullMediaList = campMediaData[index + 1] || [];
+                const fullMediaList = mediaForCamp(camp.nameEn);
 
                 // 2. Extract the first image for the 'imageUrl' prop
                 const mainImage = fullMediaList[0] || ""; 
@@ -407,10 +407,10 @@ export default function Home() {
                     <div className="absolute top-0 inset-x-0 h-1 bg-orange-500"></div>
                 )}
                 <div className={`text-3xl font-bold mb-1 ${date.importance === "highest" ? "text-orange-600" : "text-gray-800"}`}>
-                    {new Date(date.date).getDate()}
+                    {formatPrayagraj(date.date, "en-IN", { day: "numeric" })}
                 </div>
                 <div className="text-xs uppercase tracking-wide text-gray-400 mb-3 font-semibold">
-                    {new Date(date.date).toLocaleDateString("en-US", { month: "short" })}
+                    {formatPrayagraj(date.date, "en-IN", { month: "short" })}
                 </div>
                 <div className="text-sm font-medium text-gray-700 leading-tight">
                     {t(date.nameEn, date.nameHi)}
@@ -431,7 +431,7 @@ export default function Home() {
       </section>
 
       {/* --- ASTROLOGY / GUIDANCE SECTION --- */}
-      <section className="py-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] bg-indigo-950 text-white relative overflow-hidden">
+      <section className="py-20 bg-[url('/textures/stardust.png')] bg-indigo-950 text-white relative overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-950 via-purple-950 to-indigo-950 opacity-90"></div>
         
@@ -476,8 +476,10 @@ export default function Home() {
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-yellow-500/20 shadow-2xl bg-indigo-900/50">
                  {/* Tip: Replace this URL with a real photo of Acharya Ji for maximum trust */}
                  <img 
-                   src="https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg" 
+                   src={cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg")}
                    alt="Acharya Rajendra Mishra" 
+                   loading="lazy"
+                   decoding="async"
                    className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
                  />
                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 text-center">
@@ -492,9 +494,11 @@ export default function Home() {
         </div>
       </section>
 
+      <GuestFaq />
+
       {/* --- CALL TO ACTION (Bottom) --- */}
       <section className="py-24 bg-gradient-to-r from-orange-600 to-red-600 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('/textures/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center relative z-10">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
             {t("Ready to Book Your Spiritual Stay?", "अपना आध्यात्मिक प्रवास बुक करने के लिए तैयार हैं?")}

@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "src"),
       "@shared": path.resolve(__dirname, "../shared"),
+      "@app/shared": path.resolve(__dirname, "../shared/types.ts"),
     },
   },
   build: {

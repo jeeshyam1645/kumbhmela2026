@@ -2,23 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Camp } from "@app/shared";
 import { Loader2, Tent } from "lucide-react";
 import { AccommodationCard } from "@/components/AccommodationCard";
-import { useLanguage } from "@/context/LanguageContext"; 
-
-// --- MEDIA CONFIGURATION ---
-const campMediaData: Record<number, string[]> = {
-  1: [ // Deluxe Tent (Index 0 -> ID 1)
-    "https://img1.exportersindia.com/product_images/bc-full/2020/10/1791501/swiss-cottage-tents-1604062326-5622067.jpeg", // Main Image
-    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766419870/WhatsApp_Video_2025-12-22_at_8.21.56_PM_mdcgd5.mp4", // Video 1
-    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766420195/whatsapp-video-2025-12-22-at-82302-pm_1IbTToLs_1_e4cduu.mp4"  // Video 2
-  ],
-  2: [ // Dormitory (Index 1 -> ID 2)
-    "https://res.cloudinary.com/dh7bx2qib/image/upload/v1765948645/shared_image_2_b3je3d.jpg"
-  ],
-  3: [ // Swiss Cottage (Index 2 -> ID 3)
-    "https://img1.exportersindia.com/product_images/bc-full/2020/10/1791501/swiss-cottage-tents-1604062326-5622067.jpeg",
-    "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766424600/f6ce-6f5d-4077-a2f5-2858495dec39_o4lrrk.mp4" // Video
-  ]
-};
+import { useLanguage } from "@/context/LanguageContext";
+import { mediaForCamp } from "@/lib/campMedia";
+import { Seo } from "@/components/Seo";
+import { lodgingJsonLd } from "@/lib/jsonld";
+import { TENT_OFFERS } from "@/lib/site";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
@@ -34,16 +22,14 @@ export default function Accommodation() {
     },
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen pt-24 pb-12 bg-muted/10">
+      <Seo
+        title="Accommodation | Magh Mela Stays"
+        description="Swiss Cottage, Deluxe Tent, and Dormitory camps for Magh Mela Prayagraj 2026. Attached or shared bathrooms, bedding, and nightly rates from ₹999."
+        path="/accommodation"
+        jsonLd={[lodgingJsonLd()]}
+      />
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
             <h1 className="text-3xl md:text-5xl font-bold font-serif text-primary mb-4">
@@ -55,13 +41,19 @@ export default function Accommodation() {
                 "हमारे प्रीमियम कैंपिंग विकल्पों के साथ कुंभ मेले के दिव्य वातावरण का अनुभव करें। स्वच्छ, सुरक्षित और गर्म।"
             )}
             </p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {TENT_OFFERS.map((offer) => `${offer.name} · ₹${offer.price.toLocaleString("en-IN")}/night`).join(" · ")}
+            </p>
         </div>
 
-        {camps && camps.length > 0 ? (
+        {camps === undefined || isLoading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        ) : camps.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {camps.map((camp, index) => {
-              // 1. Get the list of media for this specific card position (1, 2, or 3)
-              const fullMediaList = campMediaData[index + 1] || [];
+            {camps.map((camp) => {
+              const fullMediaList = mediaForCamp(camp.nameEn);
               
               // 2. First item is the main image/video
               const mainImage = fullMediaList[0] || "";

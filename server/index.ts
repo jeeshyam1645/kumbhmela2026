@@ -1,10 +1,18 @@
 import express, { type Request, Response, NextFunction } from "express";
+import helmet from "helmet";
 import { registerRoutes } from "./routes";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
 const app = express();
+app.disable("x-powered-by");
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+}));
 
 // --- FIX 1: TRUST PROXY (REQUIRED FOR RENDER) ---
 // Render puts your app behind a load balancer. 
@@ -20,19 +28,26 @@ app.use(cors({
     // 2. Define your allowed static domains
     const allowedOrigins = [
       "http://localhost:5173",
-      "https://kumbhmela2026.vercel.app", // Main production domain
-      process.env.FRONTEND_URL            // From your Render env vars
-    ];
+      "http://127.0.0.1:5173",
+      "https://maghmelastays.in",
+      "https://www.maghmelastays.in",
+      "https://kumbhmela2026.vercel.app",
+      process.env.FRONTEND_URL,
+    ].filter((value): value is string => Boolean(value));
 
-    // 3. Check if origin matches allowed list OR ends with .vercel.app
+    // Preview deploys stay on *.vercel.app. Session cookies are SameSite=Lax,
+    // so those previews can read public data but will not receive the API cookie.
     if (
-      allowedOrigins.includes(origin) || 
-      origin.endsWith(".vercel.app") // Automatically allows ALL Vercel previews
+      allowedOrigins.includes(origin) ||
+      origin.endsWith(".vercel.app")
     ) {
       callback(null, true);
     } else {
       console.log("Blocked by CORS:", origin);
-      callback(new Error("Not allowed by CORS"));
+      const error = new Error("Not allowed by CORS") as Error & { status: number; statusCode: number };
+      error.status = 403;
+      error.statusCode = 403;
+      callback(error);
     }
   },
   credentials: true, // Essential for cookies

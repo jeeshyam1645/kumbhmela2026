@@ -1,13 +1,22 @@
 import { useLanguage } from "@/context/LanguageContext";
+import { formatPrayagraj } from "@/lib/dates";
+import { Seo } from "@/components/Seo";
+import { maghMelaEventJsonLd } from "@/lib/jsonld";
 import { bathingDates } from "@app/shared";
 import { Calendar, Star, Droplets, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function KumbhGuide() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="min-h-screen pt-20" data-testid="page-kumbh-guide">
+      <Seo
+        title="Kumbh Guide | Magh Mela 2026"
+        description="Bathing dates and rituals for Magh Mela Prayagraj 2026, from Paush Purnima on 3 January through Maha Shivaratri on 15 February."
+        path="/kumbh-guide"
+        jsonLd={[maghMelaEventJsonLd()]}
+      />
       <div className="py-12 md:py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -133,7 +142,7 @@ export default function KumbhGuide() {
                     }`}
                   >
                     <td className="p-4 text-foreground">
-                      {new Date(date.date).toLocaleDateString("en-US", {
+                      {formatPrayagraj(date.date, language === "hi" ? "hi-IN" : "en-IN", {
                         weekday: "short",
                         month: "long",
                         day: "numeric",

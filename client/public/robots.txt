@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /profile
+Disallow: /bookings
 
 Sitemap: https://maghmelastays.in/sitemap.xml
