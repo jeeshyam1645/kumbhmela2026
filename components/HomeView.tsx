@@ -1,0 +1,155 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import type { CampRecord, PujaRecord } from "@/lib/queries";
+import { bathingDates, formatPrayagraj, guestFaqs, site, tentOffers, whatsAppLink } from "@/lib/site";
+import { cloudinaryUrl } from "@/lib/media";
+import { CampList } from "./CampList";
+import { useT } from "./Language";
+
+const slides = [
+  {
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766417368/WhatsApp_Image_2025-12-20_at_12.41.46_PM_xyhvwm.jpg",
+    en: "Magh Mela 2026: The Sacred Beginning",
+    hi: "माघ मेला 2026: पवित्र शुभारंभ",
+    subEn: "Continuing our family's Bhumi Pujan for the Mela grounds",
+    subHi: "मेला क्षेत्र के भूमि पूजन की पारिवारिक परंपरा",
+  },
+  {
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766427144/WhatsApp_Image_2025-12-22_at_11.30.40_PM_pztjau.jpg",
+    en: "Praying for everyone's safety",
+    hi: "सबकी सुरक्षा की प्रार्थना",
+    subEn: "With the administration and police at the Mela",
+    subHi: "मेला प्रशासन और पुलिस के साथ",
+  },
+  {
+    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/knocksense_2025-01-13_jcozh2xg_manoj-chhabra-81_bi4x8l.avif",
+    en: "Your sanctuary at Sangam",
+    hi: "संगम तट पर आपका घर",
+    subEn: "A quiet place to rest after the holy dip",
+    subHi: "स्नान के बाद विश्राम के लिए एक शांत स्थान",
+  },
+];
+
+export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: boolean; pujas: PujaRecord[] }) {
+  const { t, lang } = useT();
+  const [slide, setSlide] = useState(0);
+  const current = slides[slide];
+  const nextDate = bathingDates.find((item) => new Date(`${item.date}T00:00:00+05:30`).getTime() >= Date.now()) || bathingDates[0];
+
+  return (
+    <div>
+      <section className="relative flex min-h-[78vh] items-end bg-ink text-white">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${cloudinaryUrl(current.url)})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/30" />
+        <div className="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-32">
+          <p className="mb-3 text-sm text-orange-100">Magh Mela 2026 · Prayagraj</p>
+          <h1 className="max-w-3xl font-serif text-4xl leading-tight md:text-6xl">{t(current.en, current.hi)}</h1>
+          <p className="sr-only">{slides.map((item) => item.en).join(". ")}</p>
+          <p className="mt-4 max-w-xl text-lg text-white/85">{t(current.subEn, current.subHi)}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a className="btn-wa" href={whatsAppLink("Namaste, I am interested in Magh Mela 2026 accommodation.")} target="_blank" rel="noopener noreferrer">{t("Plan on WhatsApp", "व्हाट्सएप पर योजना")}</a>
+            <Link className="btn bg-white/15 text-white ring-1 ring-white/40" href="/accommodation">{t("See the tents", "टेंट देखें")}</Link>
+          </div>
+          <div className="mt-8 flex gap-2">
+            {slides.map((item, index) => (
+              <button key={item.en} type="button" aria-label={item.en} onClick={() => setSlide(index)} className={`h-2 rounded-full ${index === slide ? "w-8 bg-saffron" : "w-2 bg-white/60"}`} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-6xl gap-4 px-4 py-10 md:grid-cols-3">
+        {[
+          [t("Guarded compound", "सुरक्षित परिसर"), t("Staff on site, day and night", "दिन-रात स्टाफ")],
+          [t("Local hosts", "स्थानीय मेजबान"), t("A Prayagraj family", "प्रयागराज का परिवार")],
+          [t("Near Sangam", "संगम के पास"), t("Walk to the holy dip", "पवित्र स्नान के पास")],
+        ].map(([title, text]) => (
+          <div key={title} className="card p-5">
+            <h2 className="font-serif text-xl">{title}</h2>
+            <p className="mt-1 text-sm text-ink/70">{text}</p>
+          </div>
+        ))}
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <div>
+            <h2 className="font-serif text-3xl">{t("Stays", "आवास")}</h2>
+            <p className="mt-2 text-sm text-ink/70">
+              {tentOffers.map((offer) => `${offer.name} · ₹${offer.price.toLocaleString("en-IN")}`).join(" · ")} / {t("night", "रात")}
+            </p>
+          </div>
+          <Link href="/accommodation" className="text-sm font-semibold text-saffron-dark">{t("All tents", "सभी टेंट")}</Link>
+        </div>
+        <CampList camps={camps.slice(0, 3)} live={live} />
+      </section>
+
+      <section className="bg-orange-50/70 py-14">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="font-serif text-3xl">{t("Vedic rituals", "वैदिक अनुष्ठान")}</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {pujas.slice(0, 3).map((puja) => (
+              <div key={puja.id} className="card p-5">
+                <h3 className="font-serif text-xl">{lang === "hi" && puja.nameHi ? puja.nameHi : puja.nameEn}</h3>
+                <p className="mt-2 text-sm text-ink/70">{lang === "hi" && puja.descriptionHi ? puja.descriptionHi : puja.descriptionEn}</p>
+                <Link className="mt-4 inline-block text-sm font-semibold text-saffron-dark" href={`/contact?puja=${encodeURIComponent(puja.nameEn)}`}>{t("Ask about this ritual", "इस अनुष्ठान के बारे में पूछें")}</Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-14">
+        <h2 className="font-serif text-3xl">{t("Bathing dates", "स्नान तिथियाँ")}</h2>
+        <p className="mt-2 text-sm text-ink/70">{t("Next:", "अगली:")} {t(nextDate.nameEn, nextDate.nameHi)} · {formatPrayagraj(nextDate.date, lang === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short" })}</p>
+        <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-6">
+          {bathingDates.map((item) => (
+            <div key={item.date} className={`card p-4 text-center ${item.importance === "highest" ? "ring-2 ring-saffron" : ""}`}>
+              <p className="font-serif text-3xl text-saffron-dark">{formatPrayagraj(item.date, "en-IN", { day: "numeric" })}</p>
+              <p className="text-xs uppercase text-ink/50">{formatPrayagraj(item.date, "en-IN", { month: "short" })}</p>
+              <p className="mt-2 text-sm">{t(item.nameEn, item.nameHi)}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-[url('/textures/stardust.png')] bg-indigo-950 py-16 text-white">
+        <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 md:grid-cols-[1.4fr_0.8fr]">
+          <div>
+            <h2 className="font-serif text-3xl md:text-5xl">{t("Vedic guidance", "वैदिक मार्गदर्शन")}</h2>
+            <p className="mt-4 text-indigo-100">{t("Acharya Rajendra Mishra meets guests by request. Dakshina is voluntary.", "आचार्य राजेंद्र मिश्र अनुरोध पर अतिथियों से मिलते हैं। दक्षिणा स्वैच्छिक है।")}</p>
+            <a className="btn mt-6 bg-yellow-400 text-indigo-950" href={whatsAppLink("Namaste, I would like to meet Acharya Rajendra Mishra ji.")}>{t("Request a time", "समय माँगें")}</a>
+          </div>
+          <img
+            src={cloudinaryUrl("https://res.cloudinary.com/dh7bx2qib/image/upload/v1766414799/WhatsApp_Image_2025-12-21_at_10.57.45_PM_kndk1l.jpg")}
+            alt="Acharya Rajendra Mishra"
+            className="aspect-[3/4] w-full rounded-2xl object-cover"
+          />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-4 py-16">
+        <h2 className="text-center font-serif text-3xl">{t("Common questions", "आम सवाल")}</h2>
+        <div className="mt-8 space-y-6">
+          {guestFaqs.map((faq) => (
+            <div key={faq.question}>
+              <h3 className="font-semibold">{t(faq.question, faq.questionHi)}</h3>
+              <p className="mt-1 text-sm text-ink/70">{t(faq.answer, faq.answerHi)}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-[url('/textures/cubes.png')] bg-saffron py-16 text-center text-white">
+        <h2 className="font-serif text-4xl">{t("Ready to plan the stay?", "प्रवास की योजना बनाएँ?")}</h2>
+        <p className="mt-3">{t("Call", "कॉल")} <a className="underline" href={`tel:${site.phone}`}>{site.phoneDisplay}</a></p>
+        <Link className="btn mt-6 bg-white text-saffron-dark" href="/contact">{t("Send an enquiry", "पूछताछ भेजें")}</Link>
+      </section>
+    </div>
+  );
+}

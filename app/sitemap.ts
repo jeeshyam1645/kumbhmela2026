@@ -1,0 +1,12 @@
+import type { MetadataRoute } from "next";
+import { site } from "@/lib/site";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date("2026-10-31");
+  return ["/", "/about-us", "/accommodation", "/puja-services", "/kumbh-guide", "/contact", "/privacy", "/terms"].map((path) => ({
+    url: `${site.url}${path === "/" ? "" : path}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: path === "/" ? 1 : path === "/accommodation" ? 0.9 : 0.6,
+  }));
+}
