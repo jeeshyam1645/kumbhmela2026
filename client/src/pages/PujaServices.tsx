@@ -5,6 +5,7 @@ import { PujaService } from "@app/shared";
 import { Loader2, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cloudinaryUrl } from "@/lib/media";
+import { Seo } from "@/components/Seo";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
@@ -23,6 +24,11 @@ export default function PujaServices() {
 
   return (
     <div className="min-h-screen pt-20" data-testid="page-puja-services">
+      <Seo
+        title="Puja Services | Magh Mela Stays"
+        description="Arrange sankalp, Ganga pujan, and other vedic rituals at Sangam during Magh Mela 2026. Purohit and samagri are handled for you."
+        path="/puja-services"
+      />
       
       {/* --- PAGE HEADER --- */}
       <div className="py-12 md:py-16 bg-orange-50/50">

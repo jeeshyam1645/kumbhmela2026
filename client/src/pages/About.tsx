@@ -3,6 +3,7 @@ import { Shield, Users, Coffee, BedDouble, Heart, Landmark, Calendar } from "luc
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { cloudinaryUrl } from "@/lib/media";
+import { Seo } from "@/components/Seo";
 
 export default function About() {
   const { t } = useLanguage();
@@ -43,6 +44,11 @@ export default function About() {
 
   return (
     <div className="min-h-screen pt-20">
+      <Seo
+        title="About Us | Magh Mela Stays"
+        description="Meet the Prayagraj family hosting Magh Mela 2026 camps near Sangam, including Acharya Rajendra Mishra and the long-running Police Pooja tradition."
+        path="/about-us"
+      />
       {/* HERO SECTION */}
       <section className="relative bg-primary/5 py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 text-center">

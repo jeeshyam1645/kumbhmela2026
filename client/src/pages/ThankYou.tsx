@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/context/LanguageContext";
 import { CAMP_TOUR_YOUTUBE_ID } from "@/lib/site";
+import { Seo } from "@/components/Seo";
 
 export default function ThankYou() {
   const { t } = useLanguage();
@@ -18,6 +19,12 @@ export default function ThankYou() {
 
   return (
     <div className="min-h-screen pt-20 flex items-center justify-center" data-testid="page-thank-you">
+      <Seo
+        title="Thank You | Magh Mela Stays"
+        description="Your Magh Mela 2026 enquiry has been received. The camp team will call you shortly."
+        path="/thank-you"
+        noindex
+      />
       <div className="max-w-2xl mx-auto px-4 md:px-8 py-12">
         <Card className="text-center">
           <CardContent className="p-8 md:p-12">

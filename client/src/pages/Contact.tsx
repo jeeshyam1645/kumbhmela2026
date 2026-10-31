@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InquiryForm } from "@/components/InquiryForm";
 import { useLanguage } from "@/context/LanguageContext";
+import { Seo } from "@/components/Seo";
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -19,6 +20,11 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" data-testid="page-contact">
+      <Seo
+        title="Contact | Magh Mela Stays"
+        description="Enquire without an account for a Magh Mela 2026 camp. Call or WhatsApp +91 99363 99677, or send your dates, guests, and tent type."
+        path="/contact"
+      />
       <div className="py-12 md:py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">

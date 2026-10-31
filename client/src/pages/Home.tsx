@@ -9,7 +9,10 @@ import { useQuery } from "@tanstack/react-query";
 import { bathingDates, Camp, PujaService } from "@app/shared";
 import { mediaForCamp } from "@/lib/campMedia";
 import { formatPrayagraj } from "@/lib/dates";
-import { cloudinaryUrl } from "@/lib/media"; 
+import { cloudinaryUrl } from "@/lib/media";
+import { Seo } from "@/components/Seo";
+import { GuestFaq, guestFaqs } from "@/components/GuestFaq";
+import { faqJsonLd, lodgingJsonLd, maghMelaEventJsonLd } from "@/lib/jsonld"; 
 
 // --- CONFIGURATION ---
 const WA_NUMBER = "919936399677"; 
@@ -121,6 +124,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen font-sans" data-testid="page-home">
+      <Seo
+        title="Magh Mela Camp Booking - Prayagraj 2026"
+        description="Book Swiss Cottage, Deluxe Tent, and Dormitory stays near Sangam for Magh Mela Prayagraj 2026. Satvik meals, a guarded compound, and help with vedic rituals."
+        path="/"
+        jsonLd={[lodgingJsonLd(), maghMelaEventJsonLd(), faqJsonLd(guestFaqs)]}
+      />
       
       {/* --- HERO SECTION (CAROUSEL) --- */}
       <section className="relative h-[600px] md:h-[700px] w-full overflow-hidden">
@@ -484,6 +493,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <GuestFaq />
 
       {/* --- CALL TO ACTION (Bottom) --- */}
       <section className="py-24 bg-gradient-to-r from-orange-600 to-red-600 relative overflow-hidden">

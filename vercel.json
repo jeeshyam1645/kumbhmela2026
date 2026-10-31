@@ -1,13 +1,15 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/public",
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "https://api.maghmelastays.in/api/$1"
     },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/admin", "destination": "/spa.html" },
+    { "source": "/admin/:path*", "destination": "/spa.html" },
+    { "source": "/profile", "destination": "/spa.html" },
+    { "source": "/bookings", "destination": "/spa.html" }
   ],
   "headers": [
     {

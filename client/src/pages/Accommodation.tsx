@@ -4,6 +4,9 @@ import { Loader2, Tent } from "lucide-react";
 import { AccommodationCard } from "@/components/AccommodationCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { mediaForCamp } from "@/lib/campMedia";
+import { Seo } from "@/components/Seo";
+import { lodgingJsonLd } from "@/lib/jsonld";
+import { TENT_OFFERS } from "@/lib/site";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
@@ -19,16 +22,14 @@ export default function Accommodation() {
     },
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen pt-24 pb-12 bg-muted/10">
+      <Seo
+        title="Accommodation | Magh Mela Stays"
+        description="Swiss Cottage, Deluxe Tent, and Dormitory camps for Magh Mela Prayagraj 2026. Attached or shared bathrooms, bedding, and nightly rates from ₹999."
+        path="/accommodation"
+        jsonLd={[lodgingJsonLd()]}
+      />
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
             <h1 className="text-3xl md:text-5xl font-bold font-serif text-primary mb-4">
@@ -40,9 +41,16 @@ export default function Accommodation() {
                 "हमारे प्रीमियम कैंपिंग विकल्पों के साथ कुंभ मेले के दिव्य वातावरण का अनुभव करें। स्वच्छ, सुरक्षित और गर्म।"
             )}
             </p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {TENT_OFFERS.map((offer) => `${offer.name} · ₹${offer.price.toLocaleString("en-IN")}/night`).join(" · ")}
+            </p>
         </div>
 
-        {camps && camps.length > 0 ? (
+        {camps === undefined || isLoading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        ) : camps.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {camps.map((camp) => {
               const fullMediaList = mediaForCamp(camp.nameEn);
