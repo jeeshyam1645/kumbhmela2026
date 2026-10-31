@@ -95,7 +95,7 @@ export const insertUserSchema = createInsertSchema(users).pick({
   name: true,
   mobile: true,
 }).extend({
-  password: z.string().min(6, "Password must be at least 6 characters").optional(),
+  password: z.string().min(8, "Password must be at least 8 characters").optional(),
 });
 export const insertBookingSchema = createInsertSchema(bookings).omit({
   id: true,

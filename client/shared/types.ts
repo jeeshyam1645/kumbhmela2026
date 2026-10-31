@@ -5,7 +5,7 @@ export const insertUserSchema = z.object({
   username: z.string(),
   name: z.string(),
   mobile: z.string().optional(),
-  password: z.string().min(6).optional()
+  password: z.string().min(8, "Password must be at least 8 characters").optional()
 });
 
 export const updateUserSchema = z.object({

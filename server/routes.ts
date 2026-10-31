@@ -1,6 +1,6 @@
-import type { Express } from "express";
+import { Router, type Express } from "express";
 import { createServer, type Server } from "http";
-import { setupAuth } from "./auth";
+import { setupAuth, toPublicUser } from "./auth";
 import { db } from "./db";
 import { 
   users, 
@@ -60,11 +60,11 @@ async function turnstileOk(token: string | undefined) {
 
 // Middleware to check if user is Admin
 function requireAdmin(req: any, res: any, next: any) {
-  const user = req.user as any;
-  if (req.isAuthenticated() && user.role === "admin") {
+  const user = req.user as { role?: string } | undefined;
+  if (req.isAuthenticated?.() && user?.role === "admin") {
     return next();
   }
-  res.status(403).json({ message: "Admin access required" });
+  return res.status(403).json({ message: "Admin access required" });
 }
 
 // Date calculation helper
@@ -259,18 +259,18 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
         .where(eq(users.id, userId))
         .returning();
 
-      res.json(updatedUser);
+      res.json(toPublicUser(updatedUser));
     } catch (error) {
       console.error("Update Profile Error:", error);
       res.status(400).json({ message: "Invalid profile data" });
     }
   });
 
-  // ---------------------------------------------------------
-  // ADMIN ROUTES (Admin Only)
-  // ---------------------------------------------------------
+  // Every handler on this router is behind requireAdmin.
+  const admin = Router();
+  admin.use(requireAdmin);
 
-  app.get("/api/admin/bookings", requireAdmin, async (req, res) => {
+  admin.get("/bookings", async (_req, res) => {
     try {
       const allBookings = await db.select().from(bookings).orderBy(desc(bookings.createdAt));
       res.json(allBookings);
@@ -279,7 +279,7 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
     }
   });
 
-  app.patch("/api/admin/bookings/:id/confirm", requireAdmin, async (req, res) => {
+  admin.patch("/bookings/:id/confirm", async (req, res) => {
     const bookingId = parseInt(req.params.id);
     if (isNaN(bookingId)) return res.status(400).send("Invalid ID");
 
@@ -290,7 +290,7 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
     res.json({ success: true, message: "Booking Confirmed" });
   });
 
-  app.patch("/api/admin/bookings/:id/reject", requireAdmin, async (req, res) => {
+  admin.patch("/bookings/:id/reject", async (req, res) => {
     const bookingId = parseInt(req.params.id);
     if (isNaN(bookingId)) return res.status(400).send("Invalid ID");
 
@@ -301,9 +301,7 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
     res.json({ success: true, message: "Booking Rejected" });
   });
 
-  // --- ADMIN CAMP MANAGEMENT ---
-
-  app.post("/api/admin/camps", requireAdmin, async (req, res) => {
+  admin.post("/camps", async (req, res) => {
     try {
       const data = insertCampSchema.parse(req.body);
       const newCamp = await db.insert(camps).values(data).returning();
@@ -311,22 +309,20 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
     } catch (e) { res.status(400).json({ message: "Invalid Data" }) }
   });
 
-  app.patch("/api/admin/camps/:id", requireAdmin, async (req, res) => {
+  admin.patch("/camps/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     const data = insertCampSchema.partial().parse(req.body);
     await db.update(camps).set(data).where(eq(camps.id, id));
     res.json({ success: true });
   });
 
-  app.delete("/api/admin/camps/:id", requireAdmin, async (req, res) => {
+  admin.delete("/camps/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     await db.delete(camps).where(eq(camps.id, id));
     res.json({ success: true });
   });
 
-  // --- ADMIN PUJA MANAGEMENT ---
-
-  app.post("/api/admin/puja-services", requireAdmin, async (req, res) => {
+  admin.post("/puja-services", async (req, res) => {
     try {
       const data = insertPujaSchema.parse(req.body);
       const newPuja = await db.insert(pujaServices).values(data).returning();
@@ -334,18 +330,20 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
     } catch (e) { res.status(400).json({ message: "Invalid Data" }) }
   });
 
-  app.patch("/api/admin/puja-services/:id", requireAdmin, async (req, res) => {
+  admin.patch("/puja-services/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     const data = insertPujaSchema.partial().parse(req.body);
     await db.update(pujaServices).set(data).where(eq(pujaServices.id, id));
     res.json({ success: true });
   });
 
-  app.delete("/api/admin/puja-services/:id", requireAdmin, async (req, res) => {
+  admin.delete("/puja-services/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     await db.delete(pujaServices).where(eq(pujaServices.id, id));
     res.json({ success: true });
   });
+
+  app.use("/api/admin", admin);
 
   const httpServer = createServer(app);
   return httpServer;
