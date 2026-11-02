@@ -1,5 +1,13 @@
 export const TENT_PHOTO_PLACEHOLDER = "/placeholders/tent.svg";
 
+export const swissCottageMedia = {
+  image: "/media/swiss-cottage.webp",
+  poster: "/media/swiss-cottage-poster.webp",
+  heroVideo: "/media/swiss-cottage-hero.mp4",
+  tour: "/media/swiss-cottage-tour.mp4",
+  alt: "Colourful patterned Swiss Cottage tent at the Magh Mela camp near Sangam, Prayagraj",
+};
+
 export function cloudinaryUrl(url: string) {
   if (!url || !url.includes("res.cloudinary.com/") || !url.includes("/upload/")) return url;
   if (url.includes("/upload/f_auto")) return url;
@@ -10,7 +18,7 @@ export function isVideoUrl(url: string) {
   return /\.(mp4|webm|ogg)(\?|$)/i.test(url);
 }
 
-/** TODO(owner): replace the placeholder with real Swiss Cottage and Deluxe Tent photos. */
+/** Deluxe Tent still needs a real photo. Swiss Cottage uses the local file. */
 export function mediaForCamp(nameEn: string): string[] {
   const name = nameEn.toLowerCase();
   if (name.includes("deluxe")) {
@@ -24,15 +32,13 @@ export function mediaForCamp(nameEn: string): string[] {
     return ["https://res.cloudinary.com/dh7bx2qib/image/upload/v1765948645/shared_image_2_b3je3d.jpg"];
   }
   if (name.includes("swiss")) {
-    return [
-      TENT_PHOTO_PLACEHOLDER,
-      "https://res.cloudinary.com/dh7bx2qib/video/upload/v1766424600/f6ce-6f5d-4077-a2f5-2858495dec39_o4lrrk.mp4",
-    ];
+    return [swissCottageMedia.image];
   }
   return [TENT_PHOTO_PLACEHOLDER];
 }
 
 export function displayImage(nameEn: string, imageUrl?: string | null) {
+  if (nameEn.toLowerCase().includes("swiss")) return swissCottageMedia.image;
   if (imageUrl && !imageUrl.includes("exportersindia.com") && !imageUrl.startsWith("data:")) {
     return cloudinaryUrl(imageUrl);
   }

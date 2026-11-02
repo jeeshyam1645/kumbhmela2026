@@ -60,7 +60,7 @@ export const guestFaqs = [
   },
 ];
 
-export function pageMeta(title: string, description: string, path: string): Metadata {
+export function pageMeta(title: string, description: string, path: string, image = site.ogImage): Metadata {
   const full = title.includes("Magh Mela") ? title : `${title} | ${site.name}`;
   const url = `${site.url}${path}`;
   return {
@@ -73,9 +73,9 @@ export function pageMeta(title: string, description: string, path: string): Meta
       url,
       siteName: site.name,
       type: "website",
-      images: [site.ogImage],
+      images: [image],
     },
-    twitter: { card: "summary_large_image", title: full, description, images: [site.ogImage] },
+    twitter: { card: "summary_large_image", title: full, description, images: [image] },
   };
 }
 
@@ -112,7 +112,8 @@ export function lodgingJsonLd() {
       description: offer.description,
       price: String(offer.price),
       priceCurrency: "INR",
-      url: `${site.url}/accommodation`,
+      url: offer.name === "Swiss Cottage" ? `${site.url}/accommodation/swiss-cottage` : `${site.url}/accommodation`,
+      ...(offer.name === "Swiss Cottage" ? { image: `${site.url}/media/swiss-cottage.webp` } : {}),
       availability: "https://schema.org/LimitedAvailability",
     })),
   };

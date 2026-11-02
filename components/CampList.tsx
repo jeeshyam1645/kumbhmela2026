@@ -13,10 +13,20 @@ export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {camps.map((camp) => (
         <article key={camp.id} className="card overflow-hidden">
-          <img src={displayImage(camp.nameEn, camp.imageUrl)} alt={camp.nameEn} className="h-52 w-full object-cover" />
+          <img
+            src={displayImage(camp.nameEn, camp.imageUrl)}
+            alt={camp.nameEn.toLowerCase().includes("swiss") ? "Colourful patterned Swiss Cottage tent at the Magh Mela camp near Sangam, Prayagraj" : camp.nameEn}
+            className="h-52 w-full object-cover"
+          />
           <div className="space-y-3 p-5">
             <div className="flex items-start justify-between gap-3">
-              <h2 className="font-serif text-2xl">{lang === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn}</h2>
+              <h2 className="font-serif text-2xl">
+                {camp.nameEn.toLowerCase().includes("swiss") ? (
+                  <Link href="/accommodation/swiss-cottage">{lang === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn}</Link>
+                ) : (
+                  lang === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn
+                )}
+              </h2>
               <p className="text-saffron-dark">₹{camp.price.toLocaleString("en-IN")}</p>
             </div>
             <p className="text-sm text-ink/70">{lang === "hi" && camp.descriptionHi ? camp.descriptionHi : camp.descriptionEn}</p>

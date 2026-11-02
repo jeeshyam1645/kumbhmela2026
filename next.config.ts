@@ -12,7 +12,7 @@ const contentSecurityPolicy = [
   "media-src 'self' blob: https://res.cloudinary.com",
   "font-src 'self'",
   "connect-src 'self' https://challenges.cloudflare.com https://api.cloudinary.com https://accounts.google.com",
-  "frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com https://accounts.google.com",
+  "frame-src https://challenges.cloudflare.com https://accounts.google.com",
   "upgrade-insecure-requests",
 ].join("; ");
 

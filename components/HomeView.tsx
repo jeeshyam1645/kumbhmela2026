@@ -1,64 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import type { CampRecord, PujaRecord } from "@/lib/queries";
 import { bathingDates, formatPrayagraj, guestFaqs, site, tentOffers, whatsAppLink } from "@/lib/site";
-import { cloudinaryUrl } from "@/lib/media";
+import { cloudinaryUrl, swissCottageMedia } from "@/lib/media";
 import { CampList } from "./CampList";
 import { useT } from "./Language";
 
-const slides = [
-  {
-    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766417368/WhatsApp_Image_2025-12-20_at_12.41.46_PM_xyhvwm.jpg",
-    en: "Magh Mela 2026: The Sacred Beginning",
-    hi: "माघ मेला 2026: पवित्र शुभारंभ",
-    subEn: "Continuing our family's Bhumi Pujan for the Mela grounds",
-    subHi: "मेला क्षेत्र के भूमि पूजन की पारिवारिक परंपरा",
-  },
-  {
-    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766427144/WhatsApp_Image_2025-12-22_at_11.30.40_PM_pztjau.jpg",
-    en: "Praying for everyone's safety",
-    hi: "सबकी सुरक्षा की प्रार्थना",
-    subEn: "With the administration and police at the Mela",
-    subHi: "मेला प्रशासन और पुलिस के साथ",
-  },
-  {
-    url: "https://res.cloudinary.com/dh7bx2qib/image/upload/v1766055846/knocksense_2025-01-13_jcozh2xg_manoj-chhabra-81_bi4x8l.avif",
-    en: "Your sanctuary at Sangam",
-    hi: "संगम तट पर आपका घर",
-    subEn: "A quiet place to rest after the holy dip",
-    subHi: "स्नान के बाद विश्राम के लिए एक शांत स्थान",
-  },
-];
-
 export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: boolean; pujas: PujaRecord[] }) {
   const { t, lang } = useT();
-  const [slide, setSlide] = useState(0);
-  const current = slides[slide];
   const nextDate = bathingDates.find((item) => new Date(`${item.date}T00:00:00+05:30`).getTime() >= Date.now()) || bathingDates[0];
 
   return (
     <div>
       <section className="relative flex min-h-[78vh] items-end bg-ink text-white">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${cloudinaryUrl(current.url)})` }}
+        <Image
+          src={swissCottageMedia.image}
+          alt={swissCottageMedia.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover max-md:portrait:hidden"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/30" />
-        <div className="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-32">
+        <video
+          className="absolute inset-0 hidden h-full w-full object-cover max-md:portrait:block max-md:portrait:motion-reduce:hidden"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={swissCottageMedia.poster}
+          aria-hidden="true"
+        >
+          <source src={swissCottageMedia.heroVideo} type="video/mp4" />
+        </video>
+        <img
+          src={swissCottageMedia.poster}
+          alt={swissCottageMedia.alt}
+          className="absolute inset-0 hidden h-full w-full object-cover max-md:portrait:motion-reduce:block"
+        />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/35 to-black/30" />
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-32">
           <p className="mb-3 text-sm text-orange-100">Magh Mela 2026 · Prayagraj</p>
-          <h1 className="max-w-3xl font-serif text-4xl leading-tight md:text-6xl">{t(current.en, current.hi)}</h1>
-          <p className="sr-only">{slides.map((item) => item.en).join(". ")}</p>
-          <p className="mt-4 max-w-xl text-lg text-white/85">{t(current.subEn, current.subHi)}</p>
+          <h1 className="max-w-3xl font-serif text-4xl leading-tight md:text-6xl">{t("Your sanctuary at Sangam", "संगम तट पर आपका घर")}</h1>
+          <p className="mt-4 max-w-xl text-lg text-white/85">{t("A colourful Swiss Cottage tent, and a quiet place to rest after the holy dip.", "रंगीन स्विस कॉटेज टेंट, और स्नान के बाद विश्राम के लिए एक शांत स्थान।")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a className="btn-wa" href={whatsAppLink("Namaste, I am interested in Magh Mela 2026 accommodation.")} target="_blank" rel="noopener noreferrer">{t("Plan on WhatsApp", "व्हाट्सएप पर योजना")}</a>
-            <Link className="btn bg-white/15 text-white ring-1 ring-white/40" href="/accommodation">{t("See the tents", "टेंट देखें")}</Link>
-          </div>
-          <div className="mt-8 flex gap-2">
-            {slides.map((item, index) => (
-              <button key={item.en} type="button" aria-label={item.en} onClick={() => setSlide(index)} className={`h-2 rounded-full ${index === slide ? "w-8 bg-saffron" : "w-2 bg-white/60"}`} />
-            ))}
+            <Link className="btn bg-white/15 text-white ring-1 ring-white/40" href="/accommodation/swiss-cottage">{t("See the Swiss Cottage", "स्विस कॉटेज देखें")}</Link>
           </div>
         </div>
       </section>
