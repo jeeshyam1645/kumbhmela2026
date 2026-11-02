@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useT } from "./Language";
+import { useToast } from "./Toast";
 
 export function LoginForm() {
   const { t } = useT();
@@ -12,6 +13,7 @@ export function LoginForm() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const toast = useToast();
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,7 +37,9 @@ export function LoginForm() {
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         setPending(false);
-        setError(body.message || t("Could not create the account.", "खाता नहीं बना।"));
+        const text = body.message || t("Could not create the account.", "खाता नहीं बना।");
+        setError(text);
+        toast(text, "err");
         return;
       }
     }
@@ -43,7 +47,9 @@ export function LoginForm() {
     const result = await signIn("credentials", { username, password, redirect: false, callbackUrl });
     setPending(false);
     if (result?.error) {
-      setError(t("Those details did not match. Google accounts should use the Google button.", "विवरण मेल नहीं खाए। Google खाते के लिए Google बटन का उपयोग करें।"));
+      const text = t("Those details did not match. Google accounts should use the Google button.", "विवरण मेल नहीं खाए। Google खाते के लिए Google बटन का उपयोग करें।");
+      setError(text);
+      toast(text, "err");
       return;
     }
     window.location.href = callbackUrl;

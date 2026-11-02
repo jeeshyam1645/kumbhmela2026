@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useT } from "./Language";
+import { useToast } from "./Toast";
 
 type Profile = {
   name: string;
@@ -19,6 +20,7 @@ export function ProfileEditor({ user }: { user: Profile }) {
   const { t } = useT();
   const [editing, setEditing] = useState(false);
   const [message, setMessage] = useState("");
+  const toast = useToast();
   const [imageUrl, setImageUrl] = useState(user.imageUrl || "");
 
   async function upload(file: File) {
@@ -52,21 +54,25 @@ export function ProfileEditor({ user }: { user: Profile }) {
     });
     const json = await response.json();
     if (!response.ok) {
-      setMessage(json.message || t("Could not save", "सहेजा नहीं जा सका"));
+      const text = json.message || t("Could not save", "सहेजा नहीं जा सका");
+      setMessage(text);
+      toast(text, "err");
       return;
     }
     setEditing(false);
-    setMessage(t("Profile saved.", "प्रोफ़ाइल सहेजी गई।"));
+    const saved = t("Profile saved.", "प्रोफ़ाइल सहेजी गई।");
+    setMessage(saved);
+    toast(saved, "ok");
   }
 
   return (
-    <div className="mx-auto grid max-w-5xl gap-6 px-4 py-24 md:grid-cols-[280px_1fr]">
+    <div className="mx-auto grid max-w-5xl gap-6 px-4 pt-28 pb-16 md:grid-cols-[280px_1fr]">
       <aside className="card p-6 text-center">
         <div className="mx-auto h-28 w-28 overflow-hidden rounded-full bg-orange-100">
           {imageUrl ? <img src={imageUrl} alt="" className="h-full w-full object-cover" /> : <span className="grid h-full place-items-center font-serif text-3xl">{user.name.slice(0, 1)}</span>}
         </div>
         <h1 className="mt-4 font-serif text-2xl">{user.name}</h1>
-        <p className="text-sm text-ink/60">{user.username}</p>
+        <p className="text-sm text-ink/80">{user.username}</p>
         <p className="mt-3 text-sm">{user.mobile || t("No mobile yet", "मोबाइल नहीं")}</p>
       </aside>
       <form onSubmit={save} className="card space-y-3 p-6">

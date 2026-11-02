@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
+import { SoftImage } from "@/components/SoftImage";
 import { swissCottageMedia } from "@/lib/media";
 import { pageMeta, site, whatsAppLink } from "@/lib/site";
 
@@ -27,20 +27,13 @@ const jsonLd = {
 
 export default function SwissCottagePage() {
   return (
-    <article className="mx-auto max-w-5xl px-4 py-24">
+    <article className="mx-auto max-w-5xl px-4 pt-28 pb-16">
       <JsonLd data={jsonLd} />
       <p className="text-sm text-saffron-dark">Magh Mela 2026 · Prayagraj</p>
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">Swiss Cottage</h1>
       <p className="mt-3 max-w-2xl text-ink/75">A colourful patterned tent for two or three guests, with an attached bathroom. The quote is confirmed on a call.</p>
-      <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-2xl">
-        <Image
-          src={swissCottageMedia.image}
-          alt={swissCottageMedia.alt}
-          fill
-          priority
-          sizes="(min-width: 1024px) 960px, 100vw"
-          className="object-cover"
-        />
+      <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-2xl bg-soft">
+        <SoftImage src={swissCottageMedia.image} alt={swissCottageMedia.alt} className="h-full w-full object-cover" />
       </div>
       <section className="mt-12">
         <h2 className="font-serif text-3xl">Video tour</h2>

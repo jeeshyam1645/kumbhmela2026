@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import type { CampRecord } from "@/lib/queries";
 import { campAlt, displayImage } from "@/lib/media";
+import { SoftImage } from "./SoftImage";
+import { useToast } from "./Toast";
 import { useT } from "./Language";
 
 export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }) {
@@ -13,7 +15,7 @@ export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {camps.map((camp) => (
         <article key={camp.id} className="card overflow-hidden">
-          <img
+          <SoftImage
             src={displayImage(camp.nameEn, camp.imageUrl)}
             alt={campAlt(camp.nameEn)}
             className="h-52 w-full object-cover"
@@ -29,7 +31,7 @@ export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }
               </h2>
             </div>
             <p className="text-sm text-ink/70">{lang === "hi" && camp.descriptionHi ? camp.descriptionHi : camp.descriptionEn}</p>
-            <p className="text-xs uppercase tracking-wide text-ink/50">{camp.capacity}</p>
+            <p className="text-xs uppercase tracking-wide text-ink/75">{camp.capacity}</p>
             {live && camp.id > 0 ? <CallbackForm camp={camp} /> : (
               <Link className="btn-primary w-full" href={`/contact?tent=${encodeURIComponent(camp.nameEn)}`}>{t("Send enquiry", "पूछताछ भेजें")}</Link>
             )}
@@ -46,6 +48,7 @@ function CallbackForm({ camp }: { camp: CampRecord }) {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
+  const toast = useToast();
 
   if (!data?.user) {
     return <Link className="btn-primary w-full" href={`/contact?tent=${encodeURIComponent(camp.nameEn)}`}>{t("Send enquiry", "पूछताछ भेजें")}</Link>;
@@ -71,7 +74,9 @@ function CallbackForm({ camp }: { camp: CampRecord }) {
     setPending(false);
     if (!response.ok) {
       const body = await response.json().catch(() => ({}));
-      setMessage(body.message || t("Could not save the request.", "अनुरोध सहेजा नहीं जा सका।"));
+      const text = body.message || t("Could not save the request.", "अनुरोध सहेजा नहीं जा सका।");
+      setMessage(text);
+      toast(text, "err");
       return;
     }
     window.location.href = "/bookings";

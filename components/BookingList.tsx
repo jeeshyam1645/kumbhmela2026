@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { CampRecord } from "@/lib/queries";
 import { displayImage } from "@/lib/media";
 import { useT } from "./Language";
+import { useToast } from "./Toast";
 
 type Row = {
   id: number;
@@ -21,19 +22,23 @@ export function BookingList({ bookings, camps }: { bookings: Row[]; camps: CampR
   const { t, lang } = useT();
   const [rows, setRows] = useState(bookings);
   const [message, setMessage] = useState("");
+  const toast = useToast();
 
   async function cancel(id: number) {
     const response = await fetch(`/api/bookings/${id}/cancel`, { method: "PATCH" });
     const body = await response.json().catch(() => ({}));
     if (!response.ok) {
-      setMessage(body.message || t("Could not cancel", "रद्द नहीं हो सका"));
+      const text = body.message || t("Could not cancel", "रद्द नहीं हो सका");
+      setMessage(text);
+      toast(text, "err");
       return;
     }
+    toast(t("Request cancelled.", "अनुरोध रद्द हो गया।"), "ok");
     setRows((current) => current.map((row) => row.id === id ? { ...row, status: "cancelled" } : row));
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-24">
+    <div className="mx-auto max-w-4xl px-4 pt-28 pb-16">
       <h1 className="font-serif text-4xl">{t("My bookings", "मेरी बुकिंग")}</h1>
       <p className="mt-2 text-sm text-ink/70">{t("Callback requests you have already sent.", "आपके भेजे हुए कॉलबैक अनुरोध।")}</p>
       {message && <p className="mt-4 text-sm text-red-700">{message}</p>}
@@ -51,7 +56,7 @@ export function BookingList({ bookings, camps }: { bookings: Row[]; camps: CampR
                 {row.status !== "cancelled" && row.status !== "confirmed" && (
                   <button className="btn-ghost mt-3" type="button" onClick={() => cancel(row.id)}>{t("Cancel request", "अनुरोध रद्द करें")}</button>
                 )}
-                {row.status === "confirmed" && <p className="mt-2 text-xs text-ink/60">{t("Confirmed stays: please call us to change plans.", "पुष्ट प्रवास बदलने के लिए कॉल करें।")}</p>}
+                {row.status === "confirmed" && <p className="mt-2 text-xs text-ink/80">{t("Confirmed stays: please call us to change plans.", "पुष्ट प्रवास बदलने के लिए कॉल करें।")}</p>}
               </div>
             </article>
           );

@@ -11,7 +11,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const params = await searchParams;
   const note = params.puja ? `I would like to know more about ${params.puja}.` : "";
   return (
-    <div className="mx-auto grid max-w-6xl gap-8 px-4 py-24 lg:grid-cols-[1.4fr_0.8fr]">
+    <div className="mx-auto grid max-w-6xl gap-8 px-4 pt-28 pb-16 lg:grid-cols-[1.4fr_0.8fr]">
       <div>
         <h1 className="font-serif text-4xl">Contact us</h1>
         <p className="mt-3 text-ink/70">No login needed. Share your dates and tent, and the team aims to call within 2 hours.</p>
@@ -24,7 +24,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
         <a className="block" href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
         <a className="block" href={`mailto:${site.email}`}>{site.email}</a>
         <p>Near Sangam, Prayagraj, Uttar Pradesh</p>
-        <p className="text-ink/60">Satvik meals, guarded compound, and purohit arrangements are part of the stay.</p>
+        <p className="text-ink/80">Satvik meals, guarded compound, and purohit arrangements are part of the stay.</p>
       </aside>
     </div>
   );

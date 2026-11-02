@@ -8,9 +8,9 @@ export const metadata = pageMeta(
 
 export default function TermsPage() {
   return (
-    <article className="mx-auto max-w-3xl px-4 py-24">
+    <article className="mx-auto max-w-3xl px-4 pt-28 pb-16">
       <h1 className="font-serif text-4xl">Terms and cancellation</h1>
-      <p className="mt-2 text-sm text-ink/60">Last updated: December 2024</p>
+      <p className="mt-2 text-sm text-ink/80">Last updated: December 2024</p>
       <h2 className="mt-8 font-serif text-2xl">Booking</h2>
       <ul className="mt-3 list-disc space-y-2 pl-5 text-sm">
         <li>Bookings depend on availability and a confirmation call.</li>

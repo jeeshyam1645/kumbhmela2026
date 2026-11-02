@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { CampRecord, PujaRecord } from "@/lib/queries";
 import { useT } from "./Language";
+import { useToast } from "./Toast";
 
 type BookingRow = {
   id: number;
@@ -24,6 +25,7 @@ export function AdminPanel() {
   const [camps, setCamps] = useState<CampRecord[]>([]);
   const [pujas, setPujas] = useState<PujaRecord[]>([]);
   const [message, setMessage] = useState("");
+  const toast = useToast();
 
   async function load() {
     const [bookingRes, campRes, pujaRes] = await Promise.all([
@@ -42,15 +44,18 @@ export function AdminPanel() {
     const response = await fetch(url, { method });
     if (!response.ok) {
       const body = await response.json().catch(() => ({}));
-      setMessage(body.message || "Request failed");
+      const text = body.message || "Request failed";
+      setMessage(text);
+      toast(text, "err");
       return;
     }
     setMessage("");
+    toast("Saved", "ok");
     await load();
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-24">
+    <div className="mx-auto max-w-6xl px-4 pt-28 pb-16">
       <h1 className="font-serif text-4xl">{t("Admin", "प्रशासन")}</h1>
       <div className="mt-4 flex gap-2 text-sm">
         {(["bookings", "camps", "pujas"] as const).map((item) => (
@@ -66,7 +71,7 @@ export function AdminPanel() {
             <tbody>
               {bookings.map((row) => (
                 <tr key={row.id} className="border-b border-orange-100">
-                  <td className="py-3">{row.guestName}<div className="text-xs text-ink/50">{row.mobile}</div></td>
+                  <td className="py-3">{row.guestName}<div className="text-xs text-ink/75">{row.mobile}</div></td>
                   <td>{row.checkIn} → {row.checkOut}<div className="text-xs">{row.guestCount} guests</div></td>
                   <td className="capitalize">{row.status}</td>
                   <td>{row.bookingType}</td>

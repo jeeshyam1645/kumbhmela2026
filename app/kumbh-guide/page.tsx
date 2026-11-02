@@ -18,7 +18,7 @@ const rituals = [
 
 export default function GuidePage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-24">
+    <div className="mx-auto max-w-4xl px-4 pt-28 pb-16">
       <JsonLd data={{ "@context": "https://schema.org", "@graph": [eventJsonLd()] }} />
       <h1 className="font-serif text-4xl">Kumbh and Magh Mela guide</h1>
       <p className="mt-4 text-ink/75">Magh Mela is the annual gathering at the Sangam of Ganga, Yamuna, and the mythical Saraswati in Prayagraj. Every 12 years it becomes the Kumbh, and every 6 years the Ardh Kumbh. A holy dip on the bathing dates is believed to cleanse a lifetime.</p>

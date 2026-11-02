@@ -8,7 +8,7 @@ export const metadata = pageMeta(
 
 export default function CreditsPage() {
   return (
-    <article className="mx-auto max-w-3xl px-4 py-24">
+    <article className="mx-auto max-w-3xl px-4 pt-28 pb-16">
       <h1 className="font-serif text-4xl">Photo credits</h1>
       <p className="mt-4 text-ink/75">
         The Swiss Cottage photograph and its video tour were taken for this camp. The Deluxe Tent and Dormitory cards use photographs of tents at the 2019 Prayagraj Kumbh Mela. Those two pictures were resized and saved as WebP.

@@ -2,15 +2,19 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         saffron: {
-          DEFAULT: "#e07a1f",
-          dark: "#b85d10",
+          DEFAULT: "#9a4510",
+          dark: "rgb(var(--accent) / <alpha-value>)",
         },
-        cream: "#fffaf3",
-        ink: "#3a2416",
+        cream: "rgb(var(--cream) / <alpha-value>)",
+        ink: "rgb(var(--ink) / <alpha-value>)",
+        paper: "rgb(var(--paper) / <alpha-value>)",
+        line: "rgb(var(--line) / <alpha-value>)",
+        soft: "rgb(var(--soft) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "sans-serif"],

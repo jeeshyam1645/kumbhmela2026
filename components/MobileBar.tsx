@@ -13,9 +13,9 @@ export function MobileBar() {
     "नमस्ते, मैं माघ मेला 2026 में ठहरने के बारे में पूछताछ करना चाहता हूँ।",
   ));
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 flex border-t border-orange-200 bg-white md:hidden">
-      <a href={`tel:${site.phone}`} className="flex-1 py-3 text-center text-sm font-semibold text-saffron-dark">{t("Call", "कॉल")}</a>
-      <a href={href} target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#25D366] py-3 text-center text-sm font-semibold text-white">WhatsApp</a>
+    <div className="fixed inset-x-0 bottom-0 z-50 flex border-t border-line bg-paper md:hidden">
+      <a href={`tel:${site.phone}`} className="flex min-h-12 flex-1 items-center justify-center text-sm font-semibold text-saffron-dark active:bg-soft">{t("Call", "कॉल")}</a>
+      <a href={href} target="_blank" rel="noopener noreferrer" className="flex min-h-12 flex-1 items-center justify-center bg-[#075e54] text-sm font-semibold text-white active:bg-[#064e46]">WhatsApp</a>
     </div>
   );
 }

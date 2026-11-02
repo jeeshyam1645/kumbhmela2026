@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="px-4 py-24">
+    <div className="px-4 pt-28 pb-16">
       <Suspense>
         <LoginForm />
       </Suspense>

@@ -14,7 +14,7 @@ const people = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-24">
+    <div className="mx-auto max-w-5xl px-4 pt-28 pb-16">
       <h1 className="text-center font-serif text-5xl">Atithi Devo Bhava</h1>
       <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-ink/70">A Prayagraj family hosting pilgrims near Sangam, with bedding for the January cold and a guarded compound.</p>
       <div className="mt-10 grid gap-8 md:grid-cols-2">

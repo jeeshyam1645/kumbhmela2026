@@ -8,9 +8,9 @@ export const metadata = pageMeta(
 
 export default function PrivacyPage() {
   return (
-    <article className="prose mx-auto max-w-3xl px-4 py-24">
+    <article className="prose mx-auto max-w-3xl px-4 pt-28 pb-16">
       <h1 className="font-serif text-4xl">Privacy policy</h1>
-      <p className="text-sm text-ink/60">Last updated: December 2024</p>
+      <p className="text-sm text-ink/80">Last updated: December 2024</p>
       <h2 className="mt-8 font-serif text-2xl">1. Information we collect</h2>
       <p>When you enquire or create an account we collect your name, mobile number, dates, guest count, tent preference, and any ritual request you write.</p>
       <h2 className="mt-8 font-serif text-2xl">2. How we use it</h2>

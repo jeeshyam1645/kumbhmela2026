@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { site, tentOptions, whatsAppLink } from "@/lib/site";
 import { useT } from "./Language";
+import { useToast } from "./Toast";
 
 export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTent?: string; defaultNote?: string }) {
   const { t } = useT();
@@ -20,6 +21,7 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
   });
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const toast = useToast();
   const turnstileKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   useEffect(() => {
     if (!turnstileKey || document.querySelector("script[src*='turnstile']")) return;
@@ -48,7 +50,9 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
     event.preventDefault();
     setError("");
     if (form.checkOut <= form.checkIn) {
-      setError(t("Check-out must be after check-in.", "चेक-आउट चेक-इन के बाद होना चाहिए।"));
+      const text = t("Check-out must be after check-in.", "चेक-आउट चेक-इन के बाद होना चाहिए।");
+      setError(text);
+      toast(text, "err");
       return;
     }
     setPending(true);
@@ -71,9 +75,12 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
     setPending(false);
     if (!response.ok) {
       const body = await response.json().catch(() => ({}));
-      setError(body.message || t("Could not send. Use WhatsApp.", "नहीं भेजा जा सका। व्हाट्सएप करें।"));
+      const text = body.message || t("Could not send. Use WhatsApp.", "नहीं भेजा जा सका। व्हाट्सएप करें।");
+      setError(text);
+      toast(text, "err");
       return;
     }
+    toast(t("Enquiry sent.", "पूछताछ भेज दी गई।"), "ok");
     router.push(`/thank-you?name=${encodeURIComponent(form.name)}`);
   }
 
@@ -119,7 +126,7 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
         <button className="btn-primary flex-1" disabled={pending} type="submit">{pending ? t("Sending…", "भेज रहे हैं…") : t("Send enquiry", "पूछताछ भेजें")}</button>
         <a className="btn-wa flex-1" href={whatsAppLink(message)} target="_blank" rel="noopener noreferrer">{t("WhatsApp these details", "ये विवरण व्हाट्सएप करें")}</a>
       </div>
-      <p className="text-xs text-ink/50">{t("Or call", "या कॉल करें")} {site.phoneDisplay}</p>
+      <p className="text-xs text-ink/75">{t("Or call", "या कॉल करें")} {site.phoneDisplay}</p>
     </form>
   );
 }

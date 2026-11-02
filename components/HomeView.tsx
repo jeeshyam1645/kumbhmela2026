@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { CampRecord, PujaRecord } from "@/lib/queries";
@@ -10,18 +11,20 @@ import { useT } from "./Language";
 
 export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: boolean; pujas: PujaRecord[] }) {
   const { t, lang } = useT();
+  const [heroReady, setHeroReady] = useState(false);
   const nextDate = bathingDates.find((item) => new Date(`${item.date}T00:00:00+05:30`).getTime() >= Date.now()) || bathingDates[0];
 
   return (
     <div>
-      <section className="relative flex min-h-[78vh] items-end bg-ink text-white">
+      <section className="hero relative flex min-h-[78vh] items-end bg-[#140e09] text-white">
         <Image
           src={swissCottageMedia.image}
           alt={swissCottageMedia.alt}
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center max-md:portrait:object-[center_60%]"
+          onLoad={() => setHeroReady(true)}
+          className={`object-cover object-center transition duration-700 max-md:portrait:object-[center_60%] motion-reduce:blur-0 motion-reduce:transition-none ${heroReady ? "opacity-100 blur-0" : "opacity-80 blur-sm"}`}
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/75 to-black/25" />
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-32">
@@ -59,7 +62,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
         <CampList camps={camps.slice(0, 3)} live={live} />
       </section>
 
-      <section className="bg-orange-50/70 py-14">
+      <section id="stays" className="scroll-mt-28 bg-soft py-14">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="font-serif text-3xl">{t("Vedic rituals", "वैदिक अनुष्ठान")}</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -81,7 +84,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
           {bathingDates.map((item) => (
             <div key={item.date} className={`card p-4 text-center ${item.importance === "highest" ? "ring-2 ring-saffron" : ""}`}>
               <p className="font-serif text-3xl text-saffron-dark">{formatPrayagraj(item.date, "en-IN", { day: "numeric" })}</p>
-              <p className="text-xs uppercase text-ink/50">{formatPrayagraj(item.date, "en-IN", { month: "short" })}</p>
+              <p className="text-xs uppercase text-ink/75">{formatPrayagraj(item.date, "en-IN", { month: "short" })}</p>
               <p className="mt-2 text-sm">{t(item.nameEn, item.nameHi)}</p>
             </div>
           ))}

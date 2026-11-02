@@ -7,7 +7,7 @@ import { useT } from "./Language";
 export function Footer() {
   const { t } = useT();
   return (
-    <footer className="bg-ink text-orange-50">
+    <footer className="bg-[#24160f] text-[#f6e7d4]">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-4">
         <div>
           <p className="font-serif text-xl">Magh Mela 2026</p>
