@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lora, Poppins } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -14,8 +14,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: "Magh Mela Camp Booking - Prayagraj 2027",
   description: "Book Swiss Cottage, Deluxe Tent, and Dormitory stays near Sangam for Magh Mela Prayagraj 2027.",
-  icons: { icon: "/favicon.png" },
   openGraph: { images: [site.ogImage] },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#9a4510" },
+    { media: "(prefers-color-scheme: dark)", color: "#160f0a" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
