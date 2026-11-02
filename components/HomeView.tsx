@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { CampRecord, PujaRecord } from "@/lib/queries";
-import { bathingDates, formatPrayagraj, guestFaqs, site, tentOffers, whatsAppLink } from "@/lib/site";
+import { bathingDates, bathingDatesNote, formatPrayagraj, guestFaqs, site, tentOffers, whatsAppLink } from "@/lib/site";
 import { cloudinaryUrl, swissCottageMedia } from "@/lib/media";
 import { CampList } from "./CampList";
 import { useT } from "./Language";
@@ -28,11 +28,11 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/75 to-black/25" />
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-32">
-          <p className="mb-3 text-sm text-orange-100">Magh Mela 2026 · Prayagraj</p>
+          <p className="mb-3 text-sm text-orange-100">{t("Magh Mela 2027 · Prayagraj", "माघ मेला 2027 · प्रयागराज")}</p>
           <h1 className="max-w-3xl font-serif text-4xl leading-tight md:text-6xl">{t("Your sanctuary at Sangam", "संगम तट पर आपका घर")}</h1>
           <p className="mt-4 max-w-xl text-lg text-white/85">{t("A colourful Swiss Cottage tent, and a quiet place to rest after the holy dip.", "रंगीन स्विस कॉटेज टेंट, और स्नान के बाद विश्राम के लिए एक शांत स्थान।")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a className="btn-wa" href={whatsAppLink("Namaste, I am interested in Magh Mela 2026 accommodation.")} target="_blank" rel="noopener noreferrer">{t("Plan on WhatsApp", "व्हाट्सएप पर योजना")}</a>
+            <a className="btn-wa" href={whatsAppLink(t("Namaste, I am interested in Magh Mela 2027 accommodation.", "नमस्ते, मुझे माघ मेला 2027 के आवास में रुचि है।"))} target="_blank" rel="noopener noreferrer">{t("Plan on WhatsApp", "व्हाट्सएप पर योजना")}</a>
             <Link className="btn bg-white/15 text-white ring-1 ring-white/40" href="/accommodation/swiss-cottage">{t("See the Swiss Cottage", "स्विस कॉटेज देखें")}</Link>
           </div>
         </div>
@@ -80,6 +80,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
       <section className="mx-auto max-w-6xl px-4 py-14">
         <h2 className="font-serif text-3xl">{t("Bathing dates", "स्नान तिथियाँ")}</h2>
         <p className="mt-2 text-sm text-ink/70">{t("Next:", "अगली:")} {t(nextDate.nameEn, nextDate.nameHi)} · {formatPrayagraj(nextDate.date, lang === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short" })}</p>
+        <p className="mt-2 max-w-3xl text-sm text-ink/70">{t(bathingDatesNote.en, bathingDatesNote.hi)}</p>
         <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-6">
           {bathingDates.map((item) => (
             <div key={item.date} className={`card p-4 text-center ${item.importance === "highest" ? "ring-2 ring-saffron" : ""}`}>

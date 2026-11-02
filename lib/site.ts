@@ -19,13 +19,18 @@ export const tentOffers = [
 export const tentOptions = [...tentOffers.map((tent) => tent.name), "Not sure yet"];
 
 export const bathingDates = [
-  { date: "2026-01-03", nameEn: "Paush Purnima (Start)", nameHi: "पौष पूर्णिमा (आरंभ)", importance: "high" },
-  { date: "2026-01-14", nameEn: "Makar Sankranti", nameHi: "मकर संक्रांति", importance: "high" },
-  { date: "2026-01-18", nameEn: "Mauni Amavasya", nameHi: "मौनी अमावस्या", importance: "highest" },
-  { date: "2026-01-23", nameEn: "Basant Panchami", nameHi: "बसंत पंचमी", importance: "high" },
-  { date: "2026-02-01", nameEn: "Maghi Purnima", nameHi: "माघी पूर्णिमा", importance: "high" },
-  { date: "2026-02-15", nameEn: "Maha Shivaratri", nameHi: "महा शिवरात्रि", importance: "highest" },
+  { date: "2027-01-15", nameEn: "Makar Sankranti", nameHi: "मकर संक्रांति", importance: "high" },
+  { date: "2027-01-22", nameEn: "Paush Purnima", nameHi: "पौष पूर्णिमा", importance: "high" },
+  { date: "2027-02-06", nameEn: "Mauni Amavasya", nameHi: "मौनी अमावस्या", importance: "highest" },
+  { date: "2027-02-11", nameEn: "Basant Panchami", nameHi: "बसंत पंचमी", importance: "high" },
+  { date: "2027-02-20", nameEn: "Maghi Purnima", nameHi: "माघी पूर्णिमा", importance: "high" },
+  { date: "2027-03-06", nameEn: "Maha Shivaratri", nameHi: "महा शिवरात्रि", importance: "highest" },
 ] as const;
+
+export const bathingDatesNote = {
+  en: "These dates follow the panchang and the Prayagraj Mela Authority schedule announced in the press. Confirm them with the official mela schedule before you travel.",
+  hi: "ये तिथियाँ पंचांग और प्रेस में घोषित प्रयागराज मेला प्राधिकरण कार्यक्रम के अनुसार हैं। यात्रा से पहले आधिकारिक मेला कार्यक्रम से पुष्टि करें।",
+};
 
 export const guestFaqs = [
   {
@@ -119,9 +124,9 @@ export function lodgingJsonLd() {
 export function eventJsonLd() {
   return {
     "@type": "Event",
-    name: "Magh Mela 2026",
-    startDate: "2026-01-03",
-    endDate: "2026-02-15",
+    name: "Magh Mela 2027",
+    startDate: "2027-01-15",
+    endDate: "2027-03-06",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
     location: {
@@ -134,7 +139,7 @@ export function eventJsonLd() {
         addressCountry: "IN",
       },
     },
-    description: "Magh Mela 2026 at the Sangam in Prayagraj, from Paush Purnima on 3 January through Maha Shivaratri on 15 February.",
+    description: "Magh Mela 2027 at the Sangam in Prayagraj, from Makar Sankranti on 15 January through Maha Shivaratri on 6 March.",
     organizer: { "@type": "Organization", name: site.name, url: site.url, telephone: site.phone },
   };
 }

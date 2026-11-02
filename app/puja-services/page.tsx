@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/site";
 
 export const metadata = pageMeta(
   "Puja Services | Magh Mela Stays",
-  "Arrange sankalp, Ganga pujan, and other vedic rituals at Sangam during Magh Mela 2026.",
+  "Arrange sankalp, Ganga pujan, and other vedic rituals at Sangam during Magh Mela 2027.",
   "/puja-services",
 );
 

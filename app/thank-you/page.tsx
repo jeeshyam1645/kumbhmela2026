@@ -2,7 +2,7 @@ import Link from "next/link";
 import { pageMeta } from "@/lib/site";
 
 export const metadata = {
-  ...pageMeta("Thank you | Magh Mela Stays", "Your Magh Mela 2026 enquiry has been received.", "/thank-you"),
+  ...pageMeta("Thank you | Magh Mela Stays", "Your Magh Mela 2027 enquiry has been received.", "/thank-you"),
   robots: { index: false, follow: false },
 };
 

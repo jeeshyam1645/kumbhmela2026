@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/site";
 
 export const metadata = pageMeta(
   "About Us | Magh Mela Stays",
-  "The Prayagraj family hosting Magh Mela 2026 camps near Sangam, including Acharya Rajendra Mishra.",
+  "The Prayagraj family hosting Magh Mela 2027 camps near Sangam, including Acharya Rajendra Mishra.",
   "/about-us",
 );
 

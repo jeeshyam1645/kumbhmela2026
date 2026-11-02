@@ -5,7 +5,7 @@ import { swissCottageMedia } from "@/lib/media";
 import { pageMeta, site, whatsAppLink } from "@/lib/site";
 
 const image = `${site.url}${swissCottageMedia.image}`;
-const description = "Swiss Cottage tent with a colourful patterned canopy and an attached bathroom, near Sangam for Magh Mela Prayagraj 2026.";
+const description = "Swiss Cottage tent with a colourful patterned canopy and an attached bathroom, near Sangam for Magh Mela Prayagraj 2027.";
 
 export const metadata = pageMeta("Swiss Cottage | Magh Mela Stays", description, "/accommodation/swiss-cottage", image);
 
@@ -29,7 +29,7 @@ export default function SwissCottagePage() {
   return (
     <article className="mx-auto max-w-5xl px-4 pt-28 pb-16">
       <JsonLd data={jsonLd} />
-      <p className="text-sm text-saffron-dark">Magh Mela 2026 · Prayagraj</p>
+      <p className="text-sm text-saffron-dark">Magh Mela 2027 · Prayagraj</p>
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">Swiss Cottage</h1>
       <p className="mt-3 max-w-2xl text-ink/75">A colourful patterned tent for two or three guests, with an attached bathroom. The quote is confirmed on a call.</p>
       <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-2xl bg-soft">
@@ -50,7 +50,7 @@ export default function SwissCottagePage() {
       </section>
       <div className="mt-8 flex flex-wrap gap-3">
         <Link className="btn-primary" href="/contact?tent=Swiss%20Cottage">Send an enquiry</Link>
-        <a className="btn-wa" href={whatsAppLink("Namaste, I would like to know about the Swiss Cottage tent for Magh Mela 2026.")}>WhatsApp</a>
+        <a className="btn-wa" href={whatsAppLink("Namaste, I would like to know about the Swiss Cottage tent for Magh Mela 2027.")}>WhatsApp</a>
       </div>
     </article>
   );

@@ -3,7 +3,7 @@ import { pageMeta, site } from "@/lib/site";
 
 export const metadata = pageMeta(
   "Contact | Magh Mela Stays",
-  "Enquire without an account for a Magh Mela 2026 camp. Call or WhatsApp +91 99363 99677.",
+  "Enquire without an account for a Magh Mela 2027 camp. Call or WhatsApp +91 99363 99677.",
   "/contact",
 );
 

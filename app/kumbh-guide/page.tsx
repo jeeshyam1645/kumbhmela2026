@@ -1,9 +1,9 @@
 import { JsonLd } from "@/components/JsonLd";
-import { bathingDates, eventJsonLd, formatPrayagraj, pageMeta } from "@/lib/site";
+import { bathingDates, bathingDatesNote, eventJsonLd, formatPrayagraj, pageMeta } from "@/lib/site";
 
 export const metadata = pageMeta(
-  "Kumbh Guide | Magh Mela 2026",
-  "Bathing dates and rituals for Magh Mela Prayagraj 2026, from Paush Purnima on 3 January through Maha Shivaratri on 15 February.",
+  "Kumbh Guide | Magh Mela 2027",
+  "Bathing dates and rituals for Magh Mela Prayagraj 2027, from Makar Sankranti on 15 January through Maha Shivaratri on 6 March.",
   "/kumbh-guide",
 );
 
@@ -22,7 +22,8 @@ export default function GuidePage() {
       <JsonLd data={{ "@context": "https://schema.org", "@graph": [eventJsonLd()] }} />
       <h1 className="font-serif text-4xl">Kumbh and Magh Mela guide</h1>
       <p className="mt-4 text-ink/75">Magh Mela is the annual gathering at the Sangam of Ganga, Yamuna, and the mythical Saraswati in Prayagraj. Every 12 years it becomes the Kumbh, and every 6 years the Ardh Kumbh. A holy dip on the bathing dates is believed to cleanse a lifetime.</p>
-      <h2 className="mt-10 font-serif text-3xl">Bathing dates, 2026</h2>
+      <h2 className="mt-10 font-serif text-3xl">Bathing dates, 2027</h2>
+      <p className="mt-3 text-sm text-ink/70">{bathingDatesNote.en}</p>
       <table className="mt-4 w-full text-left text-sm">
         <thead><tr className="border-b"><th className="py-2">Date</th><th>Festival</th><th>Hindi</th></tr></thead>
         <tbody>

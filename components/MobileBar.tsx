@@ -9,8 +9,8 @@ export function MobileBar() {
   const { t } = useT();
   if (pathname === "/thank-you") return null;
   const href = whatsAppLink(t(
-    "Namaste, I would like to enquire about a Magh Mela 2026 stay.",
-    "नमस्ते, मैं माघ मेला 2026 में ठहरने के बारे में पूछताछ करना चाहता हूँ।",
+    "Namaste, I would like to enquire about a Magh Mela 2027 stay.",
+    "नमस्ते, मैं माघ मेला 2027 में ठहरने के बारे में पूछताछ करना चाहता हूँ।",
   ));
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 flex border-t border-line bg-paper md:hidden">

@@ -32,7 +32,7 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
   }, [turnstileKey]);
 
   const message = [
-    "Namaste, I would like to enquire about a Magh Mela 2026 stay.",
+    "Namaste, I would like to enquire about a Magh Mela 2027 stay.",
     `Name: ${form.name}`,
     `Phone: +91 ${form.mobile}`,
     `Tent: ${form.tentType}`,
