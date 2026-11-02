@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --ink: 58 36 22;
+  --cream: 255 250 243;
+  --paper: 255 255 255;
+  --line: 236 214 188;
+  --soft: 255 244 230;
+  --accent: 122 53 8;
+  --danger: 153 27 27;
+}
+
+.dark {
+  color-scheme: dark;
+  --ink: 250 240 228;
+  --cream: 22 15 10;
+  --paper: 42 28 18;
+  --line: 96 68 46;
+  --soft: 54 36 24;
+  --accent: 255 204 154;
+  --danger: 254 202 202;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background: rgb(var(--cream));
+  color: rgb(var(--ink));
+}
+
+h1,
+h2,
+h3 {
+  scroll-margin-top: 5.5rem;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition duration-150;
+    @apply hover:brightness-110 active:scale-[0.98] active:brightness-95;
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-saffron;
+    @apply disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100;
+  }
+  .btn-primary {
+    @apply btn bg-saffron text-white;
+  }
+  .btn-wa {
+    @apply btn bg-[#075e54] text-white hover:bg-[#064e46];
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-paper text-ink hover:bg-soft;
+  }
+  .field {
+    @apply min-h-11 w-full rounded-xl border border-line bg-paper px-3 py-2.5 text-sm text-ink outline-none;
+    @apply focus-visible:border-saffron focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-saffron;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-paper text-ink shadow-sm transition duration-200;
+    @apply hover:-translate-y-0.5 hover:shadow-md;
+  }
+  .link {
+    @apply rounded-sm text-saffron-dark underline-offset-2 hover:underline;
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-saffron;
+  }
+}
+
+[data-reveal].reveal-wait {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.dark .text-red-700 {
+  color: rgb(var(--danger));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .btn,
+  .card,
+  [data-reveal].reveal-wait,
+  [data-reveal].is-in {
+    transform: none;
+    transition: none;
+    opacity: 1;
+  }
+  .btn:active {
+    transform: none;
+  }
+}
