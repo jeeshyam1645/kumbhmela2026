@@ -3,7 +3,6 @@ export const TENT_PHOTO_PLACEHOLDER = "/placeholders/tent.svg";
 export const swissCottageMedia = {
   image: "/media/swiss-cottage.webp",
   poster: "/media/swiss-cottage-poster.webp",
-  heroVideo: "/media/swiss-cottage-hero.mp4",
   tour: "/media/swiss-cottage-tour.mp4",
   alt: "Colourful patterned Swiss Cottage tent at the Magh Mela camp near Sangam, Prayagraj",
 };

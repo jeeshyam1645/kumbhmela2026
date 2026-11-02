@@ -21,26 +21,9 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
           fill
           priority
           sizes="100vw"
-          className="object-cover max-md:portrait:hidden"
+          className="object-cover object-center max-md:portrait:object-[center_60%]"
         />
-        <video
-          className="absolute inset-0 hidden h-full w-full object-cover max-md:portrait:block max-md:portrait:motion-reduce:hidden"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={swissCottageMedia.poster}
-          aria-hidden="true"
-        >
-          <source src={swissCottageMedia.heroVideo} type="video/mp4" />
-        </video>
-        <img
-          src={swissCottageMedia.poster}
-          alt={swissCottageMedia.alt}
-          className="absolute inset-0 hidden h-full w-full object-cover max-md:portrait:motion-reduce:block"
-        />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/35 to-black/30" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/75 to-black/25" />
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-32">
           <p className="mb-3 text-sm text-orange-100">Magh Mela 2026 · Prayagraj</p>
           <h1 className="max-w-3xl font-serif text-4xl leading-tight md:text-6xl">{t("Your sanctuary at Sangam", "संगम तट पर आपका घर")}</h1>
