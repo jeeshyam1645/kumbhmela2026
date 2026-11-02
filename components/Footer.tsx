@@ -29,6 +29,7 @@ export function Footer() {
           <p className="font-semibold">{t("Legal", "कानूनी")}</p>
           <Link className="block text-orange-100/80" href="/privacy">{t("Privacy", "गोपनीयता")}</Link>
           <Link className="block text-orange-100/80" href="/terms">{t("Terms", "नियम")}</Link>
+          <Link className="block text-orange-100/80" href="/credits">{t("Photo credits", "फ़ोटो श्रेय")}</Link>
         </div>
       </div>
       <p className="border-t border-white/10 px-4 py-4 text-center text-xs text-orange-100/60">

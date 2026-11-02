@@ -5,7 +5,7 @@ import { swissCottageMedia } from "@/lib/media";
 import { pageMeta, site, whatsAppLink } from "@/lib/site";
 
 const image = `${site.url}${swissCottageMedia.image}`;
-const description = "Swiss Cottage tent with a colourful patterned canopy and an attached bathroom, near Sangam for Magh Mela Prayagraj 2026. ₹5000 per night.";
+const description = "Swiss Cottage tent with a colourful patterned canopy and an attached bathroom, near Sangam for Magh Mela Prayagraj 2026.";
 
 export const metadata = pageMeta("Swiss Cottage | Magh Mela Stays", description, "/accommodation/swiss-cottage", image);
 
@@ -14,8 +14,6 @@ const jsonLd = {
   "@type": "Offer",
   name: "Swiss Cottage",
   description,
-  price: "5000",
-  priceCurrency: "INR",
   image,
   url: `${site.url}/accommodation/swiss-cottage`,
   availability: "https://schema.org/LimitedAvailability",
@@ -33,7 +31,7 @@ export default function SwissCottagePage() {
       <JsonLd data={jsonLd} />
       <p className="text-sm text-saffron-dark">Magh Mela 2026 · Prayagraj</p>
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">Swiss Cottage</h1>
-      <p className="mt-3 max-w-2xl text-ink/75">A colourful patterned tent for two or three guests, with an attached bathroom. ₹5,000 a night. The final quote is confirmed on a call.</p>
+      <p className="mt-3 max-w-2xl text-ink/75">A colourful patterned tent for two or three guests, with an attached bathroom. The quote is confirmed on a call.</p>
       <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-2xl">
         <Image
           src={swissCottageMedia.image}

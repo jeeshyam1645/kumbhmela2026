@@ -52,9 +52,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
             <h2 className="font-serif text-3xl">{t("Stays", "आवास")}</h2>
-            <p className="mt-2 text-sm text-ink/70">
-              {tentOffers.map((offer) => `${offer.name} · ₹${offer.price.toLocaleString("en-IN")}`).join(" · ")} / {t("night", "रात")}
-            </p>
+            <p className="mt-2 text-sm text-ink/70">{tentOffers.map((offer) => offer.name).join(" · ")}</p>
           </div>
           <Link href="/accommodation" className="text-sm font-semibold text-saffron-dark">{t("All tents", "सभी टेंट")}</Link>
         </div>

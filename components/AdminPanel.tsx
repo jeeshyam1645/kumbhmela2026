@@ -70,7 +70,7 @@ export function AdminPanel() {
                   <td>{row.checkIn} → {row.checkOut}<div className="text-xs">{row.guestCount} guests</div></td>
                   <td className="capitalize">{row.status}</td>
                   <td>{row.bookingType}</td>
-                  <td>₹{row.totalAmount}</td>
+                  <td>{row.guestCount}</td>
                   <td className="space-x-2 text-right">
                     {row.status === "pending" && <button className="text-green-700" type="button" onClick={() => act(`/api/admin/bookings/${row.id}/confirm`)}>Confirm</button>}
                     {row.status !== "cancelled" && <button className="text-red-700" type="button" onClick={() => act(`/api/admin/bookings/${row.id}/reject`)}>Reject</button>}
@@ -138,7 +138,6 @@ function Catalog({ kind, rows, onDone }: { kind: "camp" | "puja"; rows: Array<Ca
         <div key={row.id} className="card flex items-center justify-between p-4">
           <div>
             <p className="font-semibold">{row.nameEn}</p>
-            <p className="text-sm text-ink/60">₹{row.price || 0}</p>
           </div>
           <div className="space-x-3 text-sm">
             <button type="button" onClick={() => setEditing(row.id)}>Edit</button>

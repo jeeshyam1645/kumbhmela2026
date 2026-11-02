@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import type { CampRecord } from "@/lib/queries";
-import { cloudinaryUrl, displayImage, isVideoUrl, mediaForCamp } from "@/lib/media";
+import { campAlt, displayImage } from "@/lib/media";
 import { useT } from "./Language";
 
 export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }) {
@@ -15,7 +15,7 @@ export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }
         <article key={camp.id} className="card overflow-hidden">
           <img
             src={displayImage(camp.nameEn, camp.imageUrl)}
-            alt={camp.nameEn.toLowerCase().includes("swiss") ? "Colourful patterned Swiss Cottage tent at the Magh Mela camp near Sangam, Prayagraj" : camp.nameEn}
+            alt={campAlt(camp.nameEn)}
             className="h-52 w-full object-cover"
           />
           <div className="space-y-3 p-5">
@@ -27,30 +27,14 @@ export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }
                   lang === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn
                 )}
               </h2>
-              <p className="text-saffron-dark">₹{camp.price.toLocaleString("en-IN")}</p>
             </div>
             <p className="text-sm text-ink/70">{lang === "hi" && camp.descriptionHi ? camp.descriptionHi : camp.descriptionEn}</p>
             <p className="text-xs uppercase tracking-wide text-ink/50">{camp.capacity}</p>
             {live && camp.id > 0 ? <CallbackForm camp={camp} /> : (
               <Link className="btn-primary w-full" href={`/contact?tent=${encodeURIComponent(camp.nameEn)}`}>{t("Send enquiry", "पूछताछ भेजें")}</Link>
             )}
-            <MediaStrip name={camp.nameEn} />
           </div>
         </article>
-      ))}
-    </div>
-  );
-}
-
-function MediaStrip({ name }: { name: string }) {
-  const extra = mediaForCamp(name).slice(1).map(cloudinaryUrl);
-  if (!extra.length) return null;
-  return (
-    <div className="flex gap-2 overflow-x-auto">
-      {extra.map((url) => isVideoUrl(url) ? (
-        <video key={url} src={url} controls preload="none" className="h-20 w-32 rounded-lg bg-black object-cover" />
-      ) : (
-        <img key={url} src={url} alt="" loading="lazy" className="h-20 w-32 rounded-lg object-cover" />
       ))}
     </div>
   );

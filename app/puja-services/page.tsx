@@ -22,7 +22,7 @@ export default async function PujaPage() {
             <h2 className="font-serif text-2xl">{puja.nameEn}</h2>
             {puja.nameHi && <p className="text-sm text-saffron-dark">{puja.nameHi}</p>}
             <p className="mt-2 text-sm text-ink/70">{puja.descriptionEn}</p>
-            <p className="mt-2 text-xs text-ink/50">Rates depend on samagri and dakshina{puja.price ? ` · from ₹${puja.price}` : ""}.</p>
+            <p className="mt-2 text-xs text-ink/50">The dakshina depends on the ritual and the samagri.</p>
             <Link className="mt-3 inline-block text-sm font-semibold text-saffron-dark" href={`/contact?puja=${encodeURIComponent(puja.nameEn)}`}>Enquire</Link>
           </article>
         ))}

@@ -32,7 +32,7 @@ const fallbackCamps: CampRecord[] = tentOffers.map((offer, index) => ({
   nameHi: offer.name === "Swiss Cottage" ? "स्विस कॉटेज" : offer.name === "Deluxe Tent" ? "डीलक्स टेंट" : "शयनगृह",
   descriptionEn: offer.description,
   descriptionHi: null,
-  price: offer.price,
+  price: 0,
   capacity: offer.name === "Dormitory" ? "10 Persons" : offer.name === "Deluxe Tent" ? "2 Persons" : "2-3 Persons",
   features: null,
   imageUrl: null,

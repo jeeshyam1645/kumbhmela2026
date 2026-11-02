@@ -46,7 +46,7 @@ export function BookingList({ bookings, camps }: { bookings: Row[]; camps: CampR
               <img src={displayImage(camp?.nameEn || "tent", camp?.imageUrl)} alt="" className="h-28 w-full rounded-xl object-cover sm:w-36" />
               <div className="flex-1">
                 <h2 className="font-serif text-2xl">{lang === "hi" && camp?.nameHi ? camp.nameHi : camp?.nameEn || t("Camp", "शिविर")}</h2>
-                <p className="text-sm text-ink/70">{row.checkIn} → {row.checkOut} · {row.guestCount} {t("guests", "अतिथि")} · ₹{row.totalAmount}</p>
+                <p className="text-sm text-ink/70">{row.checkIn} → {row.checkOut} · {row.guestCount} {t("guests", "अतिथि")}</p>
                 <p className="mt-1 text-sm capitalize">{row.status || "pending"}</p>
                 {row.status !== "cancelled" && row.status !== "confirmed" && (
                   <button className="btn-ghost mt-3" type="button" onClick={() => cancel(row.id)}>{t("Cancel request", "अनुरोध रद्द करें")}</button>
