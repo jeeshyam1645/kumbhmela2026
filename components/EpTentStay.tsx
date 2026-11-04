@@ -11,19 +11,19 @@ type OptionId = "shared" | "family";
 const options = {
   shared: {
     id: "shared" as const,
-    title: "Dormitory (Shared)",
+    title: "Without beds (floor)",
     name: EP_SHARED_NAME,
     summary: "Per-person floor stay with a gadda, pillow and blanket. For budget pilgrims and groups. There are no beds.",
     price: `₹${EP_SHARED_PRICE.toLocaleString("en-IN")} per person`,
-    photos: [epTentPhotos.exterior, epTentPhotos.dormitory],
+    photos: [epTentPhotos.sharedExterior, epTentPhotos.dormitory],
   },
   family: {
     id: "family" as const,
-    title: "Family",
+    title: "With beds",
     name: EP_FAMILY_NAME,
     summary: "The whole EP tent for one family, with takht beds, pillows and blankets.",
     price: "Price on request",
-    photos: [epTentPhotos.exterior, epTentPhotos.family],
+    photos: [epTentPhotos.familyExterior, epTentPhotos.family],
   },
 };
 

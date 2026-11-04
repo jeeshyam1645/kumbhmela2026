@@ -59,10 +59,15 @@ export const deluxeTentMedia = {
 };
 
 export const epTentPhotos = {
-  exterior: {
-    webp: "/media/ep-tent-exterior.webp",
-    jpg: "/media/ep-tent-exterior.jpg",
-    alt: "Yellow and white EP tent at the camp, open at the front",
+  sharedExterior: {
+    webp: "/media/ep-tent-shared-exterior.webp",
+    jpg: "/media/ep-tent-shared-exterior.jpg",
+    alt: "Yellow and white EP tent with floor bedding, for a shared stay without beds",
+  },
+  familyExterior: {
+    webp: "/media/ep-tent-family-exterior.webp",
+    jpg: "/media/ep-tent-family-exterior.jpg",
+    alt: "Colourful decorated EP tent with beds inside, for a family stay",
   },
   dormitory: {
     webp: "/media/ep-tent-dormitory.webp",
@@ -91,14 +96,15 @@ function isEpFamily(name: string) {
 }
 
 function isEpShared(name: string) {
-  return name.includes("ep tent") || name.includes("dorm");
+  return !isEpFamily(name) && (name.includes("ep tent") || name.includes("dorm"));
 }
 
 export function mediaForCamp(nameEn: string): string[] {
   const name = nameEn.toLowerCase();
   if (name.includes("deluxe")) return [deluxeTentMedia.image];
   if (name.includes("swiss")) return [swissCottageMedia.image];
-  if (isEpFamily(name) || isEpShared(name)) return [epTentPhotos.exterior.webp];
+  if (isEpFamily(name)) return [epTentPhotos.familyExterior.webp];
+  if (isEpShared(name)) return [epTentPhotos.sharedExterior.webp];
   return [TENT_PHOTO_PLACEHOLDER];
 }
 
@@ -106,15 +112,16 @@ export function campAlt(nameEn: string) {
   const name = nameEn.toLowerCase();
   if (name.includes("swiss")) return swissCottageMedia.alt;
   if (name.includes("deluxe")) return deluxeTentMedia.alt;
-  if (isEpFamily(name)) return "Yellow and white EP tent offered to one family with takht beds";
-  if (isEpShared(name)) return "Yellow and white EP tent used as a shared floor dormitory";
+  if (isEpFamily(name)) return epTentPhotos.familyExterior.alt;
+  if (isEpShared(name)) return epTentPhotos.sharedExterior.alt;
   return nameEn;
 }
 
 export function campImageFallback(nameEn: string) {
   const name = nameEn.toLowerCase();
   if (name.includes("swiss")) return swissCottageMedia.imageFallback;
-  if (isEpFamily(name) || isEpShared(name)) return epTentPhotos.exterior.jpg;
+  if (isEpFamily(name)) return epTentPhotos.familyExterior.jpg;
+  if (isEpShared(name)) return epTentPhotos.sharedExterior.jpg;
   return undefined;
 }
 

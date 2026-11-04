@@ -30,7 +30,7 @@ export type PujaRecord = {
 const fallbackCamps: CampRecord[] = tentOffers.map((offer, index) => ({
   id: -(index + 1),
   nameEn: offer.name,
-  nameHi: offer.name === "Swiss Cottage" ? "स्विस कॉटेज" : offer.name === "Deluxe Tent" ? "डीलक्स टेंट" : offer.name === EP_SHARED_NAME ? "ईपी टेंट – शयनगृह (साझा)" : offer.name === EP_FAMILY_NAME ? "ईपी टेंट – परिवार" : null,
+  nameHi: offer.name === "Swiss Cottage" ? "स्विस कॉटेज" : offer.name === "Deluxe Tent" ? "डीलक्स टेंट" : offer.name === EP_SHARED_NAME ? "ईपी टेंट – शयनगृह (साझा, बिना बिस्तर, फर्श)" : offer.name === EP_FAMILY_NAME ? "ईपी टेंट – परिवार (बिस्तर के साथ)" : null,
   descriptionEn: offer.description,
   descriptionHi: null,
   price: offer.price,

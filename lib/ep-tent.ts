@@ -1,29 +1,28 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "./db";
 import { camps } from "./schema";
-import { EP_FAMILY_NAME, EP_SHARED_NAME, EP_SHARED_PRICE } from "./site";
+import { EP_FAMILY_NAME, EP_FAMILY_NAME_PREVIOUS, EP_SHARED_NAME, EP_SHARED_NAME_PREVIOUS, EP_SHARED_PRICE } from "./site";
 
 const sharedFields = {
   nameEn: EP_SHARED_NAME,
-  nameHi: "ईपी टेंट – शयनगृह (साझा)",
+  nameHi: "ईपी टेंट – शयनगृह (साझा, बिना बिस्तर, फर्श)",
   descriptionEn:
-    "The EP tent as a dormitory: a per-person floor stay with a gadda, pillow and blanket, for budget pilgrims and groups.",
+    "The EP tent as a dormitory without beds: a per-person floor stay with a gadda, pillow and blanket, for budget pilgrims and groups.",
   descriptionHi:
-    "ईपी टेंट शयनगृह के रूप में: फर्श पर गद्दा, तकिया और कंबल के साथ प्रति व्यक्ति ठहराव, बजट तीर्थयात्रियों और समूहों के लिए।",
+    "ईपी टेंट बिना बिस्तर के शयनगृह के रूप में: फर्श पर गद्दा, तकिया और कंबल के साथ प्रति व्यक्ति ठहराव।",
   capacity: "Per person",
-  features: ["Gadda (mattress)", "Pillow", "Blanket", "Shared floor stay"],
-  imageUrl: "/media/ep-tent-exterior.webp",
+  features: ["Gadda (mattress)", "Pillow", "Blanket", "Shared floor stay, without beds"],
+  imageUrl: "/media/ep-tent-shared-exterior.webp",
 };
 
 const familyFields = {
   nameEn: EP_FAMILY_NAME,
-  nameHi: "ईपी टेंट – परिवार",
-  descriptionEn: "The same EP tent for one family, with takht beds, pillows and blankets.",
-  descriptionHi: "वही ईपी टेंट एक परिवार के लिए, तख्त, तकिए और कंबल के साथ।",
-  price: 0,
+  nameHi: "ईपी टेंट – परिवार (बिस्तर के साथ)",
+  descriptionEn: "The same EP tent for one family, with beds: takht beds, pillows and blankets.",
+  descriptionHi: "वही ईपी टेंट एक परिवार के लिए, बिस्तर के साथ: तख्त, तकिए और कंबल।",
   capacity: "One family",
   features: ["Takht beds", "Pillows", "Blankets", "Whole tent for one family"],
-  imageUrl: "/media/ep-tent-exterior.webp",
+  imageUrl: "/media/ep-tent-family-exterior.webp",
   totalInventory: 10,
 };
 
@@ -50,17 +49,27 @@ async function applyEpCamps() {
   const db = getDb();
   if (!db) return;
   const rows = await db.select().from(camps);
-  const shared = rows.find((row) => row.nameEn === EP_SHARED_NAME);
-  const legacy = rows.find((row) => isLegacyDormitory(row.nameEn));
+  const shared =
+    rows.find((row) => row.nameEn === EP_SHARED_NAME) ||
+    rows.find((row) => row.nameEn === EP_SHARED_NAME_PREVIOUS) ||
+    rows.find((row) => isLegacyDormitory(row.nameEn));
 
-  if (legacy) {
-    await db.update(camps).set(sharedFields).where(eq(camps.id, legacy.id));
-  } else if (!shared) {
+  if (shared) {
+    if (shared.nameEn !== EP_SHARED_NAME || shared.imageUrl !== sharedFields.imageUrl) {
+      await db.update(camps).set(sharedFields).where(eq(camps.id, shared.id));
+    }
+  } else {
     await db.insert(camps).values({ ...sharedFields, price: EP_SHARED_PRICE, totalInventory: 50 });
   }
 
-  const family = rows.find((row) => row.nameEn === EP_FAMILY_NAME);
-  if (!family) {
-    await db.insert(camps).values(familyFields);
+  const family =
+    rows.find((row) => row.nameEn === EP_FAMILY_NAME) ||
+    rows.find((row) => row.nameEn === EP_FAMILY_NAME_PREVIOUS);
+  if (family) {
+    if (family.nameEn !== EP_FAMILY_NAME || family.imageUrl !== familyFields.imageUrl) {
+      await db.update(camps).set(familyFields).where(eq(camps.id, family.id));
+    }
+  } else {
+    await db.insert(camps).values({ ...familyFields, price: 0 });
   }
 }
