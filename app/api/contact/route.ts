@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { eq } from "drizzle-orm";
+import { getDb } from "@/lib/db";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { enquiries } from "@/lib/schema";
 
 export const runtime = "nodejs";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(80),
   mobile: z.string().trim().min(10).max(20),
+  email: z.string().trim().email().max(200).optional().or(z.literal("")),
   message: z.string().trim().max(2000).optional().or(z.literal("")),
   tentType: z.string().trim().max(80).optional().or(z.literal("")),
   checkIn: z.string().trim().max(20).optional().or(z.literal("")),
@@ -42,12 +46,59 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Please complete the spam check." }, { status: 400 });
   }
 
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    return NextResponse.json({ message: "Email is not configured. Please use WhatsApp." }, { status: 503 });
+  const data = parsed.data;
+
+  // 1. Persist the enquiry first so it is never lost.
+  const db = getDb();
+  let enquiryId: number | null = null;
+  if (db) {
+    try {
+      const [row] = await db
+        .insert(enquiries)
+        .values({
+          name: data.name,
+          phone: data.mobile,
+          email: data.email || null,
+          message: data.message || null,
+          tentType: data.tentType || null,
+          checkIn: data.checkIn || null,
+          checkOut: data.checkOut || null,
+          guests: data.guests ?? null,
+        })
+        .returning({ id: enquiries.id });
+      enquiryId = row?.id ?? null;
+    } catch (error) {
+      console.error("[contact] failed to save enquiry", error);
+    }
+  } else {
+    console.error("[contact] DATABASE_URL not configured; enquiry not saved");
   }
 
-  const data = parsed.data;
+  // 2. Try to send the notification email; failures are logged, not surfaced.
+  const emailSent = await sendEnquiryEmail(data).catch((error) => {
+    console.error("[contact] email send threw", error);
+    return false;
+  });
+
+  if (db && enquiryId !== null && emailSent) {
+    await db.update(enquiries).set({ emailSent: true }).where(eq(enquiries.id, enquiryId)).catch((error) => {
+      console.error("[contact] failed to mark email_sent", error);
+    });
+  }
+
+  // Only fail if we could neither store nor email the enquiry.
+  if (enquiryId === null && !emailSent) {
+    return NextResponse.json({ message: "Failed to send inquiry. Please use WhatsApp." }, { status: 500 });
+  }
+  return NextResponse.json({ success: true });
+}
+
+async function sendEnquiryEmail(data: z.infer<typeof schema>): Promise<boolean> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) {
+    console.warn("[contact] RESEND_API_KEY not configured; skipping email");
+    return false;
+  }
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
@@ -58,6 +109,7 @@ export async function POST(request: Request) {
       text: [
         `Name: ${data.name}`,
         `Mobile: ${data.mobile}`,
+        `Email: ${data.email || "-"}`,
         `Tent: ${data.tentType || "-"}`,
         `Check-in: ${data.checkIn || "-"}`,
         `Check-out: ${data.checkOut || "-"}`,
@@ -68,7 +120,9 @@ export async function POST(request: Request) {
       ].join("\n"),
     }),
   });
-
-  if (!response.ok) return NextResponse.json({ message: "Failed to send inquiry" }, { status: 500 });
-  return NextResponse.json({ success: true });
+  if (!response.ok) {
+    console.error("[contact] Resend error", response.status, await response.text().catch(() => ""));
+    return false;
+  }
+  return true;
 }
