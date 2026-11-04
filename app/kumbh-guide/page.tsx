@@ -2,7 +2,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { bathingDates, bathingDatesNote, eventJsonLd, formatPrayagraj, pageMeta } from "@/lib/site";
 
 export const metadata = pageMeta(
-  "Kumbh Guide | Magh Mela 2027",
+  "Magh Mela Guide | Prayagraj 2027",
   "Bathing dates and rituals for Magh Mela Prayagraj 2027, from Makar Sankranti on 15 January through Maha Shivaratri on 6 March.",
   "/kumbh-guide",
 );

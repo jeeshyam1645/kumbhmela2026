@@ -2,8 +2,8 @@ import { cloudinaryUrl } from "@/lib/media";
 import { pageMeta } from "@/lib/site";
 
 export const metadata = pageMeta(
-  "About Us | Magh Mela Stays",
-  "The Prayagraj family hosting Magh Mela 2027 camps near Sangam, including Acharya Rajendra Mishra.",
+  "About Us | Magh Mela Stays, Prayagraj 2027",
+  "Tent and camp stays near the Sangam for Magh Mela 2027 (15 January – 6 March 2027). Hosted by a Prayagraj family, including Acharya Rajendra Mishra.",
   "/about-us",
 );
 
@@ -16,7 +16,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 pt-28 pb-16">
       <h1 className="text-center font-serif text-5xl">Atithi Devo Bhava</h1>
-      <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-ink/70">A Prayagraj family hosting pilgrims near Sangam, with bedding for the January cold and a guarded compound.</p>
+      <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-ink/70">Tent and camp stays near the Sangam for Magh Mela 2027, 15 January – 6 March. A Prayagraj family hosts pilgrims, with bedding for the January cold and a guarded compound.</p>
       <div className="mt-10 grid gap-8 md:grid-cols-2">
         <div>
           <h2 className="font-serif text-3xl text-saffron-dark">Years of service</h2>
