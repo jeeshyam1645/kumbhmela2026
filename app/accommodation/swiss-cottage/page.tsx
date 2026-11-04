@@ -5,7 +5,7 @@ import { swissCottageMedia } from "@/lib/media";
 import { pageMeta, site, whatsAppLink } from "@/lib/site";
 
 const image = `${site.url}${swissCottageMedia.image}`;
-const description = "Swiss Cottage tent with a colourful patterned canopy and an attached bathroom, near Sangam for Magh Mela Prayagraj 2027.";
+const description = "Swiss Cottage tent with an attached bathroom, near Sangam for Magh Mela Prayagraj 2027.";
 
 export const metadata = pageMeta("Swiss Cottage | Magh Mela Stays", description, "/accommodation/swiss-cottage", image);
 
@@ -14,7 +14,7 @@ const jsonLd = {
   "@type": "Offer",
   name: "Swiss Cottage",
   description,
-  image,
+  image: swissCottageMedia.photos.map((photo) => `${site.url}${photo.webp}`),
   url: `${site.url}/accommodation/swiss-cottage`,
   availability: "https://schema.org/LimitedAvailability",
   seller: {
@@ -31,9 +31,13 @@ export default function SwissCottagePage() {
       <JsonLd data={jsonLd} />
       <p className="text-sm text-saffron-dark">Magh Mela 2027 · Prayagraj</p>
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">Swiss Cottage</h1>
-      <p className="mt-3 max-w-2xl text-ink/75">A colourful patterned tent for two or three guests, with an attached bathroom. The quote is confirmed on a call.</p>
-      <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-2xl bg-soft">
-        <SoftImage src={swissCottageMedia.image} alt={swissCottageMedia.alt} className="h-full w-full object-cover" />
+      <p className="mt-3 max-w-2xl text-ink/75">A tent for two or three guests, with an attached bathroom. The quote is confirmed on a call.</p>
+      <div className="mt-8 grid gap-3 sm:grid-cols-2">
+        {swissCottageMedia.photos.map((photo, index) => (
+          <div key={photo.webp} className={`relative aspect-[3/2] overflow-hidden rounded-2xl bg-soft ${index === 0 ? "sm:col-span-2" : ""}`}>
+            <SoftImage src={photo.webp} fallbackSrc={photo.jpg} alt={photo.alt} className="h-full w-full object-cover" />
+          </div>
+        ))}
       </div>
       <section className="mt-12">
         <h2 className="font-serif text-3xl">Video tour</h2>

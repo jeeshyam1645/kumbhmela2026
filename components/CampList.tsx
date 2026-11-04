@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import type { CampRecord } from "@/lib/queries";
-import { campAlt, displayImage } from "@/lib/media";
+import { campAlt, campImageFallback, displayImage } from "@/lib/media";
 import { SoftImage } from "./SoftImage";
 import { useToast } from "./Toast";
 import { useT } from "./Language";
@@ -17,6 +17,7 @@ export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }
         <article key={camp.id} className="card overflow-hidden">
           <SoftImage
             src={displayImage(camp.nameEn, camp.imageUrl)}
+            fallbackSrc={campImageFallback(camp.nameEn)}
             alt={campAlt(camp.nameEn)}
             className="h-52 w-full object-cover"
           />
