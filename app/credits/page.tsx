@@ -15,7 +15,7 @@ export default function CreditsPage() {
       </p>
       <h2 className="mt-8 font-serif text-2xl">Swiss Cottage</h2>
       <p className="mt-2 text-sm">
-        The camp owner&apos;s photographs of the Swiss Cottage tent: the walkway at night, the row of tents outside, a double bed with floral blankets, an interior with several beds, and a tent with a double bed.
+        The camp owner&apos;s photographs of the Swiss Cottage tent. The main picture shows the tents along a walkway. The interiors show a double bed, several single beds, and a double bed in a room with blue walls.
       </p>
       <h2 className="mt-8 font-serif text-2xl">Deluxe Tent</h2>
       <p className="mt-2 text-sm">

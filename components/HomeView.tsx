@@ -24,7 +24,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
           priority
           sizes="100vw"
           onLoad={() => setHeroReady(true)}
-          className={`object-cover object-center transition duration-700 max-md:portrait:object-[center_60%] motion-reduce:blur-0 motion-reduce:transition-none ${heroReady ? "opacity-100 blur-0" : "opacity-80 blur-sm"}`}
+          className={`object-cover object-top transition duration-700 motion-reduce:blur-0 motion-reduce:transition-none ${heroReady ? "opacity-100 blur-0" : "opacity-80 blur-sm"}`}
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/75 to-black/25" />
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-32">

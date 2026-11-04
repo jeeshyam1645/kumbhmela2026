@@ -24,10 +24,18 @@ The Swiss Cottage photographs are the camp owner's own pictures of that tent. Th
 - Licence: Creative Commons Attribution 2.0 Generic (CC BY 2.0)
 - Licence URL: https://creativecommons.org/licenses/by/2.0/
 
-## swiss-cottage-1 … swiss-cottage-5 (portrait and 3:2, JPG and WebP)
+## swiss-cottage-exterior, swiss-cottage-interior-1, swiss-cottage-interior-2, swiss-cottage-interior-3
 
-- Used for: Swiss Cottage gallery, stay cards, and the home hero. The pages show the 3:2 WebP files, with the matching JPG as a fallback, in this order: 2, 1, 3, 5, 4.
-- Description: The owner's photographs of the Swiss Cottage tent. 1 is the walkway to the tents at night, 2 is the row of tents outside, 3 is a double bed with floral blankets, 4 is an interior with several beds, and 5 is a tent with a double bed.
+- Used for: Swiss Cottage home hero, stay cards, booking thumbnails, Open Graph image, and the first four gallery frames. WebP is preferred, with the JPG as a fallback.
+- Description: Enhanced photographs of this camp's Swiss Cottage tents. The exterior shows the tents along a walkway. Interior 1 is a double bed, interior 2 is several single beds, and interior 3 is a double bed in a room with blue walls.
+- Author: Magh Mela Stays (the camp owner)
+- Source: photographs taken of this camp's Swiss Cottage tent
+- Licence: owned by Magh Mela Stays
+
+## swiss-cottage-1, swiss-cottage-3, swiss-cottage-5, swiss-cottage-4 (3:2)
+
+- Used for: the rest of the Swiss Cottage gallery, after the enhanced photos, in that order. Photo 2 is not shown; its 3:2 crop does not include the tents.
+- Description: Earlier photographs from the camp. 1 is the walkway to the tents at night, 3 is a double bed with floral blankets, 5 is a tent with a double bed, and 4 is an interior with several beds.
 - Author: Magh Mela Stays (the camp owner)
 - Source: photographs taken of this camp's Swiss Cottage tent
 - Licence: owned by Magh Mela Stays
