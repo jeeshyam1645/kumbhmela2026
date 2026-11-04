@@ -2,13 +2,46 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { eq } from "drizzle-orm";
-import { getDb } from "./db";
+import { getDb, type Database } from "./db";
 import { users } from "./schema";
 import { verifyPassword } from "./password";
 import { clientIp, rateLimit } from "./rate-limit";
 
 const googleId = process.env.AUTH_GOOGLE_ID || process.env.GOOGLE_CLIENT_ID;
 const googleSecret = process.env.AUTH_GOOGLE_SECRET || process.env.GOOGLE_CLIENT_SECRET;
+const DEFAULT_ADMIN_EMAIL = "maghmelastays@gmail.com";
+
+function adminEmailAllowlist(): Set<string> {
+  const raw = process.env.ADMIN_EMAILS;
+  const source = raw === undefined ? DEFAULT_ADMIN_EMAIL : raw;
+  return new Set(
+    source
+      .split(",")
+      .map((entry) => entry.trim().toLowerCase())
+      .filter((entry) => entry.length > 0),
+  );
+}
+
+function isAllowlistedAdmin(identity: string | null | undefined): boolean {
+  if (!identity) return false;
+  const normalized = identity.trim().toLowerCase();
+  if (!normalized) return false;
+  return adminEmailAllowlist().has(normalized);
+}
+
+/** Promote an allowlisted account to admin. Never writes a non-admin role. */
+async function grantAdminIfAllowlisted(
+  db: Database,
+  userId: number,
+  currentRole: string,
+  identities: Array<string | null | undefined>,
+): Promise<boolean> {
+  if (!identities.some((identity) => isAllowlistedAdmin(identity))) return false;
+  if (currentRole !== "admin") {
+    await db.update(users).set({ role: "admin" }).where(eq(users.id, userId));
+  }
+  return true;
+}
 
 function authSecret() {
   return (
@@ -43,7 +76,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!user?.password) return null;
         const valid = await verifyPassword(password, user.password);
         if (!valid) return null;
-        return { id: String(user.id), name: user.name, email: user.username, role: user.role };
+        const allowlisted = await grantAdminIfAllowlisted(db, user.id, user.role, [username, user.username]);
+        return { id: String(user.id), name: user.name, email: user.username, role: allowlisted ? "admin" : user.role };
       },
     }),
   ],
@@ -61,17 +95,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           username: email,
           googleId: account.providerAccountId,
           name: profile?.name || "Google User",
-          role: "user",
+          role: isAllowlistedAdmin(email) ? "admin" : "user",
           mobile: "",
         });
-      } else if (!existing.googleId) {
-        await db.update(users).set({ googleId: account.providerAccountId }).where(eq(users.id, existing.id));
+      } else {
+        const patch: { googleId?: string; role?: string } = {};
+        if (!existing.googleId) patch.googleId = account.providerAccountId;
+        if (existing.role !== "admin" && (isAllowlistedAdmin(email) || isAllowlistedAdmin(existing.username))) {
+          patch.role = "admin";
+        }
+        if (patch.googleId || patch.role) {
+          await db.update(users).set(patch).where(eq(users.id, existing.id));
+        }
       }
       return true;
     },
     async jwt({ token, user, account, profile }) {
       if (user?.id) token.uid = user.id;
       if (user?.role) token.role = user.role;
+      if (isAllowlistedAdmin(user?.email)) token.role = "admin";
       if (account?.provider === "google" && profile?.email) {
         const db = getDb();
         if (db) {
@@ -80,6 +122,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             token.uid = String(row.id);
             token.role = row.role;
             token.name = row.name;
+            // Re-read must not drop an allowlisted admin back to the stored role.
+            if (await grantAdminIfAllowlisted(db, row.id, row.role, [profile.email, row.username])) {
+              token.role = "admin";
+            }
           }
         }
       }
