@@ -14,10 +14,10 @@ The Swiss Cottage photographs are the camp owner's own pictures of that tent. Th
 - Licence: Creative Commons Attribution 2.0 Generic (CC BY 2.0)
 - Licence URL: https://creativecommons.org/licenses/by/2.0/
 
-## ep-tent-exterior, ep-tent-dormitory, ep-tent-family
+## ep-tent-shared-exterior, ep-tent-family-exterior, ep-tent-dormitory, ep-tent-family
 
-- Used for: EP Tent cards and the EP Tent page. The shared dormitory shows the exterior, then the floor bedding. The family option shows the exterior, then the takht beds. WebP is preferred, with the JPG as a fallback.
-- Description: The owner's photographs of the EP tent. The exterior is the yellow and white tent. The dormitory photo is floor bedding with gadda mattresses, pillows and blankets. The family photo is takht beds with pillows and blankets.
+- Used for: EP Tent cards and the EP Tent page. The shared option (without beds, floor) shows its yellow-and-white exterior, then the floor bedding. The family option (with beds) shows its colourful tent, then the takht beds. WebP is preferred, with the JPG as a fallback.
+- Description: The owner's photographs of the EP tent. The shared exterior is a yellow and white tent with floor bedding. The family exterior is a colourful decorated tent with beds inside. The dormitory photo is floor bedding with gadda mattresses, pillows and blankets. The family photo is takht beds with pillows and blankets.
 - Author: Magh Mela Stays (the camp owner)
 - Source: photographs taken of this camp's EP tent
 - Licence: owned by Magh Mela Stays

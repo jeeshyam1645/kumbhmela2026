@@ -2,9 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { site, tentOptions, whatsAppLink } from "@/lib/site";
+import { EP_FAMILY_NAME, EP_FAMILY_NAME_PREVIOUS, EP_SHARED_NAME, EP_SHARED_NAME_PREVIOUS, site, tentOptions, whatsAppLink } from "@/lib/site";
 import { useT } from "./Language";
 import { useToast } from "./Toast";
+
+function normalizeTent(value: string) {
+  if (value === "Dormitory" || value === EP_SHARED_NAME_PREVIOUS) return EP_SHARED_NAME;
+  if (value === EP_FAMILY_NAME_PREVIOUS) return EP_FAMILY_NAME;
+  return value;
+}
 
 export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTent?: string; defaultNote?: string }) {
   const { t } = useT();
@@ -12,9 +18,7 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
   const [form, setForm] = useState({
     name: "",
     mobile: "",
-    tentType: tentOptions.includes((defaultTent === "Dormitory" ? "EP Tent – Dormitory (Shared)" : defaultTent) as (typeof tentOptions)[number])
-      ? (defaultTent === "Dormitory" ? "EP Tent – Dormitory (Shared)" : defaultTent)
-      : "",
+    tentType: tentOptions.includes(normalizeTent(defaultTent) as (typeof tentOptions)[number]) ? normalizeTent(defaultTent) : "",
     checkIn: "",
     checkOut: "",
     guests: "2",

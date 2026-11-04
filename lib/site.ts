@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { epTentPhotos, swissCottageMedia } from "./media";
 
-export const EP_SHARED_NAME = "EP Tent – Dormitory (Shared)";
-export const EP_FAMILY_NAME = "EP Tent – Family";
+export const EP_SHARED_NAME = "EP Tent – Dormitory (Shared, without beds (floor))";
+export const EP_FAMILY_NAME = "EP Tent – Family (with beds)";
+export const EP_SHARED_NAME_PREVIOUS = "EP Tent – Dormitory (Shared)";
+export const EP_FAMILY_NAME_PREVIOUS = "EP Tent – Family";
 /** Existing production price on the Dormitory camp row, charged per person. */
 export const EP_SHARED_PRICE = 999;
 
@@ -138,7 +140,8 @@ export function lodgingJsonLd() {
               ? `${site.url}/accommodation/ep-tent?option=shared`
               : `${site.url}/accommodation`,
       ...(offer.name === "Swiss Cottage" ? { image: `${site.url}${swissCottageMedia.image}` } : {}),
-      ...(offer.name === EP_SHARED_NAME || offer.name === EP_FAMILY_NAME ? { image: `${site.url}${epTentPhotos.exterior.webp}` } : {}),
+      ...(offer.name === EP_SHARED_NAME ? { image: `${site.url}${epTentPhotos.sharedExterior.webp}` } : {}),
+      ...(offer.name === EP_FAMILY_NAME ? { image: `${site.url}${epTentPhotos.familyExterior.webp}` } : {}),
       availability: "https://schema.org/LimitedAvailability",
     })),
   };

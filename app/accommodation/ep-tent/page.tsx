@@ -4,7 +4,7 @@ import { listCamps } from "@/lib/queries";
 import { EP_SHARED_NAME, EP_SHARED_PRICE, pageMeta, site } from "@/lib/site";
 
 const description = "EP tent near Sangam for Magh Mela 2027: a shared floor dormitory with gadda, pillow and blanket, or the whole tent for one family with takht beds.";
-const image = `${site.url}${epTentPhotos.exterior.webp}`;
+const image = `${site.url}${epTentPhotos.sharedExterior.webp}`;
 
 export const metadata = pageMeta("EP Tent | Magh Mela Stays", description, "/accommodation/ep-tent", image);
 
