@@ -30,7 +30,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-32">
           <p className="mb-3 text-sm text-orange-100">{t("Magh Mela 2027 · Prayagraj", "माघ मेला 2027 · प्रयागराज")}</p>
           <h1 className="max-w-3xl font-serif text-4xl leading-tight md:text-6xl">{t("Your sanctuary at Sangam", "संगम तट पर आपका घर")}</h1>
-          <p className="mt-4 max-w-xl text-lg text-white/85">{t("A colourful Swiss Cottage tent, and a quiet place to rest after the holy dip.", "रंगीन स्विस कॉटेज टेंट, और स्नान के बाद विश्राम के लिए एक शांत स्थान।")}</p>
+          <p className="mt-4 max-w-xl text-lg text-white/85">{t("Swiss Cottage tents, and a quiet place to rest after the holy dip.", "स्विस कॉटेज टेंट, और स्नान के बाद विश्राम के लिए एक शांत स्थान।")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a className="btn-wa" href={whatsAppLink(t("Namaste, I am interested in Magh Mela 2027 accommodation.", "नमस्ते, मुझे माघ मेला 2027 के आवास में रुचि है।"))} target="_blank" rel="noopener noreferrer">{t("Plan on WhatsApp", "व्हाट्सएप पर योजना")}</a>
             <Link className="btn bg-white/15 text-white ring-1 ring-white/40" href="/accommodation/swiss-cottage">{t("See the Swiss Cottage", "स्विस कॉटेज देखें")}</Link>

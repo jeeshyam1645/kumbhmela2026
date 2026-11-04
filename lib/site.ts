@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { swissCottageMedia } from "./media";
 
 export const site = {
   name: "Magh Mela Stays",
@@ -115,7 +116,7 @@ export function lodgingJsonLd() {
       name: offer.name,
       description: offer.description,
       url: offer.name === "Swiss Cottage" ? `${site.url}/accommodation/swiss-cottage` : `${site.url}/accommodation`,
-      ...(offer.name === "Swiss Cottage" ? { image: `${site.url}/media/swiss-cottage.webp` } : {}),
+      ...(offer.name === "Swiss Cottage" ? { image: `${site.url}${swissCottageMedia.image}` } : {}),
       availability: "https://schema.org/LimitedAvailability",
     })),
   };
