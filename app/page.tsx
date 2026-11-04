@@ -5,7 +5,7 @@ import { eventJsonLd, faqJsonLd, lodgingJsonLd, pageMeta } from "@/lib/site";
 
 export const metadata = pageMeta(
   "Magh Mela Camp Booking - Prayagraj 2027",
-  "Book Swiss Cottage, Deluxe Tent, and Dormitory stays near Sangam for Magh Mela Prayagraj 2027. Satvik meals, a guarded compound, and help with vedic rituals.",
+  "Book Swiss Cottage, Deluxe Tent, and EP Tent stays near Sangam for Magh Mela Prayagraj 2027. Satvik meals, a guarded compound, and help with vedic rituals.",
   "/",
 );
 

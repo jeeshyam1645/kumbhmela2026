@@ -1,6 +1,6 @@
 # Image credits
 
-The Deluxe Tent and Dormitory photos were downloaded from Wikimedia Commons, resized so the long side is at most 1600 pixels, and converted to WebP. That resize is a change to the original, as the CC BY licences ask us to note.
+The Deluxe Tent photo was downloaded from Wikimedia Commons, resized so the long side is at most 1600 pixels, and converted to WebP. That resize is a change to the original, as the CC BY licences ask us to note.
 
 The Swiss Cottage photographs are the camp owner's own pictures of that tent. The poster frame and the walkthrough video were also supplied by Magh Mela Stays. They are not third-party stock.
 
@@ -14,15 +14,13 @@ The Swiss Cottage photographs are the camp owner's own pictures of that tent. Th
 - Licence: Creative Commons Attribution 2.0 Generic (CC BY 2.0)
 - Licence URL: https://creativecommons.org/licenses/by/2.0/
 
-## dormitory.webp
+## ep-tent-exterior, ep-tent-dormitory, ep-tent-family
 
-- Used for: Dormitory
-- Description: Simpler cloth tents in the pilgrims' camp at the 2019 Prayagraj Kumbh Mela
-- Author: Ninara (Helsinki, Finland)
-- Source: https://commons.wikimedia.org/wiki/File:Kumbh_Mela_2019,_January_15_-_March_4_(33383311278).jpg
-- Original file: https://upload.wikimedia.org/wikipedia/commons/c/c6/Kumbh_Mela_2019%2C_January_15_-_March_4_%2833383311278%29.jpg
-- Licence: Creative Commons Attribution 2.0 Generic (CC BY 2.0)
-- Licence URL: https://creativecommons.org/licenses/by/2.0/
+- Used for: EP Tent cards and the EP Tent page. The shared dormitory shows the exterior, then the floor bedding. The family option shows the exterior, then the takht beds. WebP is preferred, with the JPG as a fallback.
+- Description: The owner's photographs of the EP tent. The exterior is the yellow and white tent. The dormitory photo is floor bedding with gadda mattresses, pillows and blankets. The family photo is takht beds with pillows and blankets.
+- Author: Magh Mela Stays (the camp owner)
+- Source: photographs taken of this camp's EP tent
+- Licence: owned by Magh Mela Stays
 
 ## swiss-cottage-exterior, swiss-cottage-interior-1, swiss-cottage-interior-2, swiss-cottage-interior-3
 

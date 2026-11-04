@@ -59,7 +59,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
           </div>
           <Link href="/accommodation" className="text-sm font-semibold text-saffron-dark">{t("All tents", "सभी टेंट")}</Link>
         </div>
-        <CampList camps={camps.slice(0, 3)} live={live} />
+        <CampList camps={camps} live={live} />
       </section>
 
       <section id="stays" className="scroll-mt-28 bg-soft py-14">
