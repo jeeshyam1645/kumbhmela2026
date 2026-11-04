@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { ensureEnquiriesTable } from "@/lib/ensure-enquiries";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { enquiries } from "@/lib/schema";
 
@@ -53,6 +54,7 @@ export async function POST(request: Request) {
   let enquiryId: number | null = null;
   if (db) {
     try {
+      await ensureEnquiriesTable();
       const [row] = await db
         .insert(enquiries)
         .values({

@@ -1,5 +1,7 @@
--- Apply manually against Neon (no drizzle-kit in this repo):
---   psql "$DATABASE_URL" -f migrations/0001_create_enquiries.sql
+-- Canonical DDL for the enquiries table.
+-- lib/ensure-enquiries.ts reads this file and runs the statements below
+-- (CREATE TABLE IF NOT EXISTS + CREATE INDEX IF NOT EXISTS) once per server instance.
+-- No manual psql step is required. The statements stay idempotent if re-run.
 CREATE TABLE IF NOT EXISTS enquiries (
   id serial PRIMARY KEY,
   name text NOT NULL,

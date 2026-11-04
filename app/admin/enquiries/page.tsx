@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { AdminEnquiries } from "@/components/AdminEnquiries";
 import { auth } from "@/lib/auth";
+import { ensureEnquiriesTable } from "@/lib/ensure-enquiries";
 import { pageMeta } from "@/lib/site";
 
 export const metadata = {
@@ -12,5 +13,6 @@ export default async function AdminEnquiriesPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login?callbackUrl=/admin/enquiries");
   if (session.user.role !== "admin") redirect("/");
+  await ensureEnquiriesTable();
   return <AdminEnquiries />;
 }
