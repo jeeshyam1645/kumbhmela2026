@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
     "/api/admin/enquiries/[id]/handled": ["./migrations/0001_create_enquiries.sql"],
     "/admin/enquiries": ["./migrations/0001_create_enquiries.sql"],
   },
+  async redirects() {
+    return [
+      { source: "/accommodation/dormitory", destination: "/accommodation/ep-tent", permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },

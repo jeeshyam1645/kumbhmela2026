@@ -12,7 +12,9 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
   const [form, setForm] = useState({
     name: "",
     mobile: "",
-    tentType: tentOptions.includes(defaultTent as (typeof tentOptions)[number]) ? defaultTent : "",
+    tentType: tentOptions.includes((defaultTent === "Dormitory" ? "EP Tent – Dormitory (Shared)" : defaultTent) as (typeof tentOptions)[number])
+      ? (defaultTent === "Dormitory" ? "EP Tent – Dormitory (Shared)" : defaultTent)
+      : "",
     checkIn: "",
     checkOut: "",
     guests: "2",

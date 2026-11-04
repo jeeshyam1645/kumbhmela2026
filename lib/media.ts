@@ -58,10 +58,23 @@ export const deluxeTentMedia = {
   alt: "Patterned canvas tents in the camp at the 2019 Prayagraj Kumbh Mela",
 };
 
-export const dormitoryMedia = {
-  image: "/media/dormitory.webp",
-  alt: "Simpler cloth tents in the pilgrims' camp at the 2019 Prayagraj Kumbh Mela",
-};
+export const epTentPhotos = {
+  exterior: {
+    webp: "/media/ep-tent-exterior.webp",
+    jpg: "/media/ep-tent-exterior.jpg",
+    alt: "Yellow and white EP tent at the camp, open at the front",
+  },
+  dormitory: {
+    webp: "/media/ep-tent-dormitory.webp",
+    jpg: "/media/ep-tent-dormitory.jpg",
+    alt: "Floor bedding in the EP tent, with gadda mattresses, pillows and blankets",
+  },
+  family: {
+    webp: "/media/ep-tent-family.webp",
+    jpg: "/media/ep-tent-family.jpg",
+    alt: "Takht beds with pillows and blankets inside the EP tent",
+  },
+} as const;
 
 export function cloudinaryUrl(url: string) {
   if (!url || !url.includes("res.cloudinary.com/") || !url.includes("/upload/")) return url;
@@ -73,11 +86,19 @@ export function isVideoUrl(url: string) {
   return /\.(mp4|webm|ogg)(\?|$)/i.test(url);
 }
 
+function isEpFamily(name: string) {
+  return name.includes("ep tent") && name.includes("family");
+}
+
+function isEpShared(name: string) {
+  return name.includes("ep tent") || name.includes("dorm");
+}
+
 export function mediaForCamp(nameEn: string): string[] {
   const name = nameEn.toLowerCase();
   if (name.includes("deluxe")) return [deluxeTentMedia.image];
-  if (name.includes("dorm")) return [dormitoryMedia.image];
   if (name.includes("swiss")) return [swissCottageMedia.image];
+  if (isEpFamily(name) || isEpShared(name)) return [epTentPhotos.exterior.webp];
   return [TENT_PHOTO_PLACEHOLDER];
 }
 
@@ -85,12 +106,15 @@ export function campAlt(nameEn: string) {
   const name = nameEn.toLowerCase();
   if (name.includes("swiss")) return swissCottageMedia.alt;
   if (name.includes("deluxe")) return deluxeTentMedia.alt;
-  if (name.includes("dorm")) return dormitoryMedia.alt;
+  if (isEpFamily(name)) return "Yellow and white EP tent offered to one family with takht beds";
+  if (isEpShared(name)) return "Yellow and white EP tent used as a shared floor dormitory";
   return nameEn;
 }
 
 export function campImageFallback(nameEn: string) {
-  if (nameEn.toLowerCase().includes("swiss")) return swissCottageMedia.imageFallback;
+  const name = nameEn.toLowerCase();
+  if (name.includes("swiss")) return swissCottageMedia.imageFallback;
+  if (isEpFamily(name) || isEpShared(name)) return epTentPhotos.exterior.jpg;
   return undefined;
 }
 

@@ -5,7 +5,7 @@ import { lodgingJsonLd, pageMeta, tentOffers } from "@/lib/site";
 
 export const metadata = pageMeta(
   "Accommodation | Magh Mela Stays",
-  "Swiss Cottage, Deluxe Tent, and Dormitory camps for Magh Mela Prayagraj 2027, near Sangam.",
+  "Swiss Cottage, Deluxe Tent, and EP Tent stays for Magh Mela Prayagraj 2027, near Sangam.",
   "/accommodation",
 );
 

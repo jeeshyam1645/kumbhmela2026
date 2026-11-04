@@ -5,40 +5,59 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import type { CampRecord } from "@/lib/queries";
 import { campAlt, campImageFallback, displayImage } from "@/lib/media";
+import { EP_FAMILY_NAME } from "@/lib/site";
 import { SoftImage } from "./SoftImage";
 import { useToast } from "./Toast";
 import { useT } from "./Language";
+
+function stayHref(name: string) {
+  const normalized = name.toLowerCase();
+  if (normalized.includes("swiss")) return "/accommodation/swiss-cottage";
+  if (normalized.includes("family")) return "/accommodation/ep-tent?option=family";
+  if (normalized.includes("ep tent") || normalized.includes("dorm")) return "/accommodation/ep-tent?option=shared";
+  return null;
+}
+
+function priceLabel(camp: CampRecord) {
+  const normalized = camp.nameEn.toLowerCase();
+  if (!normalized.includes("ep tent") && !normalized.includes("dorm")) return null;
+  if (normalized.includes("family") || camp.price <= 0) return "Price on request";
+  return `₹${camp.price.toLocaleString("en-IN")} per person`;
+}
 
 export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }) {
   const { t, lang } = useT();
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {camps.map((camp) => (
-        <article key={camp.id} className="card overflow-hidden">
-          <SoftImage
-            src={displayImage(camp.nameEn, camp.imageUrl)}
-            fallbackSrc={campImageFallback(camp.nameEn)}
-            alt={campAlt(camp.nameEn)}
-            className={`h-52 w-full object-cover ${camp.nameEn.toLowerCase().includes("swiss") ? "object-top" : "object-center"}`}
-          />
-          <div className="space-y-3 p-5">
-            <div className="flex items-start justify-between gap-3">
-              <h2 className="font-serif text-2xl">
-                {camp.nameEn.toLowerCase().includes("swiss") ? (
-                  <Link href="/accommodation/swiss-cottage">{lang === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn}</Link>
-                ) : (
-                  lang === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn
-                )}
-              </h2>
+      {camps.map((camp) => {
+        const href = stayHref(camp.nameEn);
+        const title = lang === "hi" && camp.nameHi ? camp.nameHi : camp.nameEn;
+        const family = camp.nameEn === EP_FAMILY_NAME || camp.nameEn.toLowerCase().includes("family");
+        const price = priceLabel(camp);
+        return (
+          <article key={camp.id} className="card overflow-hidden">
+            <SoftImage
+              src={displayImage(camp.nameEn, camp.imageUrl)}
+              fallbackSrc={campImageFallback(camp.nameEn)}
+              alt={campAlt(camp.nameEn)}
+              className={`h-52 w-full object-cover ${camp.nameEn.toLowerCase().includes("swiss") ? "object-top" : "object-center"}`}
+            />
+            <div className="space-y-3 p-5">
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="font-serif text-2xl">
+                  {href ? <Link href={href}>{title}</Link> : title}
+                </h2>
+              </div>
+              <p className="text-sm text-ink/70">{lang === "hi" && camp.descriptionHi ? camp.descriptionHi : camp.descriptionEn}</p>
+              <p className="text-xs uppercase tracking-wide text-ink/75">{camp.capacity}</p>
+              {price && <p className="text-sm font-semibold text-saffron-dark">{price}</p>}
+              {live && camp.id > 0 && !family ? <CallbackForm camp={camp} /> : (
+                <Link className="btn-primary w-full" href={`/contact?tent=${encodeURIComponent(camp.nameEn)}`}>{t("Send enquiry", "पूछताछ भेजें")}</Link>
+              )}
             </div>
-            <p className="text-sm text-ink/70">{lang === "hi" && camp.descriptionHi ? camp.descriptionHi : camp.descriptionEn}</p>
-            <p className="text-xs uppercase tracking-wide text-ink/75">{camp.capacity}</p>
-            {live && camp.id > 0 ? <CallbackForm camp={camp} /> : (
-              <Link className="btn-primary w-full" href={`/contact?tent=${encodeURIComponent(camp.nameEn)}`}>{t("Send enquiry", "पूछताछ भेजें")}</Link>
-            )}
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
   );
 }

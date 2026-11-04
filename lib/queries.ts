@@ -1,7 +1,8 @@
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "./db";
+import { ensureEpCamps } from "./ep-tent";
 import { bookings, camps, pujaServices, users } from "./schema";
-import { tentOffers } from "./site";
+import { EP_FAMILY_NAME, EP_SHARED_NAME, tentOffers } from "./site";
 
 export type CampRecord = {
   id: number;
@@ -29,15 +30,28 @@ export type PujaRecord = {
 const fallbackCamps: CampRecord[] = tentOffers.map((offer, index) => ({
   id: -(index + 1),
   nameEn: offer.name,
-  nameHi: offer.name === "Swiss Cottage" ? "स्विस कॉटेज" : offer.name === "Deluxe Tent" ? "डीलक्स टेंट" : "शयनगृह",
+  nameHi: offer.name === "Swiss Cottage" ? "स्विस कॉटेज" : offer.name === "Deluxe Tent" ? "डीलक्स टेंट" : offer.name === EP_SHARED_NAME ? "ईपी टेंट – शयनगृह (साझा)" : offer.name === EP_FAMILY_NAME ? "ईपी टेंट – परिवार" : null,
   descriptionEn: offer.description,
   descriptionHi: null,
-  price: 0,
-  capacity: offer.name === "Dormitory" ? "10 Persons" : offer.name === "Deluxe Tent" ? "2 Persons" : "2-3 Persons",
+  price: offer.price,
+  capacity: offer.name === EP_SHARED_NAME ? "Per person" : offer.name === EP_FAMILY_NAME ? "One family" : offer.name === "Deluxe Tent" ? "2 Persons" : "2-3 Persons",
   features: null,
   imageUrl: null,
   totalInventory: 0,
 }));
+
+function campRank(name: string) {
+  const normalized = name.toLowerCase();
+  if (normalized.includes("swiss")) return 0;
+  if (normalized.includes("deluxe")) return 1;
+  if (normalized.includes("family")) return 3;
+  if (normalized.includes("ep tent") || normalized.includes("dorm")) return 2;
+  return 4;
+}
+
+function sortCamps(rows: CampRecord[]) {
+  return [...rows].sort((a, b) => campRank(a.nameEn) - campRank(b.nameEn) || a.nameEn.localeCompare(b.nameEn));
+}
 
 const fallbackPujas: PujaRecord[] = [
   { id: -1, nameEn: "Rudrabhishek", nameHi: "रुद्राभिषेक", descriptionEn: "Sacred worship of Lord Shiva.", descriptionHi: "भगवान शिव की पूजा।", price: 2100, imageUrl: null },
@@ -61,13 +75,14 @@ function mapCamp(row: typeof camps.$inferSelect): CampRecord {
 
 export async function listCamps() {
   const db = getDb();
-  if (!db) return { camps: fallbackCamps, live: false };
+  if (!db) return { camps: sortCamps(fallbackCamps), live: false };
   try {
+    await ensureEpCamps();
     const rows = await db.select().from(camps);
-    if (!rows.length) return { camps: fallbackCamps, live: false };
-    return { camps: rows.map(mapCamp), live: true };
+    if (!rows.length) return { camps: sortCamps(fallbackCamps), live: false };
+    return { camps: sortCamps(rows.map(mapCamp)), live: true };
   } catch {
-    return { camps: fallbackCamps, live: false };
+    return { camps: sortCamps(fallbackCamps), live: false };
   }
 }
 

@@ -13,7 +13,7 @@ const serif = Lora({ subsets: ["latin"], weight: ["400", "600", "700"], style: [
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: "Magh Mela Camp Booking - Prayagraj 2027",
-  description: "Book Swiss Cottage, Deluxe Tent, and Dormitory stays near Sangam for Magh Mela Prayagraj 2027.",
+  description: "Book Swiss Cottage, Deluxe Tent, and EP Tent stays near Sangam for Magh Mela Prayagraj 2027.",
   openGraph: { images: [site.ogImage] },
 };
 

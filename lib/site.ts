@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { swissCottageMedia } from "./media";
+import { epTentPhotos, swissCottageMedia } from "./media";
+
+export const EP_SHARED_NAME = "EP Tent – Dormitory (Shared)";
+export const EP_FAMILY_NAME = "EP Tent – Family";
+/** Existing production price on the Dormitory camp row, charged per person. */
+export const EP_SHARED_PRICE = 999;
 
 export const site = {
   name: "Magh Mela Stays",
@@ -12,9 +17,18 @@ export const site = {
 };
 
 export const tentOffers = [
-  { name: "Swiss Cottage", description: "Premium tent with an attached bathroom for 2–3 guests." },
-  { name: "Deluxe Tent", description: "Twin-bed tent with a shared bathroom for 2 guests." },
-  { name: "Dormitory", description: "Shared dormitory stay for groups and solo pilgrims." },
+  { name: "Swiss Cottage", description: "Premium tent with an attached bathroom for 2–3 guests.", price: 0 },
+  { name: "Deluxe Tent", description: "Twin-bed tent with a shared bathroom for 2 guests.", price: 0 },
+  {
+    name: EP_SHARED_NAME,
+    description: "The EP tent as a dormitory: a per-person floor stay with a gadda, pillow and blanket, for budget pilgrims and groups.",
+    price: EP_SHARED_PRICE,
+  },
+  {
+    name: EP_FAMILY_NAME,
+    description: "The same EP tent for one family, with takht beds, pillows and blankets.",
+    price: 0,
+  },
 ] as const;
 
 export const tentOptions = [...tentOffers.map((tent) => tent.name), "Not sure yet"];
@@ -49,8 +63,8 @@ export const guestFaqs = [
   {
     question: "Which tents can I book?",
     questionHi: "कौन से टेंट बुक हो सकते हैं?",
-    answer: "Swiss Cottage with an attached bathroom, Deluxe Tent, and a shared Dormitory. The quote is confirmed on the call.",
-    answerHi: "अटैच बाथरूम वाला स्विस कॉटेज, डीलक्स टेंट, और साझा शयनगृह। कोटेशन कॉल पर तय होता है।",
+    answer: "Swiss Cottage with an attached bathroom, Deluxe Tent, and the EP tent either as a shared floor dormitory or for one family with takht beds. The quote is confirmed on the call.",
+    answerHi: "अटैच बाथरूम वाला स्विस कॉटेज, डीलक्स टेंट, और ईपी टेंट या तो साझा फर्श शयनगृह के रूप में या एक परिवार के लिए तख्त के साथ। कोटेशन कॉल पर तय होता है।",
   },
   {
     question: "How quickly will someone call?",
@@ -115,8 +129,16 @@ export function lodgingJsonLd() {
       "@type": "Offer",
       name: offer.name,
       description: offer.description,
-      url: offer.name === "Swiss Cottage" ? `${site.url}/accommodation/swiss-cottage` : `${site.url}/accommodation`,
+      url:
+        offer.name === "Swiss Cottage"
+          ? `${site.url}/accommodation/swiss-cottage`
+          : offer.name === EP_FAMILY_NAME
+            ? `${site.url}/accommodation/ep-tent?option=family`
+            : offer.name === EP_SHARED_NAME
+              ? `${site.url}/accommodation/ep-tent?option=shared`
+              : `${site.url}/accommodation`,
       ...(offer.name === "Swiss Cottage" ? { image: `${site.url}${swissCottageMedia.image}` } : {}),
+      ...(offer.name === EP_SHARED_NAME || offer.name === EP_FAMILY_NAME ? { image: `${site.url}${epTentPhotos.exterior.webp}` } : {}),
       availability: "https://schema.org/LimitedAvailability",
     })),
   };
