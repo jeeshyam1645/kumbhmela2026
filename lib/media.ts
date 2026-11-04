@@ -1,11 +1,26 @@
 export const TENT_PHOTO_PLACEHOLDER = "/placeholders/tent.svg";
 
-/** Landscape 3:2 frames match the wide stay cards and the Swiss Cottage gallery. Order is exterior first: 2, 1, 3, 5, 4. */
+/** Exterior first, then the three enhanced interiors, then the earlier photos that still show the camp. Photo 2 is omitted: its 3:2 crop does not show the tents. */
 export const swissCottagePhotos = [
   {
-    webp: "/media/swiss-cottage-2-3x2.webp",
-    jpg: "/media/swiss-cottage-2-3x2.jpg",
-    alt: "Row of Swiss Cottage tents at the camp, seen from outside",
+    webp: "/media/swiss-cottage-exterior.webp",
+    jpg: "/media/swiss-cottage-exterior.jpg",
+    alt: "White Swiss Cottage tents lining a walkway at the camp",
+  },
+  {
+    webp: "/media/swiss-cottage-interior-1.webp",
+    jpg: "/media/swiss-cottage-interior-1.jpg",
+    alt: "Double bed inside a Swiss Cottage tent",
+  },
+  {
+    webp: "/media/swiss-cottage-interior-2.webp",
+    jpg: "/media/swiss-cottage-interior-2.jpg",
+    alt: "Several single beds inside a Swiss Cottage tent",
+  },
+  {
+    webp: "/media/swiss-cottage-interior-3.webp",
+    jpg: "/media/swiss-cottage-interior-3.jpg",
+    alt: "Double bed in a Swiss Cottage room with blue walls",
   },
   {
     webp: "/media/swiss-cottage-1-3x2.webp",

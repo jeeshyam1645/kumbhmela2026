@@ -34,8 +34,8 @@ export default function SwissCottagePage() {
       <p className="mt-3 max-w-2xl text-ink/75">A tent for two or three guests, with an attached bathroom. The quote is confirmed on a call.</p>
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {swissCottageMedia.photos.map((photo, index) => (
-          <div key={photo.webp} className={`relative aspect-[3/2] overflow-hidden rounded-2xl bg-soft ${index === 0 ? "sm:col-span-2" : ""}`}>
-            <SoftImage src={photo.webp} fallbackSrc={photo.jpg} alt={photo.alt} className="h-full w-full object-cover" />
+          <div key={photo.webp} className={`relative aspect-[4/3] overflow-hidden rounded-2xl bg-soft ${index === 0 ? "sm:col-span-2" : ""}`}>
+            <SoftImage src={photo.webp} fallbackSrc={photo.jpg} alt={photo.alt} className="h-full w-full object-cover object-center" />
           </div>
         ))}
       </div>

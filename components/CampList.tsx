@@ -19,7 +19,7 @@ export function CampList({ camps, live }: { camps: CampRecord[]; live: boolean }
             src={displayImage(camp.nameEn, camp.imageUrl)}
             fallbackSrc={campImageFallback(camp.nameEn)}
             alt={campAlt(camp.nameEn)}
-            className="h-52 w-full object-cover"
+            className={`h-52 w-full object-cover ${camp.nameEn.toLowerCase().includes("swiss") ? "object-top" : "object-center"}`}
           />
           <div className="space-y-3 p-5">
             <div className="flex items-start justify-between gap-3">

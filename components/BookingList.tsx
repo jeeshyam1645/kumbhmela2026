@@ -48,7 +48,7 @@ export function BookingList({ bookings, camps }: { bookings: Row[]; camps: CampR
           const camp = camps.find((item) => item.id === row.campId);
           return (
             <article key={row.id} className="card flex flex-col gap-4 p-4 sm:flex-row">
-              <img src={displayImage(camp?.nameEn || "tent", camp?.imageUrl)} alt="" className="h-28 w-full rounded-xl object-cover sm:w-36" />
+              <img src={displayImage(camp?.nameEn || "tent", camp?.imageUrl)} alt="" className={`h-28 w-full rounded-xl object-cover sm:w-36 ${camp?.nameEn?.toLowerCase().includes("swiss") ? "object-top" : "object-center"}`} />
               <div className="flex-1">
                 <h2 className="font-serif text-2xl">{lang === "hi" && camp?.nameHi ? camp.nameHi : camp?.nameEn || t("Camp", "शिविर")}</h2>
                 <p className="text-sm text-ink/70">{row.checkIn} → {row.checkOut} · {row.guestCount} {t("guests", "अतिथि")}</p>
