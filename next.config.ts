@@ -18,6 +18,12 @@ const contentSecurityPolicy = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/api/contact": ["./migrations/0001_create_enquiries.sql"],
+    "/api/admin/enquiries": ["./migrations/0001_create_enquiries.sql"],
+    "/api/admin/enquiries/[id]/handled": ["./migrations/0001_create_enquiries.sql"],
+    "/admin/enquiries": ["./migrations/0001_create_enquiries.sql"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },

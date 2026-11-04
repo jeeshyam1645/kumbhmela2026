@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { CampRecord, PujaRecord } from "@/lib/queries";
 import { useT } from "./Language";
@@ -61,6 +62,7 @@ export function AdminPanel() {
         {(["bookings", "camps", "pujas"] as const).map((item) => (
           <button key={item} className={tab === item ? "btn-primary" : "btn-ghost"} type="button" onClick={() => setTab(item)}>{item}</button>
         ))}
+        <Link className="btn-ghost" href="/admin/enquiries">enquiries</Link>
       </div>
       {message && <p className="mt-3 text-sm text-red-700">{message}</p>}
 

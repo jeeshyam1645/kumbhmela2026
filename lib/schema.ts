@@ -1,4 +1,4 @@
-import { date, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, date, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -57,4 +57,19 @@ export const bookings = pgTable("bookings", {
   bookingType: text("booking_type").default("inquiry_call"),
   specialNeeds: text("special_needs"),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const enquiries = pgTable("enquiries", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  phone: text("phone").notNull(),
+  email: text("email"),
+  message: text("message"),
+  tentType: text("tent_type"),
+  checkIn: text("check_in"),
+  checkOut: text("check_out"),
+  guests: integer("guests"),
+  status: text("status").default("new").notNull(),
+  emailSent: boolean("email_sent").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
