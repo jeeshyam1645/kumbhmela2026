@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import type { CampRecord } from "@/lib/queries";
+import { trackEvent } from "@/lib/gtag";
 import { campAlt, campImageFallback, displayImage } from "@/lib/media";
 import { EP_FAMILY_NAME } from "@/lib/site";
 import { SoftImage } from "./SoftImage";
@@ -99,6 +100,12 @@ function CallbackForm({ camp }: { camp: CampRecord }) {
       toast(text, "err");
       return;
     }
+    const guests = Number(form.get("guests") || 2);
+    const checkIn = String(form.get("checkIn") || "");
+    const checkOut = String(form.get("checkOut") || "");
+    const nights = Math.round((new Date(`${checkOut}T00:00:00+05:30`).getTime() - new Date(`${checkIn}T00:00:00+05:30`).getTime()) / 86400000);
+    const value = camp.price > 0 && nights >= 1 ? camp.price * guests * nights : undefined;
+    trackEvent("generate_lead", { tent: camp.nameEn, guests, currency: "INR", value });
     window.location.href = "/bookings";
   }
 

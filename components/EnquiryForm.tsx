@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { EP_FAMILY_NAME, EP_FAMILY_NAME_PREVIOUS, EP_SHARED_NAME, EP_SHARED_NAME_PREVIOUS, site, tentOptions, whatsAppLink } from "@/lib/site";
+import { trackEvent } from "@/lib/gtag";
+import { EP_FAMILY_NAME, EP_FAMILY_NAME_PREVIOUS, EP_SHARED_NAME, EP_SHARED_NAME_PREVIOUS, EP_SHARED_PRICE, site, tentOptions, whatsAppLink } from "@/lib/site";
 import { useT } from "./Language";
 import { useToast } from "./Toast";
 
@@ -86,6 +87,10 @@ export function EnquiryForm({ defaultTent = "", defaultNote = "" }: { defaultTen
       toast(text, "err");
       return;
     }
+    const guests = Number(form.guests);
+    const nights = Math.round((new Date(`${form.checkOut}T00:00:00+05:30`).getTime() - new Date(`${form.checkIn}T00:00:00+05:30`).getTime()) / 86400000);
+    const value = form.tentType === EP_SHARED_NAME && nights >= 1 ? EP_SHARED_PRICE * guests * nights : undefined;
+    trackEvent("generate_lead", { tent: form.tentType, guests, currency: "INR", value });
     toast(t("Enquiry sent.", "पूछताछ भेज दी गई।"), "ok");
     router.push(`/thank-you?name=${encodeURIComponent(form.name)}`);
   }
