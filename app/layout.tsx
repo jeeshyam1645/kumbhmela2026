@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lora, Poppins } from "next/font/google";
 import { Footer } from "@/components/Footer";
+import { GoogleAds } from "@/components/GoogleAds";
 import { Header } from "@/components/Header";
 import { MobileBar } from "@/components/MobileBar";
 import { Providers } from "@/components/Providers";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className={`${sans.variable} ${serif.variable} font-sans antialiased`}>
         <Providers>
+          <GoogleAds />
           <Header />
           <main className="min-h-screen pb-16 md:pb-0">{children}</main>
           <Footer />
