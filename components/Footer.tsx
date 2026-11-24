@@ -17,7 +17,11 @@ export function Footer() {
           <p className="font-semibold">{t("Visit", "देखें")}</p>
           <Link className="block text-orange-100/80" href="/accommodation">{t("Stays", "आवास")}</Link>
           <Link className="block text-orange-100/80" href="/puja-services">{t("Rituals", "अनुष्ठान")}</Link>
-          <Link className="block text-orange-100/80" href="/kumbh-guide">{t("Guide", "गाइड")}</Link>
+          <p className="pt-2 font-semibold">{t("Guides", "गाइड")}</p>
+          <Link className="block text-orange-100/80" href="/guides/magh-mela-2027-dates">{t("Dates", "तिथियाँ")}</Link>
+          <Link className="block text-orange-100/80" href="/guides/how-to-reach-sangam">{t("Reaching Sangam", "संगम कैसे पहुँचें")}</Link>
+          <Link className="block text-orange-100/80" href="/guides/what-to-pack">{t("What to pack", "क्या लाएँ")}</Link>
+          <Link className="block text-orange-100/80" href="/guides/kalpvas">{t("Kalpvas", "कल्पवास")}</Link>
         </div>
         <div className="space-y-2 text-sm">
           <p className="font-semibold">{t("Contact", "संपर्क")}</p>
