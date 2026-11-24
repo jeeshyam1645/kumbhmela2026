@@ -12,7 +12,7 @@ const links = [
   { href: "/about-us", en: "About", hi: "हमारे बारे में" },
   { href: "/accommodation", en: "Stays", hi: "आवास" },
   { href: "/puja-services", en: "Rituals", hi: "अनुष्ठान" },
-  { href: "/kumbh-guide", en: "Guide", hi: "गाइड" },
+  { href: "/guides", en: "Guides", hi: "गाइड" },
   { href: "/contact", en: "Contact", hi: "संपर्क" },
 ];
 
@@ -49,7 +49,7 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={`inline-flex min-h-11 items-center rounded-full px-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-saffron ${
-                pathname === link.href ? "bg-saffron text-white" : glass ? "text-white hover:bg-white/15" : "text-ink hover:bg-soft"
+                pathname === link.href || (link.href === "/guides" && pathname.startsWith("/guides")) ? "bg-saffron text-white" : glass ? "text-white hover:bg-white/15" : "text-ink hover:bg-soft"
               }`}
             >
               {t(link.en, link.hi)}

@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date("2026-11-02");
-  return ["/", "/about-us", "/accommodation", "/accommodation/swiss-cottage", "/accommodation/ep-tent", "/puja-services", "/kumbh-guide", "/contact", "/privacy", "/terms", "/credits"].map((path) => ({
+  const lastModified = new Date("2026-11-24");
+  return ["/", "/about-us", "/accommodation", "/accommodation/swiss-cottage", "/accommodation/ep-tent", "/puja-services", "/kumbh-guide", "/guides", "/guides/magh-mela-2027-dates", "/guides/how-to-reach-sangam", "/guides/what-to-pack", "/guides/kalpvas", "/contact", "/privacy", "/terms", "/credits"].map((path) => ({
     url: `${site.url}${path === "/" ? "" : path}`,
     lastModified,
     changeFrequency: "weekly",

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { bathingDates, bathingDatesNote, eventJsonLd, formatPrayagraj, pageMeta } from "@/lib/site";
 
@@ -23,7 +24,7 @@ export default function GuidePage() {
       <h1 className="font-serif text-4xl">Kumbh and Magh Mela guide</h1>
       <p className="mt-4 text-ink/75">Magh Mela is the annual gathering at the Sangam of Ganga, Yamuna, and the mythical Saraswati in Prayagraj. Every 12 years it becomes the Kumbh, and every 6 years the Ardh Kumbh. A holy dip on the bathing dates is believed to cleanse a lifetime.</p>
       <h2 className="mt-10 font-serif text-3xl">Bathing dates, 2027</h2>
-      <p className="mt-3 text-sm text-ink/70">{bathingDatesNote.en}</p>
+      <p className="mt-3 text-sm text-ink/70">{bathingDatesNote.en} The sources for the 2027 list are on the <Link className="underline" href="/guides/magh-mela-2027-dates">dates guide</Link>.</p>
       <table className="mt-4 w-full text-left text-sm">
         <thead><tr className="border-b"><th className="py-2">Date</th><th>Festival</th><th>Hindi</th></tr></thead>
         <tbody>
