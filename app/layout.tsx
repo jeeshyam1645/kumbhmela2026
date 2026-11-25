@@ -15,7 +15,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: "Magh Mela Camp Booking - Prayagraj 2027",
   description: "Book Swiss Cottage, Deluxe Tent, and EP Tent stays near Sangam for Magh Mela Prayagraj 2027.",
-  openGraph: { images: [site.ogImage] },
+  openGraph: {
+    url: site.url,
+    siteName: site.name,
+    type: "website",
+    images: [{ url: site.ogImage, width: 1200, height: 630, alt: "Magh Mela Stays – Camps near Sangam, Prayagraj" }],
+  },
+  twitter: { card: "summary_large_image", images: [site.ogImage] },
 };
 
 export const viewport: Viewport = {
