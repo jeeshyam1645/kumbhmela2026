@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Lora, Poppins } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { GoogleAds } from "@/components/GoogleAds";
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="min-h-screen pb-16 md:pb-0">{children}</main>
           <Footer />
           <MobileBar />
+          <Analytics />
         </Providers>
       </body>
     </html>
