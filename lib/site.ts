@@ -95,7 +95,11 @@ export function pageMeta(title: string, description: string, path: string, image
       url,
       siteName: site.name,
       type: "website",
-      images: [image],
+      images: [
+        image === site.ogImage
+          ? { url: image, width: 1200, height: 630, alt: "Magh Mela Stays – Camps near Sangam, Prayagraj" }
+          : image,
+      ],
     },
     twitter: { card: "summary_large_image", title: full, description, images: [image] },
   };
