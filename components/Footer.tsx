@@ -11,7 +11,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-4">
         <div>
           <p className="font-serif text-xl">{t("Magh Mela 2027", "माघ मेला 2027")}</p>
-          <p className="mt-2 text-sm text-orange-100/80">{t("Camps near Sangam, Prayagraj.", "संगम के पास शिविर, प्रयागराज।")}</p>
+          <p className="mt-2 text-sm text-orange-100/80">{t("500 m from Sangam, Prayagraj.", "संगम से 500 मीटर, प्रयागराज।")}</p>
         </div>
         <div className="space-y-2 text-sm">
           <p className="font-semibold">{t("Visit", "देखें")}</p>
@@ -27,7 +27,7 @@ export function Footer() {
           <p className="font-semibold">{t("Contact", "संपर्क")}</p>
           <a className="block text-orange-100/80" href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
           <a className="block text-orange-100/80" href={`mailto:${site.email}`}>{site.email}</a>
-          <p className="text-orange-100/80">{t("Near Sangam, Prayagraj", "संगम के पास, प्रयागराज")}</p>
+          <p className="text-orange-100/80">{t("500 m from Sangam · 50 m from Ganga ji", "संगम से 500 मीटर · गंगा जी से 50 मीटर")}</p>
         </div>
         <div className="space-y-2 text-sm">
           <p className="font-semibold">{t("Legal", "कानूनी")}</p>

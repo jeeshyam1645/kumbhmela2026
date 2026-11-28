@@ -37,7 +37,7 @@ export default function KalpvasGuidePage() {
 
       <h2 className="mt-10 font-serif text-3xl">What a camp stay can cover</h2>
       <p className="mt-3 text-ink/75">
-        This camp is near Sangam. A stay includes satvik meals, bedding for the January cold, and a guarded compound with staff on site. The shared EP tent is a floor stay: gadda, pillow, and blanket, and no beds. The family EP tent is the whole tent with takht beds. The Swiss Cottage has an attached bathroom for 2–3 guests. The Deluxe Tent has twin beds and a shared bathroom for 2 guests.
+        This camp is 500 m from Sangam, 50 m from Ganga ji, and 300 m from Bade Hanuman ji Mandir (Lete Hanuman ji). A stay includes satvik meals, bedding for the January cold, and a guarded compound with staff on site. The shared EP tent is a floor stay: gadda, pillow, and blanket, and no beds. The family EP tent is the whole tent with takht beds. The Swiss Cottage has an attached bathroom for 2–3 guests. The Deluxe Tent has twin beds and a shared bathroom for 2 guests.
       </p>
       <p className="mt-3 text-ink/75">
         The camp does not publish a kalpvas rulebook. If your vow is stricter than a normal satvik meal, write that in the enquiry. The team aims to call within 2 hours.
