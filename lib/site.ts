@@ -59,8 +59,14 @@ export const guestFaqs = [
   {
     question: "Where is the camp?",
     questionHi: "शिविर कहाँ है?",
-    answer: "Near Sangam, Prayagraj, Uttar Pradesh. The exact plot is the one allotted by the Mela Adhikari.",
-    answerHi: "संगम के पास, प्रयागराज, उत्तर प्रदेश। सटीक भूखंड मेला अधिकारी द्वारा आवंटित स्थान पर होता है।",
+    answer: "The camp is 500 m from Sangam, 50 m from Ganga ji, and 300 m from Bade Hanuman ji Mandir (Lete Hanuman ji), in Prayagraj. The exact plot is the one allotted by the Mela Adhikari.",
+    answerHi: "शिविर संगम से 500 मीटर, गंगा जी से 50 मीटर, और बड़े हनुमान जी मंदिर (लेटे हनुमान जी) से 300 मीटर है, प्रयागराज में। सटीक भूखंड मेला अधिकारी द्वारा आवंटित स्थान पर होता है।",
+  },
+  {
+    question: "How far is the camp from Sangam?",
+    questionHi: "शिविर संगम से कितनी दूर है?",
+    answer: "500 m from Sangam. It is also 50 m from Ganga ji and 300 m from Bade Hanuman ji Mandir, also called Lete Hanuman ji.",
+    answerHi: "संगम से 500 मीटर। गंगा जी से 50 मीटर और बड़े हनुमान जी मंदिर, जिन्हें लेटे हनुमान जी भी कहते हैं, से 300 मीटर।",
   },
   {
     question: "Which tents can I book?",
@@ -124,9 +130,10 @@ export function lodgingJsonLd() {
     telephone: site.phone,
     email: site.email,
     image: site.ogImage,
+    description: "500 m from Sangam, 50 m from Ganga ji, and 300 m from Bade Hanuman ji Mandir (Lete Hanuman ji).",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Near Sangam",
+      streetAddress: "500 m from Sangam, 50 m from Ganga ji, 300 m from Bade Hanuman ji Mandir",
       addressLocality: "Prayagraj",
       addressRegion: "Uttar Pradesh",
       addressCountry: "IN",

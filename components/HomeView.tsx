@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Landmark, MapPin, Waves } from "lucide-react";
 import type { CampRecord, PujaRecord } from "@/lib/queries";
 import { bathingDates, bathingDatesNote, formatPrayagraj, guestFaqs, site, tentOffers, whatsAppLink } from "@/lib/site";
 import { cloudinaryUrl, swissCottageMedia } from "@/lib/media";
@@ -35,6 +36,18 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
             <a className="btn-wa" href={whatsAppLink(t("Namaste, I am interested in Magh Mela 2027 accommodation.", "नमस्ते, मुझे माघ मेला 2027 के आवास में रुचि है।"))} target="_blank" rel="noopener noreferrer">{t("Plan on WhatsApp", "व्हाट्सएप पर योजना")}</a>
             <Link className="btn bg-white/15 text-white ring-1 ring-white/40" href="/accommodation/swiss-cottage">{t("See the Swiss Cottage", "स्विस कॉटेज देखें")}</Link>
           </div>
+          <ul className="mt-8 grid max-w-3xl grid-cols-1 gap-2 sm:grid-cols-3">
+            {[
+              { icon: MapPin, en: "500 m from Sangam", hi: "संगम से 500 मीटर" },
+              { icon: Waves, en: "50 m from Ganga ji", hi: "गंगा जी से 50 मीटर" },
+              { icon: Landmark, en: "300 m from Bade Hanuman ji Mandir (Lete Hanuman ji)", hi: "बड़े हनुमान जी से 300 मीटर" },
+            ].map((item) => (
+              <li key={item.en} className="flex items-center gap-2 rounded-xl bg-black/45 px-3 py-2 text-sm text-white ring-1 ring-white/30 backdrop-blur-md">
+                <item.icon className="h-4 w-4 shrink-0 text-orange-100" aria-hidden="true" />
+                <span>{t(item.en, item.hi)}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -42,7 +55,7 @@ export function HomeView({ camps, live, pujas }: { camps: CampRecord[]; live: bo
         {[
           [t("Guarded compound", "सुरक्षित परिसर"), t("Staff on site, day and night", "दिन-रात स्टाफ")],
           [t("Local hosts", "स्थानीय मेजबान"), t("A Prayagraj family", "प्रयागराज का परिवार")],
-          [t("Near Sangam", "संगम के पास"), t("Walk to the holy dip", "पवित्र स्नान के पास")],
+          [t("500 m from Sangam", "संगम से 500 मीटर"), t("Walk to the holy dip", "पवित्र स्नान के पास")],
         ].map(([title, text]) => (
           <div key={title} className="card p-5">
             <h2 className="font-serif text-xl">{title}</h2>

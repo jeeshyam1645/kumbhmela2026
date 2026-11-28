@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     question: "Where exactly is the camp?",
-    answer: "Near Sangam, Prayagraj, Uttar Pradesh. The exact plot is the one allotted by the Mela Adhikari. Call +91 99363 99677 when you enquire and the team will tell you the meeting point for your dates.",
+    answer: "The camp is 500 m from Sangam, 50 m from Ganga ji, and 300 m from Bade Hanuman ji Mandir (Lete Hanuman ji), in Prayagraj. The exact plot is allotted by the Mela Adhikari. Call +91 99363 99677 when you enquire and the team will tell you the meeting point for your dates.",
   },
 ];
 
@@ -29,7 +29,7 @@ export default function ReachGuidePage() {
       <p className="text-sm text-saffron-dark">Magh Mela 2027 · Prayagraj</p>
       <h1 className="mt-2 font-serif text-4xl md:text-5xl">How to reach Sangam</h1>
       <p className="mt-4 text-ink/75">
-        The mela is at the Sangam in Prayagraj, where the Ganga and Yamuna meet. The Ministry of Tourism’s Incredible India page for Magh Mela 2027 names the airport and the main railway stations below. This camp is near Sangam. The exact plot depends on the Mela Adhikari’s allotment, so this page does not give a kilometre figure or a fixed gate.
+        The mela is at the Sangam in Prayagraj, where the Ganga and Yamuna meet. The Ministry of Tourism’s Incredible India page for Magh Mela 2027 names the airport and the main railway stations below. The camp is 500 m from Sangam, 50 m from Ganga ji, and 300 m from Bade Hanuman ji Mandir (Lete Hanuman ji). The exact plot still depends on the Mela Adhikari’s allotment, so the meeting point is confirmed when you enquire.
       </p>
 
       <h2 className="mt-10 font-serif text-3xl">By train</h2>
@@ -52,7 +52,7 @@ export default function ReachGuidePage() {
 
       <h2 className="mt-10 font-serif text-3xl">From the city to the camp</h2>
       <p className="mt-3 text-ink/75">
-        The camp is near Sangam, Prayagraj, Uttar Pradesh. Staff are on site in a guarded compound. Call {site.phoneDisplay} or send the enquiry form with your arrival point. The team aims to call within 2 hours. You do not need an account.
+        The camp is 500 m from Sangam, 50 m from Ganga ji, and 300 m from Bade Hanuman ji Mandir (Lete Hanuman ji), in Prayagraj. Staff are on site in a guarded compound. Call {site.phoneDisplay} or send the enquiry form with your arrival point. The team aims to call within 2 hours. You do not need an account.
       </p>
 
       <h2 className="mt-10 font-serif text-3xl">Source</h2>

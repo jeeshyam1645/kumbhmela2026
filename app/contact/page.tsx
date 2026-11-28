@@ -23,7 +23,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
         <h2 className="font-serif text-2xl">Talk to us</h2>
         <a className="block" href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
         <a className="block" href={`mailto:${site.email}`}>{site.email}</a>
-        <p>Near Sangam, Prayagraj, Uttar Pradesh</p>
+        <p>Prayagraj, Uttar Pradesh. 500 m from Sangam, 50 m from Ganga ji, and 300 m from Bade Hanuman ji Mandir (Lete Hanuman ji).</p>
         <p className="text-ink/80">Satvik meals, guarded compound, and purohit arrangements are part of the stay.</p>
       </aside>
     </div>
